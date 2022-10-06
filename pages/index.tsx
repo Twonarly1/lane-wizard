@@ -1,86 +1,109 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import { useQuery } from "@apollo/client"
+import React, { useState } from "react"
+import AthleteDropdown from "../components/AthleteDropdown"
+import Header from "../components/Header"
+import { GET_ATHLETES, GET_EVENT_USING_ATHLETE } from "../graphql/queries"
+import EventBox from "../components/EventBox"
+import AthleteEvents from "../components/AthleteEvents"
 
-const Home: NextPage = () => {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+interface IFormInput {
+    time: string
+    athlete: string
+    event: string
+    milliseconds: string
+    fullName: string
+}
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+const Home = () => {
+    const [query, setQuery] = useState<string>("")
+    const [selectedPerson, setSelectedPerson] = useState()
+    const { loading, error, data } = useQuery(GET_ATHLETES)
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
+    // Find athlete data from Athlete Dropdown selection
+    const athleteFound = data?.getAthleteList.find((athlete: any, i: number) => {
+        const fullName = athlete.firstName + " " + athlete.lastName
+        return fullName === selectedPerson
+    })
+    const { data: eData } = useQuery(GET_EVENT_USING_ATHLETE, {
+        variables: {
+            id: athleteFound?.id.toString(),
+        },
+    })
+    console.log(eData)
 
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
+    const filteredAthletes =
+        query === ""
+            ? data?.getAthleteList
+            : data?.getAthleteList.filter((athlete: { firstName: string; lastName: string }) => {
+                  return athlete.firstName.toLowerCase().includes(query.toLowerCase())
+              })
 
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+    console.log(selectedPerson)
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
+    if (loading) return <p>Loading ...</p>
+    if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    return (
+        <div className="flex min-h-screen w-full px-4 flex-col items-center  bg-gray-200 ">
+            <div className="mx-auto h-full max-w-7xl">
+                <Header />
+                <div className="grid grid-cols-1 px-4 md:space-x-8 justify-center md:grid-cols-2 mt-10">
+                    <div className=" hidden md:flex flex-col mt-2 ">
+                        {athleteFound ? (
+                            <div className="flex space-x-2 text-blue-500">
+                                <p className="">
+                                    {athleteFound?.firstName + " " + athleteFound?.lastName + ","}
+                                </p>
+                                <p className="">{athleteFound?.grade}</p>
+                            </div>
+                        ) : (
+                            <p className="text-gray-400 font-light">Select athlete</p>
+                        )}
+                        <div className="hidden md:flex">
+                            <AthleteEvents
+                                athlete={eData?.getEventUsingAthlete}
+                                loading={loading}
+                                error={error}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col rounded-lg 0">
+                        <AthleteDropdown
+                            selectedPerson={selectedPerson}
+                            setSelectedPerson={setSelectedPerson}
+                            setQuery={setQuery}
+                            filteredAthletes={filteredAthletes}
+                        />
+
+                        <EventBox
+                            athleteFound={athleteFound}
+                            setSelectedPerson={setSelectedPerson}
+                        />
+                    </div>
+                </div>
+                <div className="mt-10 flex-col md:hidden">
+                    {athleteFound ? (
+                        <div className="flex space-x-2 text-blue-500">
+                            <p className="">
+                                {athleteFound?.firstName + " " + athleteFound?.lastName + ","}
+                            </p>
+                            <p className="">{athleteFound?.grade}</p>
+                        </div>
+                    ) : (
+                        <p className="text-gray-400 font-light">Select athlete</p>
+                    )}
+                    <div className="flex">
+                        <AthleteEvents
+                            athlete={eData?.getEventUsingAthlete}
+                            loading={loading}
+                            error={error}
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
-      </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
-    </div>
-  )
+    )
 }
 
 export default Home

@@ -1,0 +1,127 @@
+type Athlete {
+    eventList: [Event] @materializer(query: "getEventUsingAthlete")
+    firstName: String
+    grade: Int
+    id: ID!
+    lastName: String
+}
+
+type Event {
+    athlete: ID
+    athleteUsingAthlete: Athlete
+        @materializer(query: "getAthlete", arguments: [{ name: "id", field: "athlete" }])
+    event: String
+    id: ID!
+    time: String
+    milliseconds: Int
+    fullName: String
+}
+
+"""
+These are some examples of queries generated from the schema. Feel free to modify them or add your own.
+"""
+type Query {
+    getAthleteList: [Athlete]
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "Athlete"
+            configuration: "postgresql_config"
+        )
+    getAthlete(id: ID!): Athlete
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "Athlete"
+            configuration: "postgresql_config"
+        )
+    getEventUsingAthlete(id: ID!): [Event]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            SELECT T."athlete", T."event", T."id", T."time", T."milliseconds", T."fullName"
+              FROM "public"."event" T
+              WHERE T."athlete" = $1
+            """
+            configuration: "postgresql_config"
+        )
+
+    getEventByAthlete(id: ID!): [Event]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "event" where "id" = $1
+            """
+            configuration: "postgresql_config"
+        )
+
+    getEventsByEvent(event: String): [Event]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "event" where "event" = $1
+            """
+            configuration: "postgresql_config"
+        )
+
+    getEventList: [Event]
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "event"
+            configuration: "postgresql_config"
+        )
+    getEvent(id: ID!): Event
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "event"
+            configuration: "postgresql_config"
+        )
+}
+
+"""
+These are some examples of mutations generated from the schema. Feel free to modify them or add your own.
+"""
+type Mutation {
+    insertAthlete(firstName: String!, lastName: String!, grade: Int!): Athlete
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "Athlete"
+            dml: INSERT
+            configuration: "postgresql_config"
+        )
+    deleteAthlete(id: ID!): Athlete
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "Athlete"
+            dml: DELETE
+            configuration: "postgresql_config"
+        )
+
+    insertEvent(
+        event: String!
+        time: String!
+        athlete: ID!
+        milliseconds: Int
+        fullName: String!
+    ): Event
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "event"
+            dml: INSERT
+            configuration: "postgresql_config"
+        )
+
+    deleteEvent(id: ID!): Event
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "event"
+            dml: DELETE
+            configuration: "postgresql_config"
+        )
+}
