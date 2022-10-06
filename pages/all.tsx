@@ -15,7 +15,7 @@ const All = (props: Props) => {
 
 
   return (
-    <div>
+    <div className='bg-gray-200'>
       <Header /> 
       <div className="mt-2 w-full overflow-x-auto  justify-between flex flex-col">
         {events && 
