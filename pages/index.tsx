@@ -57,7 +57,7 @@ const Home = () => {
                                 <p className="">{athleteFound?.grade}</p>
                             </div>
                         ) : (
-                            <p className="text-gray-400 font-light">Select athlete</p>
+                            <p className="text-gray-500 ml-4 font-light">Select athlete</p>
                         )}
                         <div className="hidden md:flex">
                             <AthleteEvents
@@ -82,7 +82,7 @@ const Home = () => {
                         />
                     </div>
                 </div>
-                <div className="mt-10 flex-col md:hidden">
+                <div className="mt-10 ml-4 flex-col md:hidden">
                     {athleteFound ? (
                         <div className="flex space-x-2 text-blue-500">
                             <p className="">

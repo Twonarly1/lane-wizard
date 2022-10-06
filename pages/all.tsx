@@ -15,9 +15,8 @@ const All = (props: Props) => {
 
 
   return (
-    <div className='bg-gray-200'>
+      <div className="w-full bg-gray-200 overflow-x-auto  justify-between flex flex-col">
       <Header /> 
-      <div className="mt-2 w-full overflow-x-auto  justify-between flex flex-col">
         {events && 
           <div className='mx-auto text-sm py-4'> 
             counting {events?.getEventList.length} 
@@ -25,7 +24,7 @@ const All = (props: Props) => {
         }
         <div className="inline-block  py-2">
             <div className="overflow-y-auto">
-                <table className="w-[400px] mx-auto divide-y divide-gray-300">
+                <table className="w-[300px] md:w-[400px] mx-auto divide-y divide-gray-300">
                     <thead className="bg-gray-50">
                         <tr>
                             <th scope="col" className="px-3 py-3.5 pl-4 text-left text-sm font-semibold text-gray-900">
@@ -58,7 +57,7 @@ const All = (props: Props) => {
             </div>
         </div>
       </div>
-    </div>
+ 
   )
 }
 

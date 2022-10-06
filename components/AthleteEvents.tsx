@@ -12,9 +12,9 @@ const AthleteEvents = ({athlete, loading, error}: Props) => {
 
   return (
     <div className="mt-2 w-full overflow-x-auto justify-between flex flex-col">
-        <div className="inline-block  py-2">
+        <div className="inline-block px-4 py-2">
             <div className="overflow-hidden">
-                <table className="w-[350px] divide-y divide-gray-300">
+                <table className="w-[260px] sm:w-[350px] divide-y divide-gray-300">
                     <thead className="bg-gray-50">
                         <tr>
                             <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">

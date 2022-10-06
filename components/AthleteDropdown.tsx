@@ -19,14 +19,14 @@ const AthleteDropdown = ({selectedPerson, setSelectedPerson, setQuery, filteredA
   return (
 <Combobox
         as="div"
-        className="text-black flex space-x-2 items-center"
+        className="text-black sm:flex sm:space-x-2 items-center"
         value={selectedPerson}
         onChange={setSelectedPerson}
     >
         <Combobox.Label className="text-black w-24">
             <b>Athlete:</b>
         </Combobox.Label>
-        <div className="relative w-full">
+        <div className="relative w-[260px] sm:w-full">
             <Combobox.Input
                 className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 onChange={(event) => setQuery(event.target.value)}

@@ -97,8 +97,8 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
 
   return (
     <div> 
-        <form onSubmit={onSubmit} className="flex flex-col gap-y-2 mt-2">
-            <div className="flex items-center space-x-3">
+        <form onSubmit={onSubmit} className="sm:flex flex-col gap-y-2 mt-2">
+            <div className="flex w-[260px] sm:w-full sm:flex-row flex-col sm:items-center sm:space-x-3">
                 <label htmlFor="" className="w-24">
                     <b>Event:</b>
                 </label>
@@ -117,7 +117,7 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
                     })}
                 </select>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex mt-2 sm:mt-0 w-[260px] sm:w-full sm:flex-row flex-col sm:items-center sm:space-x-3">
                 <label htmlFor="" className="w-24">
                     <b>Time:</b>
                 </label>
@@ -136,7 +136,7 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
                 />
             </div>
             {/* display formatted time 00:00:00 */}
-            <div className="flex flex-col w-full relative rounded-2xl py-2 border bg-gray-200 text-[40px] items-center justify-center">
+            <div className="flex flex-col w-[260px] sm:w-full relative rounded-2xl py-2 border bg-gray-200 text-[40px] items-center justify-center">
                 <p className=""> {time.length && displayTime()}</p>
                 {/* time converted to milliseconds */}
                 <div className="flex text-xs  text-gray-500 space-x-1">
@@ -144,14 +144,16 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
                     <p>{time * Number(10)}</p>
                 </div>
             </div>
-            <div className="border border-black rounded-lg justify-center flex  text-black hover:text-blue-500">
+            {!!watch('event') && (
+            <div className="border w-[260px] sm:w-full border-gray-500 rounded-lg justify-center flex  text-black hover:text-blue-500">
                 <button
-                    className="border rounded-lg py-2 w-80 px-4 "
+                    className="border  w-[260px] sm:w-full rounded-lg py-2 "
                     type="submit"
                 >
                     <p>Create Event</p>
                 </button>
             </div>
+            )}
             
             
 

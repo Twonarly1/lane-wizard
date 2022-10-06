@@ -5,7 +5,7 @@ type Props = {}
 
 const Header = (props: Props) => {
   return (
-    <header className="flex w-fit mx-auto mt-4 justify-center">
+    <header className="flex w-fit mx-auto bg-gray-200 mt-4 justify-center">
         <Link href="/" className="">
             <a className="links">Create Event</a>
         </Link>

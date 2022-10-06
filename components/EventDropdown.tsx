@@ -17,7 +17,7 @@ export default function EventDropdown({selectedPerson, setSelectedPerson, setQue
 console.log(selectedPerson)
 
   return (
-    <Combobox as="div" className="mt-6 flex items-center mx-auto px-4 w-[380px]" value={selectedPerson} onChange={setSelectedPerson}>
+    <Combobox as="div" className="mt-6 md:flex items-center mx-auto px-4 md:w-[380px] w-[300px]" value={selectedPerson} onChange={setSelectedPerson}>
       <Combobox.Label className="block text-sm font-medium w-32 text-gray-700">Select Event</Combobox.Label>
       <div className="relative mt-1">
         <Combobox.Input
