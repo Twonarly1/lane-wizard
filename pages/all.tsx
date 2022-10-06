@@ -6,14 +6,11 @@ import { GET_ATHLETES, GET_EVENTS, GET_EVENTS_BY_EVENT, GET_EVENT_USING_ATHLETE 
 type Props = {}
 
 const All = (props: Props) => {
-    const [athleteIds, setAthleteIds] = useState<string[]>([])
-    const { data } = useQuery(GET_ATHLETES)
-    const { data: events } = useQuery(GET_EVENTS)
-    const [allData, setAllData] = useState<Array<any>>([])
-      
+    const {error, loading, data: events } = useQuery(GET_EVENTS)      
     console.log(events?.getEventList);
 
-
+    if (loading) return <p>Loading ...</p>;
+    if (error) return (<pre>{JSON.stringify(error, null, 2)}</pre>);
   return (
       <div className="w-full bg-gray-200 overflow-x-auto  justify-between flex flex-col">
       <Header /> 
