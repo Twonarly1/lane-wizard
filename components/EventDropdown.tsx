@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Combobox } from '@headlessui/react'
 
@@ -23,9 +22,7 @@ console.log(selectedEvent)
     value={selectedEvent} 
     onChange={setSelectedEvent}
     >
-        <p className="text-black w-14 font-bold">
-            Event:
-        </p>
+        <p className="text-black w-14 font-bold">Event:</p>
         <div className="relative w-full">
             <Combobox.Input
             className="w-full border-none rounded"

@@ -9,8 +9,8 @@ type Props = {
 
 const AthleteEvents = ({ athleteFound}: Props) => {
     const [events, setEvents]= useState<boolean>(false)
-    const [idToDelete, setIdToDelete] = useState<string>("")
     const [deleteEvent] = useMutation(DELETE_EVENT)
+
     // Query events using athlete if athlete is found.
     const [getEventsUsingAthlete, { data: data , refetch}] = useLazyQuery(GET_EVENT_USING_ATHLETE)
     
@@ -18,8 +18,6 @@ const AthleteEvents = ({ athleteFound}: Props) => {
     const isRadioSelected = (value: string): boolean => selectedRadioBtn === value
     const handleRadioClick = (e: React.ChangeEvent<HTMLInputElement>): void => setSelectedRadioBtn(e.currentTarget.value)
     
-    // console.log(selectedRadioBtn);
-
     // run LazyQuery whenever athlete found is updated.
     useEffect(() => {
         if (!athleteFound) {
