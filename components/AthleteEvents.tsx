@@ -11,38 +11,35 @@ const AthleteEvents = ({athlete, loading, error}: Props) => {
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
   return (
-    <div className="mt-2 w-full overflow-x-auto justify-between flex flex-col">
-        <div className="inline-block px-4 py-2">
+    athlete && (
+
+    <div className="w-full overflow-x-auto justify-between flex flex-col">
             <div className="overflow-hidden">
-                <table className="w-[260px] sm:w-[350px] divide-y divide-gray-300">
+                <table className="w-full divide-y divide-gray-300">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                            <th scope="col" className="col">
                                 Event
                             </th>
-                            <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            <th scope="col" className="col text-right">
                                 Time
                             </th>
-                            {/* <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                Milliseconds
-                            </th> */}
                         </tr>
                     </thead>
-                    <tbody className="bg-white">
+                    <tbody className="bg-white text-xs">
                         {athlete?.map((event: any, idx: number) => (
                             <tr key={idx} className={idx % 2 === 0 ? undefined : 'bg-gray-50'}>
-                                <td className="whitespace-nowrap py-1 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                <td className="row">
                                     {event.event}
                                 </td>
-                                <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500">{event.time}</td>
-                                {/* <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500">{event.milliseconds}</td> */}
+                                <td className="row text-right">{event.time}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    )
   )
 }
 

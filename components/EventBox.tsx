@@ -22,6 +22,7 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
     const [time, setTime] = useState<any>("")
     const [addEvent] = useMutation(ADD_EVENT)
 
+    // REACT HOOK FORM //
     const {
         register,
         setValue,
@@ -29,6 +30,8 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
         watch,
         formState: { errors },
     } = useForm<IFormInput>()
+
+    // ON SUBMIT //
     const onSubmit = handleSubmit(async (formData: any) => {
         const notification = toast.loading("Creating new event")
         if (time.length < 4) {
@@ -74,6 +77,7 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
         }
     })
 
+    // DISPLAY TIME 0:00.00 //
     const displayTime = () => {
         if (time.length === 1) {
             return time[0]
@@ -96,15 +100,15 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
     }
 
   return (
-    <div> 
-        <form onSubmit={onSubmit} className="sm:flex flex-col gap-y-2 mt-2">
-            <div className="flex w-[260px] sm:w-full sm:flex-row flex-col sm:items-center sm:space-x-3">
-                <label htmlFor="" className="w-24">
-                    <b>Event:</b>
-                </label>
+
+        <form onSubmit={onSubmit} className="w-full justify-between">
+            <div className="flex space-x-4 mt-3 items-center mx-auto ">
+                <p className="w-16 font-bold ">
+                    Event:
+                </p>
                 {/* register event input with react-hook-form */}
                 <select
-                    className="comboboxInput"
+                    className="w-full border-none rounded"
                     placeholder="Event"
                     {...register("event", { required: true })}
                 >
@@ -117,13 +121,13 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
                     })}
                 </select>
             </div>
-            <div className="flex mt-2 sm:mt-0 w-[260px] sm:w-full sm:flex-row flex-col sm:items-center sm:space-x-3">
-                <label htmlFor="" className="w-24">
-                    <b>Time:</b>
-                </label>
+            <div className="flex mt-3 items-center mx-auto space-x-4">
+                <p className="w-16 font-bold">
+                    Time:
+                </p>
                 {/* register time input with react-hook-form */}
                 <input
-                    className="comboboxInput"
+                    className="w-full border-none rounded"
                     {...register("time", {
                         required: true,
                         minLength: 4,
@@ -136,41 +140,27 @@ const EventBox = ({athleteFound, setSelectedPerson}: Props) => {
                 />
             </div>
             {/* display formatted time 00:00:00 */}
-            <div className="flex flex-col w-[260px] sm:w-full relative rounded-2xl py-2 border bg-gray-200 text-[40px] items-center justify-center">
-                <p className=""> {time.length && displayTime()}</p>
+            <div className="flex mt-2 flex-col w-full relative border bg-gray-200 text-[40px] items-center justify-center">
+                <p> {time.length && displayTime()}</p>
                 {/* time converted to milliseconds */}
-                <div className="flex text-xs  text-gray-500 space-x-1">
+                <div className="flex text-xs text-gray-500 space-x-1">
                     <p>ms: </p>
                     <p>{time * Number(10)}</p>
                 </div>
             </div>
             {!!watch('event') && (
-            <div className="border w-[260px] sm:w-full border-gray-500 rounded-lg justify-center flex  text-black hover:text-blue-500">
+            <div className="mt-4 w-full bg-white rounded justify-center flex  text-black hover:text-blue-500">
                 <button
-                    className="border  w-[260px] sm:w-full rounded-lg py-2 "
+                    className="w-full rounded-lg py-2 "
                     type="submit"
                 >
                     <p>Create Event</p>
                 </button>
             </div>
             )}
-            
-            
 
-            {/* Errors */}
-            {Object.keys(errors).length > 0 && (
-                <div className="space-y-2 p-2 text-red-500">
-                    {errors.athlete?.type === "required" && (
-                        <p>- An athlete is required</p>
-                    )}
-
-                    {errors.event?.type === "required" && (
-                        <p>- An event is required</p>
-                    )}
-                </div>
-            )}
         </form>
-    </div>
+ 
   )
 }
 

@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import EventDropdown from '../components/EventDropdown'
 import { GET_EVENTS_BY_EVENT } from '../graphql/queries'
 import eventList from "../eventList.json"
-import Header from '../components/Header'
 import Link from 'next/link'
+import Footer from '../components/Footer'
 
 const event = () => {
     const [query, setQuery] = useState('')
-    const [selectedPerson, setSelectedPerson] = useState<any>("")
+    const [selectedEvent, setSelectedEvent] = useState<any>("")
 
     const filteredEvents: any =
       query === ''
@@ -19,7 +19,7 @@ const event = () => {
 
     const {error, loading, data} = useQuery(GET_EVENTS_BY_EVENT, {
         variables: {
-            event: selectedPerson?.name
+            event: selectedEvent?.name
         }
     })
 
@@ -32,63 +32,53 @@ const event = () => {
     }
 
     
-    if (loading) return <p>Loading ...</p>
+    if (loading) return <p className='loading'>Loading ...</p>
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
   
   return (
-    <div className='bg-gray-200 flex-col w-full min-h-screen flex'>
-        <div className="mx-auto px-4 h-full w-full">
-            <Header />
-            <EventDropdown 
-                selectedPerson={selectedPerson}
-                setSelectedPerson={setSelectedPerson}
-                setQuery={setQuery}
-                filteredEvents={filteredEvents}
-            />
-            <div className="mt-8 overflow-x-auto flex flex-col">
-                <div className="mx-auto justify-center w-full flex py-2 align-middle ">
-                    <div className="overflow-hidden w-[500px] shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-                        <table className=" divide-y divide-gray-300 w-full">
-                            <thead className="bg-gray-50 w-full">
-                                <tr>
-                                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
-                                    Rank
-                                    </th>
-                                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
-                                    Name
-                                    </th>
-                                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                    Time
-                                    </th>
-                                    {/* <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                    Milliseconds
-                                    </th> */}
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white">
-                                {numbers?.map((event: any, idx: number) => (
-                                    <tr key={idx} className={idx % 2 === 0 ? undefined : 'bg-gray-50'}>
-                                    <td className="whitespace-nowrap w-10 text-center py-1 text-sm text-gray-500">{idx+1}</td>
-                                    <td className="whitespace-nowrap py-1 pl-4 pr-3 text-sm font-medium text-gray-500">
-                                        {event.fullName}
-                                    </td>
-                                    <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500">{event.time}</td>
-                                    {/* <td className="whitespace-nowrap px-3 py-1 text-sm text-gray-500">{event.milliseconds}</td> */}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <>
+        <div className='bg-gray-200 min-h-screen flex-col mx-auto  flex'>
+            <EventDropdown
+              selectedEvent={selectedEvent}
+              setSelectedEvent={setSelectedEvent}
+              setQuery={setQuery}
+              filteredEvents={filteredEvents} />
+            {selectedEvent ?
+              <div className="mt-8 min-h-screen overflow-x-auto mx-auto md:w-[400px] flex-col">
+                  <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                      <table className=" divide-y divide-gray-300 w-full">
+                          <thead className="bg-gray-50 w-full">
+                              <tr>
+                                  <th scope="col" className="col">
+                                      Rank
+                                  </th>
+                                  <th scope="col" className="col">
+                                      Name
+                                  </th>
+                                  <th scope="col" className="col text-right">
+                                      Time
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody className="bg-white text-xs">
+                              {numbers?.map((event: any, idx: number) => (
+                                  <tr key={idx} className={idx % 2 === 0 ? undefined : 'bg-gray-50'}>
+                                      <td className="row">{idx + 1}</td>
+                                      <td className="row">
+                                          {event.fullName}
+                                      </td>
+                                      <td className="row text-right">{event.time}</td>
+                                  </tr>
+                              ))}
+                          </tbody>
+                      </table>
+                  </div>
+              </div> : <p className="text-gray-500 mt-6 mx-auto font-light">Select athlete for data...</p>
+            }
         </div>
-        <div className="flex gap-2">
-            <Link href="/" className=" text-left ">
-                <a className="links mt-10 text-center w-full">Create Event</a>
-            </Link>
-        </div>
-    </div>
+      <Footer />
+    </>
   )
 }
 
