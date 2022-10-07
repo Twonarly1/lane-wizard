@@ -1,37 +1,28 @@
 import { useQuery } from "@apollo/client"
 import React, { useState } from "react"
 import AthleteDropdown from "../components/AthleteDropdown"
-import { GET_ATHLETES, GET_EVENT_USING_ATHLETE } from "../graphql/queries"
+import { GET_ATHLETES } from "../graphql/queries"
 import EventBox from "../components/EventBox"
 import AthleteEvents from "../components/AthleteEvents"
 import AthleteFound from "../components/AthleteFound"
 import Footer from "../components/Footer"
 
+type Athlete = {
+    firstName: string
+    grade: number
+    id: number
+    lastName: string
+}
+
 const Home = () => {
-    const [query, setQuery] = useState<string>("")
     const [selectedPerson, setSelectedPerson] = useState()
-    const { loading, error, data } = useQuery(GET_ATHLETES)
+    const { error, loading, data: athletesData } = useQuery(GET_ATHLETES)
 
     // Find athlete data from <Athlete Dropdown />
-    const athleteFound = data?.getAthleteList.find((athlete: any, i: number) => {
+    const athleteFound = athletesData?.getAthleteList.find((athlete: Athlete) => {
         const fullName = athlete.firstName + " " + athlete.lastName
         return fullName === selectedPerson
     })
-
-    // Query events using athlete
-    const { data: eData } = useQuery(GET_EVENT_USING_ATHLETE, {
-        variables: {
-            id: athleteFound?.id.toString(),
-        },
-    })
-
-    // Filter athletes
-    const filteredAthletes =
-        query === ""
-            ? data?.getAthleteList
-            : data?.getAthleteList.filter((athlete: { firstName: string; lastName: string }) => {
-                  return athlete.firstName.toLowerCase().includes(query.toLowerCase())
-              })
 
     if (loading) return <p className="loading">Loading ...</p>
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
@@ -39,36 +30,18 @@ const Home = () => {
     return (
         <>
             <div className="flex mx-auto min-h-screen max-w-7xl w-full flex-col items-center">
-                <div className="grid mt-10 grid-cols-1 md:space-x-16 justify-center md:grid-cols-2">
-                    <div className="hidden md:flex flex-col">
-                        <AthleteFound athleteFound={athleteFound} />
-
-                        <AthleteEvents
-                            athlete={eData?.getEventUsingAthlete}
-                            loading={loading}
-                            error={error}
-                        />
-                    </div>
-                    <div className="">
+                <div className="flex mt-10 flex-col justify-center md:flex-row-reverse">
+                    <div>
                         <AthleteDropdown
                             selectedPerson={selectedPerson}
                             setSelectedPerson={setSelectedPerson}
-                            setQuery={setQuery}
-                            filteredAthletes={filteredAthletes}
+                            data={athletesData}
                         />
-                        <EventBox
-                            athleteFound={athleteFound}
-                            setSelectedPerson={setSelectedPerson}
-                        />
+                        <EventBox athleteFound={athleteFound} />
                     </div>
-                    <div className="flex-col mt-10 md:hidden">
+                    <div className="flex-col mt-10 md:mt-0 md:mr-12 md:flex-row">
                         <AthleteFound athleteFound={athleteFound} />
-
-                        <AthleteEvents
-                            athlete={eData?.getEventUsingAthlete}
-                            loading={loading}
-                            error={error}
-                        />
+                        <AthleteEvents athleteFound={athleteFound} />
                     </div>
                 </div>
             </div>

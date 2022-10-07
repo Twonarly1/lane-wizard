@@ -8,6 +8,8 @@ export const GET_EVENT_USING_ATHLETE = gql`
     id
     time
     milliseconds
+    fullName
+    checked
     }
   }
   `
@@ -33,6 +35,7 @@ query MyQuery {
       event
       athlete
       fullName
+      checked
     }
 }`
 

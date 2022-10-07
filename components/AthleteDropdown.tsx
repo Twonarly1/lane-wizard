@@ -5,8 +5,7 @@ import React, { useState } from 'react'
 type Props = {
     selectedPerson: any
     setSelectedPerson: any
-    setQuery: any
-    filteredAthletes: any
+    data: any
 }
 
 
@@ -14,8 +13,18 @@ function classNames(...classes: any) {
     return classes.filter(Boolean).join(" ")
 }
 
-const AthleteDropdown = ({selectedPerson, setSelectedPerson, setQuery, filteredAthletes}: Props) => {
- 
+const AthleteDropdown = ({selectedPerson, setSelectedPerson, data}: Props) => {
+    const [query, setQuery] = useState<string>("")
+
+ // Filter athletes
+ const filteredAthletes =
+ query === ""
+     ? data?.getAthleteList
+     : data?.getAthleteList.filter((athlete: { firstName: string; lastName: string }) => {
+           return athlete.firstName.toLowerCase().includes(query.toLowerCase())
+       })
+
+
   return (
     <Combobox
         as="div"

@@ -7,7 +7,6 @@ export const ADD_EVENT = gql`
       $event: String!
       $milliseconds: Int
       $fullName: String!
-
   ) {
     insertEvent(
     athlete: $athlete
@@ -26,3 +25,16 @@ export const ADD_EVENT = gql`
   }
   
 `;
+
+export const DELETE_EVENT = gql`
+  mutation MyMutation($id: ID!) {
+    deleteEvent(id: $id) {
+      athlete
+      event
+      fullName
+      id
+      milliseconds
+      time
+    }
+  }
+`

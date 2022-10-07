@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import EventDropdown from '../components/EventDropdown'
 import { GET_EVENTS_BY_EVENT } from '../graphql/queries'
 import eventList from "../eventList.json"
-import Link from 'next/link'
 import Footer from '../components/Footer'
 
 const event = () => {
@@ -63,7 +62,7 @@ const event = () => {
                           </thead>
                           <tbody className="bg-white text-xs">
                               {numbers?.map((event: any, idx: number) => (
-                                  <tr key={idx} className={idx % 2 === 0 ? undefined : 'bg-gray-50'}>
+                                  <tr key={idx} className='odd:bg-gray-50 bg-white'>
                                       <td className="row">{idx + 1}</td>
                                       <td className="row">
                                           {event.fullName}

@@ -15,6 +15,7 @@ type Event {
     time: String
     milliseconds: Int
     fullName: String
+    checked: Boolean
 }
 
 """
@@ -92,6 +93,7 @@ type Mutation {
             dml: INSERT
             configuration: "postgresql_config"
         )
+
     deleteAthlete(id: ID!): Athlete
         @dbquery(
             type: "postgresql"
