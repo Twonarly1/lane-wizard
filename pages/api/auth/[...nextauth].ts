@@ -4,6 +4,9 @@ import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "../../../lib/env"
 
 export const authOptions = {
     // Configure one or more authentication providers
+    pages: {
+        signIn: "/auth/signin",
+    },
     providers: [
         GoogleProvider({
             clientId: GOOGLE_CLIENT_ID,
