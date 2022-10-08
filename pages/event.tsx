@@ -4,6 +4,7 @@ import EventDropdown from '../components/EventDropdown'
 import { GET_EVENTS_BY_EVENT } from '../graphql/queries'
 import eventList from "../eventList.json"
 import Footer from '../components/Footer'
+import EventsFound from '../components/EventsFound'
 
 const event = () => {
     const [query, setQuery] = useState('')
@@ -24,59 +25,28 @@ const event = () => {
 
     const numbers = data?.getEventsByEvent.map((o: any) => { return ( o )})    
     numbers?.sort(compareFunction)
-    console.log("inc...", numbers);
     
     function compareFunction(a: any,b: any) {
         return a.milliseconds-b.milliseconds
     }
-
-    
+   
     if (loading) return <p className='loading'>Loading ...</p>
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
-  
-  return (
+  return ( 
     <>
-        <div className='bg-gray-200 min-h-screen flex-col mx-auto  flex'>
-            <EventDropdown
-              selectedEvent={selectedEvent}
-              setSelectedEvent={setSelectedEvent}
-              setQuery={setQuery}
-              filteredEvents={filteredEvents} />
-            {selectedEvent ?
-              <div className="mt-8 min-h-screen overflow-x-auto mx-auto md:w-[400px] flex-col">
-                  <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-                      <table className=" divide-y divide-gray-300 w-full">
-                          <thead className="bg-gray-50 w-full">
-                              <tr>
-                                  <th scope="col" className="col">
-                                      Rank
-                                  </th>
-                                  <th scope="col" className="col">
-                                      Name
-                                  </th>
-                                  <th scope="col" className="col text-right">
-                                      Time
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody className="bg-white text-xs">
-                              {numbers?.map((event: any, idx: number) => (
-                                  <tr key={idx} className='odd:bg-gray-50 bg-white'>
-                                      <td className="row">{idx + 1}</td>
-                                      <td className="row">
-                                          {event.fullName}
-                                      </td>
-                                      <td className="row text-right">{event.time}</td>
-                                  </tr>
-                              ))}
-                          </tbody>
-                      </table>
-                  </div>
-              </div> : <p className="text-gray-500 mt-6 mx-auto font-light">Select athlete for data...</p>
-            }
+        <div className="flex mx-auto min-h-screen max-w-7xl w-full flex-col items-center">
+        <EventDropdown
+            selectedEvent={selectedEvent}
+            setSelectedEvent={setSelectedEvent}
+            setQuery={setQuery}
+            filteredEvents={filteredEvents} 
+        />
+        <EventsFound 
+            selectedEvent={selectedEvent} 
+            numbers={numbers} />
         </div>
-      <Footer />
+        <Footer />
     </>
   )
 }

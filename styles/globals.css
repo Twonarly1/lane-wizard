@@ -15,5 +15,14 @@
     .row {
         @apply whitespace-nowrap pr-3 text-xs font-medium text-gray-500 px-4
     }
+    .comboboxButton {
+        @apply absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none
+    }
+    .comboboxOptions {
+        @apply absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none
+    }
+    .comboboxInput {
+        @apply w-full border-none rounded
+    }
   
 }

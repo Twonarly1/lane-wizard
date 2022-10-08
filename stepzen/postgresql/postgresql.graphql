@@ -4,6 +4,7 @@ type Athlete {
     grade: Int
     id: ID!
     lastName: String
+    fullName: String!
 }
 
 type Event {
@@ -15,7 +16,6 @@ type Event {
     time: String
     milliseconds: Int
     fullName: String
-    checked: Boolean
 }
 
 """
@@ -29,7 +29,7 @@ type Query {
             table: "Athlete"
             configuration: "postgresql_config"
         )
-    getAthlete(id: ID!): Athlete
+    getAthlete(fullName: String!): Athlete
         @dbquery(
             type: "postgresql"
             schema: "public"
@@ -47,11 +47,11 @@ type Query {
             configuration: "postgresql_config"
         )
 
-    getEventByAthlete(id: ID!): [Event]
+    getEventByAthlete(fullName: String!): [Event]
         @dbquery(
             type: "postgresql"
             query: """
-            select * from "event" where "id" = $1
+            select * from "event" where "fullName" = $1
             """
             configuration: "postgresql_config"
         )

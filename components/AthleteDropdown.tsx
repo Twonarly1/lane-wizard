@@ -1,11 +1,11 @@
 import { Combobox } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import React, { useState } from 'react'
 
 type Props = {
     selectedPerson: any
     setSelectedPerson: any
-    data: any
+    getAthleteList: any
 }
 
 
@@ -13,43 +13,40 @@ function classNames(...classes: any) {
     return classes.filter(Boolean).join(" ")
 }
 
-const AthleteDropdown = ({selectedPerson, setSelectedPerson, data}: Props) => {
+const AthleteDropdown = ({selectedPerson, setSelectedPerson, getAthleteList}: Props) => {
     const [query, setQuery] = useState<string>("")
-
- // Filter athletes
- const filteredAthletes =
- query === ""
-     ? data?.getAthleteList
-     : data?.getAthleteList.filter((athlete: { firstName: string; lastName: string }) => {
-           return athlete.firstName.toLowerCase().includes(query.toLowerCase())
-       })
-
+    // Filter athletes
+    const filteredAthletes =
+    query === ""
+        ? getAthleteList
+        : getAthleteList?.filter((athlete: { firstName: string; lastName: string }) => {
+            return athlete.firstName.toLowerCase().includes(query.toLowerCase())
+        })
+            
 
   return (
     <Combobox
         as="div"
-        className="text-black w-full space-x-4 flex items-center"
+        className="mt-6 flex items-center space-x-4 mx-auto max-w-md" 
         value={selectedPerson}
         onChange={setSelectedPerson}
     >
-        <p className="text-black w-14 font-bold">
-        Name:
-        </p>
+        <p className="text-black w-14 font-bold">Name:</p>
         <div className="relative w-full">
             <Combobox.Input
-                className="w-full border-none rounded"
+                className="comboboxInput"
                 onChange={(event) => setQuery(event.target.value)}
                 displayValue={selectedPerson}
             />
-            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-                <ChevronUpDownIcon
-                    className="h-5 w-5 text-gray-600"
+            <Combobox.Button className="comboboxButton">
+                <ChevronDownIcon
+                    className="h-5 w-5 text-gray-500"
                     aria-hidden="true"
                 />
             </Combobox.Button>
 
-            {filteredAthletes.length > 0 && (
-                <Combobox.Options className="absolute mt-2 z-10 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            {filteredAthletes?.length > 0 && (
+                <Combobox.Options className="comboboxOptions">
                     {filteredAthletes.map((athlete: any) => (
                         <Combobox.Option
                             key={athlete.id}
@@ -65,16 +62,12 @@ const AthleteDropdown = ({selectedPerson, setSelectedPerson, data}: Props) => {
                         >
                             {({ active, selected }) => (
                                 <>
-                                    <div className="flex items-center">
-                                        <span
-                                            className={classNames(
-                                                "ml-3 truncate",
-                                                selected && "font-semibold"
-                                            )}
+                                    <div className="flex w-full justify-between items-center">
+                                        <span 
+                                            className={classNames("ml-3 truncate", 
+                                            selected && "font-semibold")}
                                         >
-                                            {athlete.firstName +
-                                                " " +
-                                                athlete.lastName}
+                                            {athlete.firstName + " " + athlete.lastName}
                                         </span>
                                     </div>
 
@@ -82,9 +75,7 @@ const AthleteDropdown = ({selectedPerson, setSelectedPerson, data}: Props) => {
                                         <span
                                             className={classNames(
                                                 "absolute inset-y-0 right-0 flex items-center pr-4",
-                                                active
-                                                    ? "text-white"
-                                                    : "text-indigo-600"
+                                                active ? "text-white" : "text-indigo-600"
                                             )}
                                         >
                                             <CheckIcon

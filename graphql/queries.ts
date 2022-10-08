@@ -9,7 +9,6 @@ export const GET_EVENT_USING_ATHLETE = gql`
     time
     milliseconds
     fullName
-    checked
     }
   }
   `
@@ -35,7 +34,6 @@ query MyQuery {
       event
       athlete
       fullName
-      checked
     }
 }`
 
@@ -53,12 +51,26 @@ export const GET_EVENTS_BY_EVENT = gql`
 `;
 
 export const GET_ATHLETE = gql`
-  query MyQuery($id: ID!) {
-    getAthlete(id: $id) {
+  query MyQuery($fullName: String!) {
+    getAthlete(fullName: $fullName) {
       firstName
       lastName
       id
       grade
+      fullName
     }
   }
 `
+
+export const GET_EVENT_BY_ATHLETE = gql`
+  query MyQuery($fullName: String!)   {
+    getEventByAthlete(fullName: $fullName) {
+      event
+      athlete
+      fullName
+      id
+      milliseconds
+      time
+    }
+  }
+`;
