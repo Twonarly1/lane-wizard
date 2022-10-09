@@ -43,9 +43,9 @@ const AthleteEvents = ({ selectedPerson}: Props) => {
 
   return (
     selectedPerson && 
-    <div className="mt-10">
-        <div className="overflow-x-auto justify-between flex flex-col">
-        <div className="overflow-hidden ">
+        <div className="mt-10">
+            <div className="overflow-x-auto justify-between flex flex-col">
+                <div className="overflow-hidden ">
                     <table className="w-full divide-y divide-gray-300">
                         <thead className="bg-gray-50">
                             <tr>
@@ -82,8 +82,8 @@ const AthleteEvents = ({ selectedPerson}: Props) => {
                         </tbody>
                     </table>
                 </div>
+            </div>
         </div>
-    </div>
     )
 }
 

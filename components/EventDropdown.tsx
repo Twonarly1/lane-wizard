@@ -50,7 +50,9 @@ export default function EventDropdown({selectedEvent, setSelectedEvent, setQuery
                         >
                             {({ active, selected }) => (
                             <>
-                                <span className={classNames('ml-3 truncate', selected && 'font-semibold')}
+                                <span
+                                    className={classNames('ml-3 truncate',
+                                    selected && 'font-semibold')}
                                 >
                                     {person.name}
                                 </span>
@@ -58,11 +60,14 @@ export default function EventDropdown({selectedEvent, setSelectedEvent, setQuery
                                 {selected && (
                                 <span
                                     className={classNames(
-                                    'absolute inset-y-0 right-0 flex items-center pr-4',
-                                    active ? 'text-white' : 'text-indigo-600'
+                                        'absolute inset-y-0 right-0 flex items-center pr-4',
+                                        active ? 'text-white' : 'text-indigo-600'
                                     )}
                                 >
-                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                    <CheckIcon 
+                                        className="h-5 w-5"
+                                        aria-hidden="true" 
+                                    />
                                 </span>
                                 )}
                             </>

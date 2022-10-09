@@ -109,13 +109,13 @@ const EventBox = ({athleteFound}: Props) => {
     }
 
   return (
-    <form onSubmit={onSubmit} className="w-full justify-between">
+    <form onSubmit={onSubmit} className="overflow-x-auto justify-between flex flex-col">
         {/* Event */}
-        <div className="flex space-x-4 mt-3 items-center mx-auto ">
+        <div className="flex mt-3 items-center mx-auto ">
             <p className="w-16 font-bold ">Event:</p>
             {/* register event input with react-hook-form */}
             <select
-                className="w-full border-none rounded"
+                className="ml-[2px] w-[205px] border-none rounded"
                 placeholder="Event"
                 {...register("event", { required: true })}
             >
@@ -130,10 +130,10 @@ const EventBox = ({athleteFound}: Props) => {
         </div>
 
         {/* Time */}
-        <div className="flex mt-3 items-center mx-auto space-x-4">
+        <div className="flex mt-3 items-center mx-auto">
             <p className="w-16 font-bold">Time:</p>
             <input
-                className="w-full border-none rounded"
+                className="ml-[2px] w-[205px] border-none rounded"
                 {...register("time", {
                     required: true,
                     minLength: 4,
