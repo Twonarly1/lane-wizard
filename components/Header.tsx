@@ -9,10 +9,13 @@ const Header = (props: Props) => {
     return (
         <header className="mx-auto flex w-fit justify-center bg-gray-200 pt-4 pb-4">
             <Link href="/" className="">
-                <a className="links">Create Event</a>
+              <a className="links">Create Event</a>
             </Link>
             <Link href="/event" className="">
-                <a className="links">Event Ranking</a>
+                <a className="links">Events</a>
+            </Link>
+            <Link href="/athlete" className="">
+                <a className="links">Athletes</a>
             </Link>
             <Link href="/all" className="">
                 <a className="links">All Times</a>
