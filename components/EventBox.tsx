@@ -1,9 +1,10 @@
-import { useMutation } from '@apollo/client'
-import React, { useState } from 'react'
+import { useLazyQuery, useMutation } from '@apollo/client'
+import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { ADD_EVENT } from "../graphql/mutations"
 import eventList from "../eventList.json"
+import { GET_ATHLETE } from '../graphql/queries'
 
 type Props = {
     athleteFound: any
@@ -20,6 +21,21 @@ interface IFormInput {
 const EventBox = ({athleteFound}: Props) => {
     const [time, setTime] = useState<any>("")
     const [addEvent] = useMutation(ADD_EVENT)
+    
+    const [getAthlete, { data: athlete, refetch }] =
+    useLazyQuery(GET_ATHLETE)
+   
+    useEffect(() => {
+        if (!athleteFound) {
+            return
+        } else {
+            getAthlete({
+                variables: {
+                    fullName: athleteFound,
+                },
+            })
+        }
+    }, [athleteFound])
 
     // REACT HOOK FORM //
     const {
@@ -45,11 +61,11 @@ const EventBox = ({athleteFound}: Props) => {
                 data: { insertEvent: newEvent },
             } = await addEvent({
                 variables: {
-                    athlete: athleteFound?.id,
+                    athlete: athlete.getAthlete.id,
                     event: formData.event,
                     time: formattedTime,
                     milliseconds: time * 10,
-                    fullName: athleteFound?.firstName + " " + athleteFound?.lastName,
+                    fullName: athlete.getAthlete.fullName,
                 },
             })
             console.log("New event added:", newEvent)
@@ -76,7 +92,7 @@ const EventBox = ({athleteFound}: Props) => {
             return time[0]
         }
         if (time.length === 2) {
-            return time[0] + time[1]
+            return time[0] + time[1] 
         }
         if (time.length === 3) {
             return time[0] + time[1] + "." + time[2]
@@ -131,16 +147,12 @@ const EventBox = ({athleteFound}: Props) => {
         </div>
 
         {/* display formatted time 00:00:00 */}
-        <div className="flex mt-2 flex-col w-full relative border bg-gray-200 text-[40px] items-center justify-center">
-            <p> {time.length && displayTime()}</p>
-            {/* time converted to milliseconds */}
-            <div className="flex text-xs text-gray-500 space-x-1">
-                <p>ms: {time * Number(10)}</p>
-            </div>
+        <div className="flex my-2 h-fit text-right flex-col w-full relative border bg-gray-200 text-[40px]  justify-end">
+            <p> {time.length ? displayTime() : <span className='text-gray-400'>00:00.00</span>}</p>
         </div>
 
         {!!watch('event') && (
-        <div className="mt-4 w-full bg-white rounded justify-center flex  text-black hover:text-blue-500">
+        <div className=" w-full bg-white rounded justify-center flex  text-black hover:text-blue-500">
             <button
                 className="w-full rounded-lg py-2 "
                 type="submit"

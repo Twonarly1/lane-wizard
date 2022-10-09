@@ -24,51 +24,42 @@ const All = () => {
     if (loading) return <p className='loading'>Loading ...</p>;
     if (error) return (<pre>{JSON.stringify(error, null, 2)}</pre>);
   return (
-    <>
-      <div className="w-full bg-gray-200 overflow-x-auto justify-between flex flex-col">
-        <div className="inline-block py-2">
-          <div className="overflow-y-auto">
-            <table className="w-[300px] md:w-[400px] mx-auto divide-y divide-gray-300">
-              <thead className="bg-gray-50">
-                <tr>
-               
-                  <th scope="col" className="col">
-                    id
-                  </th>
-                  <th scope="col" className="col">
-                    Name
-                  </th>
-                  <th scope="col" className="col">
-                    Events ({events?.getEventList.length})
-                  </th>
-                  <th scope="col" className="col text-right">
-                    Time 
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white text-xs">
-                {events?.getEventList?.map((event: any, idx: number) => (
-                  <tr key={idx} className='odd:bg-gray-50 bg-white'>
-                  
-                    <td className="row">
-                      {event.id}
-                    </td>
-                    <td className="row">
-                      {event.fullName}
-                    </td>
-                    <td className="row">
-                      {event.event}
-                    </td>
-                    <td className="row text-right">{event.time}</td>
+    <div className="flex mx-auto min-h-screen max-w-7xl w-full flex-col items-center">
+      <div className='mt-10'>
+        <div className="overflow-x-auto justify-between flex flex-col">
+            <div className="overflow-y-auto">
+            <table className=" divide-y divide-gray-300 w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th scope="col" className="col">id</th>
+                    <th scope="col" className="col">Name</th>
+                    <th scope="col" className="col">Events ({events?.getEventList.length})</th>
+                    <th scope="col" className="col text-right">Time </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white text-xs">
+                  {events?.getEventList?.map((event: any, idx: number) => (
+                    <tr key={idx} className='odd:bg-gray-50 bg-white'>
+                    
+                      <td className="row">
+                        {event.id}
+                      </td>
+                      <td className="row">
+                        {event.fullName}
+                      </td>
+                      <td className="row">
+                        {event.event}
+                      </td>
+                      <td className="row text-right">{event.time}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   )
 }
 

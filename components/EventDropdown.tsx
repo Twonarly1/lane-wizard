@@ -1,4 +1,4 @@
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { CheckIcon, ChevronDownIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Combobox } from '@headlessui/react'
 
 type Props = {
@@ -13,42 +13,47 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 export default function EventDropdown({selectedEvent, setSelectedEvent, setQuery, filteredEvents}: Props) {
-console.log(selectedEvent)
 
   return (
     <Combobox 
     as="div" 
-    className="mt-6 flex items-center space-x-4 mx-auto w-full max-w-md px-4" 
+    className="mt-6 flex items-center space-x-4 mx-auto max-w-md" 
     value={selectedEvent} 
     onChange={setSelectedEvent}
     >
         <p className="text-black w-14 font-bold">Event:</p>
-        <div className="relative w-full">
+        <div className="relative">
             <Combobox.Input
-            className="w-full border-none rounded"
+            className="comboboxInput"
             onChange={(event) => setQuery(event.target.value)}
             displayValue={(event: any) => event?.name}
             />
-            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <Combobox.Button className="comboboxButton">
+                <ChevronDownIcon 
+                    className="h-5 w-5 text-gray-500" 
+                    aria-hidden="true" 
+                />
             </Combobox.Button>
 
             {filteredEvents.length > 0 && (
-                <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Combobox.Options className="comboboxOptions">
                     {filteredEvents.map((person: any, i:number) => (
                         <Combobox.Option
                             key={i}
                             value={person}
                             className={({ active }) =>
                             classNames(
-                                'relative cursor-default select-none py-2 pl-3 pr-9',
+                                "relative cursor-default select-none py-2",
                                 active ? 'bg-indigo-600 text-white' : 'text-gray-900'
                             )
                             }
                         >
                             {({ active, selected }) => (
                             <>
-                                <span className={classNames('block truncate', selected && 'font-semibold')}>{person.name}</span>
+                                <span className={classNames('ml-3 truncate', selected && 'font-semibold')}
+                                >
+                                    {person.name}
+                                </span>
 
                                 {selected && (
                                 <span
