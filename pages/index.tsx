@@ -1,33 +1,39 @@
-import { useQuery } from "@apollo/client"
 import React, { useState } from "react"
-import AthleteDropdown from "../components/AthleteDropdown"
-import { GET_ATHLETES } from "../graphql/queries"
-import EventBox from "../components/EventBox"
-import AthleteEvents from "../components/AthleteEvents"
-import Footer from "../components/Footer"
+import { TeamEvents, TeamDropdown, Footer } from "components"
 
-const Home = () => {
-    const [selectedPerson, setSelectedPerson] = useState()
-    const { error, loading, data: getAthleteList } = useQuery(GET_ATHLETES)
-    console.log(selectedPerson)
+const team: string[] = ["Sartell", "foo", "bar"]
 
-    if (loading) return <p className="loading">Loading ...</p>
-    if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
+const Team = () => {
+    const [teamSelected, setTeamSelected] = useState<string>("")
 
     return (
         <>
-            <div className="flex mx-auto min-h-screen max-w-7xl w-full flex-col items-center">
-                <AthleteDropdown
-                    selectedPerson={selectedPerson}
-                    setSelectedPerson={setSelectedPerson}
-                    getAthleteList={getAthleteList.getAthleteList}
+            <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col items-center">
+                <TeamDropdown
+                    selectedTeam={teamSelected}
+                    setSelectedTeam={setTeamSelected}
+                    getTeamList={team}
                 />
-                <EventBox athleteFound={selectedPerson} />
-                <AthleteEvents selectedPerson={selectedPerson} />
+                <TeamEvents selectedTeam={teamSelected} />
             </div>
             <Footer />
         </>
     )
 }
 
-export default Home
+export default Team
+
+// const [checked, setChecked] = useState<any>([])
+// const handleCheck = (e: { target: { checked: any; value: string } }) => {
+//   const event_id = e.target.value
+//   var updatedList = [...checked]
+//   const present = updatedList.includes(`${event_id}`,0)
+//   if (present) {
+//     console.log(present, `id found --> remove event.id ${event_id}`)
+//     updatedList.splice(updatedList.indexOf(event_id), 1)
+//   } else {
+//     console.log(present, `id not found --> add event.id ${event_id}`)
+//     updatedList = [...checked, event_id]
+//   }
+//   setChecked(updatedList)
+// }

@@ -1,10 +1,10 @@
-import "../styles/globals.css"
+import "styles/globals.css"
 import type { AppProps } from "next/app"
 import { ApolloProvider } from "@apollo/client"
 import { SessionProvider } from "next-auth/react"
-import client from "../apollo-client"
+import client from "apollo-client"
 import { Toaster } from "react-hot-toast"
-import Header from "../components/Header"
+import { Header } from "components"
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (

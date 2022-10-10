@@ -5,6 +5,7 @@ type Athlete {
     id: ID!
     lastName: String
     fullName: String!
+    team: String!
 }
 
 type Event {
@@ -16,6 +17,13 @@ type Event {
     time: String
     milliseconds: Int
     fullName: String
+    team: String!
+}
+
+type Admin {
+    id: ID!
+    email: String
+    team: String
 }
 
 """
@@ -36,6 +44,30 @@ type Query {
             table: "Athlete"
             configuration: "postgresql_config"
         )
+    getAthleteByTeam(team: String!): [Athlete]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "Athlete" where "team" = $1
+            """
+            configuration: "postgresql_config"
+        )
+    getAdminList: [Admin]
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "admin"
+            configuration: "postgresql_config"
+        )
+    getAdminByEmail(email: String!): [Admin]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "admin" where "email" = $1
+            """
+            configuration: "postgresql_config"
+        )
+
     getEventUsingAthlete(id: ID!): [Event]
         @dbquery(
             type: "postgresql"
@@ -52,6 +84,14 @@ type Query {
             type: "postgresql"
             query: """
             select * from "event" where "fullName" = $1
+            """
+            configuration: "postgresql_config"
+        )
+    getEventByTeam(team: String!): [Event]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "event" where "team" = $1
             """
             configuration: "postgresql_config"
         )
