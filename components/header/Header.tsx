@@ -29,11 +29,11 @@ const Header = () => {
         }
     }, [session])
 
-    if (loading) return <p className="loading">Loading ...</p>
+    // if (loading) return <p className="loading">Loading ...</p>
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
     return (
-        <header className="mx-auto flex w-fit items-center justify-center bg-gray-200 pt-4 pb-12">
+        <header className="mx-auto flex w-full items-center justify-center bg-gray-200 pt-4 pb-12">
             <Link href="/" className="">
                 <a className="links rounded-l bg-gray-100">Team</a>
             </Link>

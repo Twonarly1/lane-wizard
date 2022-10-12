@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react"
 
 const Home = () => {
     const [selectedEvent, setSelectedEvent] = useState<any>("")
-    const [selectedPerson, setSelectedPerson] = useState<string>("")
+    const [selectedAthlete, setSelectedAthlete] = useState<string>("")
     const { data: session }: any = useSession()
     const [getAdminByEmail, { error: adminError, loading: admingLoading, data: getAdminTeam }] =
         useLazyQuery(GET_ADMIN_BY_EMAIL)
@@ -39,9 +39,11 @@ const Home = () => {
 
     // console.log(session?.user)
     // console.log("admin Team", getAdminTeam?.getAdminByEmail[0].team)
-    // console.log("admin Athletes", getAthleteList)
+    console.log("selected", selectedAthlete)
 
-    if (admingLoading || teamLoading) return <p className="loading">Loading ...</p>
+    console.log("admin Athletes", getAthleteList)
+
+    if (admingLoading) return <p className="loading">Loading ...</p>
     if (adminError || teamError)
         return <pre>{JSON.stringify(adminError || teamError, null, 2)}</pre>
 
@@ -54,13 +56,13 @@ const Home = () => {
             </div>
             <div className="mx-auto mt-10 flex min-h-screen w-full max-w-7xl flex-col items-center">
                 <AthleteDropdown
-                    selectedPerson={selectedPerson}
-                    setSelectedPerson={setSelectedPerson}
+                    selectedAthlete={selectedAthlete}
+                    setSelectedAthlete={setSelectedAthlete}
                     getAthleteList={getAthleteList?.getAthleteByTeam}
                 />
                 <EventDropdown selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />
-                <EventBox athleteFound={selectedPerson} eventFound={selectedEvent} />
-                <Admin selectedPerson={selectedPerson} />
+                <EventBox athleteFound={selectedAthlete} eventFound={selectedEvent} />
+                <Admin selectedAthlete={selectedAthlete} />
             </div>
             <Footer />
         </>

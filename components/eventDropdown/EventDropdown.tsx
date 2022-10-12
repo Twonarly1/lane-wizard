@@ -1,6 +1,6 @@
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
 import { Combobox } from "@headlessui/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import eventList from "eventList.json"
 
 type Props = {
@@ -14,6 +14,7 @@ function classNames(...classes: (string | boolean)[]) {
 
 export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props) {
     const [query, setQuery] = useState("")
+    const [active, setActive] = useState<boolean>(false)
 
     const filteredEvents: any =
         query === ""
@@ -22,16 +23,27 @@ export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props
                   return event.name.toLowerCase().includes(query.toLowerCase())
               })
 
+    useEffect(() => {
+        if (!selectedEvent) {
+            return
+        } else {
+            setActive(true)
+        }
+    }, [selectedEvent])
+
     return (
         <Combobox
             as="div"
-            className="mx-auto mt-2 items-center"
+            className="mx-auto items-center"
             value={selectedEvent}
             onChange={setSelectedEvent}
         >
-            <Combobox.Label>Event:</Combobox.Label>
+            <Combobox.Label className={`${active ? "visible" : "invisible"}`}>
+                Event:
+            </Combobox.Label>
             <div className="relative w-full">
                 <Combobox.Input
+                    placeholder="select event"
                     className="comboboxInput cursor-default"
                     onChange={(event) => setQuery(event.target.value)}
                     displayValue={(event: any) => event?.name}

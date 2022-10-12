@@ -18,6 +18,7 @@ type Event {
     milliseconds: Int
     fullName: String
     team: String!
+    grade: Int
 }
 
 type Admin {
@@ -149,6 +150,7 @@ type Mutation {
         athlete: ID!
         milliseconds: Int
         fullName: String!
+        grade: Int
     ): Event
         @dbquery(
             type: "postgresql"

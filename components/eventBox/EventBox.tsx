@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { ADD_EVENT } from "graphql/mutations"
-import eventList from "eventList.json"
 import { GET_ATHLETE } from "graphql/queries"
+import { diveScore, swimTime } from "lib/utils"
 
 type Props = {
     athleteFound: string
@@ -17,14 +17,19 @@ interface IFormInput {
     event: string
     milliseconds: string
     fullName: string
+    grade: any
 }
 
 const EventBox = ({ athleteFound, eventFound }: Props) => {
     const [time, setTime] = useState<any>("")
-    const [addEvent] = useMutation(ADD_EVENT)
+    const [addEvent] = useMutation(ADD_EVENT) // add event mutation
     const [getAthlete, { data: athlete, refetch }] = useLazyQuery(GET_ATHLETE)
+    const [active, setActive] = useState<boolean>(false)
+    // const current = new Date()
+    // const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`
+    // console.log(date)
 
-    console.log(eventFound)
+    console.log("athFound", athlete)
 
     useEffect(() => {
         if (!athleteFound) {
@@ -38,7 +43,7 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
         }
     }, [athleteFound])
 
-    // REACT HOOK FORM //
+    //////  REACT HOOK FORM  ////////
     const {
         register,
         setValue,
@@ -47,17 +52,27 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
         formState: { errors },
     } = useForm<IFormInput>()
 
-    // ON SUBMIT //
     const onSubmit = handleSubmit(async (formData: IFormInput) => {
         const notification = toast.loading("Creating new event")
-        console.log(formData)
 
+        // throw error if input length less than 2
         if (time.length < 2) {
             return toast.error("wrong time input. 2 - 6 NUMBERS!", {
                 id: notification,
             })
         }
-        const formattedTime = displayTime()
+
+        // format swim time or dive score
+        let formattedSwimTime: string | undefined = ""
+        let formattedDiven: string | undefined = ""
+
+        if (eventFound.name?.includes("diving")) {
+            formattedDiven = await diveScore(time)
+        } else {
+            formattedSwimTime = await swimTime(time)
+        }
+        // console.log("dive...", diveScore(time), "swim...", swimTime(time))
+
         try {
             console.log("Creating event...", formData)
             const {
@@ -65,8 +80,9 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
             } = await addEvent({
                 variables: {
                     athlete: athlete.getAthlete.id,
+                    grade: athlete.getAthlete.grade,
                     event: eventFound.name,
-                    time: formattedTime,
+                    time: formattedSwimTime || formattedDiven,
                     milliseconds: time * 10,
                     fullName: athlete.getAthlete.fullName,
                 },
@@ -80,90 +96,51 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
             setValue("milliseconds", "")
             setValue("fullName", "")
 
+            //alert success
             toast.success("New Event Created!", {
                 id: notification,
             })
         } catch (error) {
+            //alert error
             toast.error("Whoops something went wrong!", {
                 id: notification,
             })
         }
     })
-
-    // DISPLAY TIME 00:00.00 //
-    const displayTime = () => {
-        if (!isNaN(time) && time.length === 1) {
-            return "00:0" + time[0] + ".00" //00.01.00
-        }
-        if (time.length === 2) {
-            return "00:" + time[0] + time[1] + ".00" //00:11.00
-        }
-        if (time.length === 3) {
-            return "00:" + time[0] + time[1] + "." + time[2] + "0" //00:11.10
-        }
-        if (time.length === 4) {
-            return "00:" + time[0] + time[1] + "." + time[2] + time[3] //00:11.11
-        }
-        if (time.length === 5) {
-            return "0" + time[0] + ":" + time[1] + time[2] + "." + time[3] + time[4] //01:11.11
-        }
-        if (time.length === 6) {
-            return time[0] + time[1] + ":" + time[2] + time[3] + "." + time[4] + time[5] //11:11.11
-        }
-    }
+    //////  REACT HOOK FORM  ////////
 
     return (
         <div>
-            {/* <p>You have privileges to create events for ....</p> */}
             <form onSubmit={onSubmit} className="form">
-                {/* Event */}
-                {/* <label className="mt-3">Event:</label>
-                <select
-                    className="comboboxInput"
-                    placeholder="Event"
-                    {...register("event", { required: true })}
-                >
-                    {eventList.map((event: any, i: number) => {
-                        return (
-                            <option key={i} value={event.name}>
-                                {event.name}
-                            </option>
-                        )
-                    })}
-                </select> */}
-
-                {/* Time */}
-                <label className="mt-2">Time:</label>
+                <label className={`mt-2 ${active ? "visible" : "invisible"}`}>Time:</label>
                 <input
-                    className="comboboxInput "
+                    type="number"
+                    placeholder="enter time"
+                    className="comboboxInput"
+                    autoComplete="off"
                     {...register("time", {
                         required: true,
                         minLength: 2,
                         maxLength: 6,
                         valueAsNumber: true,
                     })}
-                    autoComplete="off"
                     onChange={(e) => {
                         setTime(e.target.value)
+                        setActive(true)
                     }}
-                    type="number"
-                    placeholder="requires 2-6 numbers"
                 />
 
-                {/* display formatted time 00:00:00 */}
+                {/* display formatted swimTime or diveScore */}
                 <div className="my-3 text-right text-[40px]">
                     <p>
-                        {" "}
-                        {time.length ? (
-                            displayTime()
-                        ) : (
-                            <span className="text-gray-400">00:00.00</span>
-                        )}
+                        {eventFound.name?.includes("diving") && time.length
+                            ? diveScore(time) || <span className="text-gray-400">000.00</span>
+                            : swimTime(time) || <span className="text-gray-400">00:00.00</span>}
                     </p>
                 </div>
 
-                <div className=" flex w-full justify-center rounded bg-white hover:text-indigo-500">
-                    <button className="w-full rounded-lg py-2 " type="submit">
+                <div className=" flex justify-center rounded bg-white hover:text-indigo-500">
+                    <button className="rounded-lg py-2 " type="submit">
                         <p>Create Event</p>
                     </button>
                 </div>

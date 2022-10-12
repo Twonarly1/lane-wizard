@@ -4,10 +4,10 @@ import { DELETE_EVENT } from "graphql/mutations"
 import { GET_EVENT_BY_ATHLETE } from "graphql/queries"
 
 type Props = {
-    selectedPerson: any
+    selectedAthlete: any
 }
 
-const Admin = ({ selectedPerson }: Props) => {
+const Admin = ({ selectedAthlete }: Props) => {
     const [deleteEvent] = useMutation(DELETE_EVENT)
     const [getEventsByAthlete, { loading, error, data: athletesEvents, refetch }] =
         useLazyQuery(GET_EVENT_BY_ATHLETE)
@@ -17,16 +17,16 @@ const Admin = ({ selectedPerson }: Props) => {
         setSelectedRadioBtn(e.currentTarget.value)
 
     useEffect(() => {
-        if (!selectedPerson) {
+        if (!selectedAthlete) {
             return
         } else {
             getEventsByAthlete({
                 variables: {
-                    fullName: selectedPerson,
+                    fullName: selectedAthlete,
                 },
             })
         }
-    }, [selectedPerson])
+    }, [selectedAthlete])
 
     const handleOnSubmit = (e: any, params: any) => {
         const id = params.event.id
@@ -39,12 +39,16 @@ const Admin = ({ selectedPerson }: Props) => {
         console.log("event deleted:", eventToDelete)
     }
 
-    if (loading) return <p className="loading">Loading ...</p>
+    // if (loading) return <p className="loading">Loading ...</p>
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
     return (
-        selectedPerson && (
+        selectedAthlete && (
             <div className="mt-10">
+                <p>
+                    {athletesEvents?.getEventByAthlete[0].fullName},{" "}
+                    {athletesEvents?.getEventByAthlete[0].grade}{" "}
+                </p>
                 <div className="flex flex-col justify-between overflow-x-auto">
                     <div className="overflow-hidden ">
                         <table className="table">

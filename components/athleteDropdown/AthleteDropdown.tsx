@@ -1,10 +1,10 @@
 import { Combobox } from "@headlessui/react"
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 type Props = {
-    selectedPerson: any
-    setSelectedPerson: any
+    selectedAthlete: any
+    setSelectedAthlete: any
     getAthleteList: any
 }
 
@@ -12,8 +12,10 @@ function classNames(...classes: any) {
     return classes.filter(Boolean).join(" ")
 }
 
-const AthleteDropdown = ({ selectedPerson, setSelectedPerson, getAthleteList }: Props) => {
+const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }: Props) => {
     const [query, setQuery] = useState<string>("")
+    const [active, setActive] = useState<boolean>(false)
+
     // Filter athletes
     const filteredAthletes =
         query === ""
@@ -22,19 +24,33 @@ const AthleteDropdown = ({ selectedPerson, setSelectedPerson, getAthleteList }: 
                   return athlete.firstName.toLowerCase().includes(query.toLowerCase())
               })
 
+    useEffect(() => {
+        if (!selectedAthlete) {
+            return
+        } else {
+            setActive(true)
+        }
+    }, [selectedAthlete])
+
+    // console.log(getAthleteList)
+    // console.log(filteredAthletes)
+
     return (
         <Combobox
             as="div"
-            className="cursor mx-auto items-center"
-            value={selectedPerson}
-            onChange={setSelectedPerson}
+            className="cursor mx-auto mb-2 items-center"
+            value={selectedAthlete}
+            onChange={setSelectedAthlete}
         >
-            <Combobox.Label>Athlete:</Combobox.Label>
+            <Combobox.Label className={`${active ? "visible" : "invisible"}`}>
+                Athlete:
+            </Combobox.Label>
             <div className="relative w-full">
                 <Combobox.Input
+                    placeholder="select athlete"
                     className="comboboxInput cursor-default"
                     onChange={(event) => setQuery(event.target.value)}
-                    displayValue={selectedPerson}
+                    displayValue={selectedAthlete}
                 />
                 <Combobox.Button className="comboboxButton cursor-default">
                     <ChevronDownIcon className="h-5 w-5 " aria-hidden="true" />

@@ -36,6 +36,9 @@ const TeamEvents = ({ selectedTeam }: Props) => {
                                     Name
                                 </th>
                                 <th scope="col" className="col">
+                                    Grade
+                                </th>
+                                <th scope="col" className="col">
                                     Events ({teamEvents?.getEventByTeam.length})
                                 </th>
                                 <th scope="col" className="col text-right">
@@ -47,6 +50,7 @@ const TeamEvents = ({ selectedTeam }: Props) => {
                             {teamEvents?.getEventByTeam?.map((event: any, idx: number) => (
                                 <tr key={idx} className="tr">
                                     <td className="row">{event.fullName}</td>
+                                    <td className="row">{event.grade}</td>
                                     <td className="row">{event.event}</td>
                                     <td className="row text-right">{event.time}</td>
                                 </tr>

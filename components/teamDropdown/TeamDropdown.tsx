@@ -1,6 +1,6 @@
 import { Combobox } from "@headlessui/react"
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 type Props = {
     selectedTeam: any
@@ -14,8 +14,7 @@ function classNames(...classes: any) {
 
 const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => {
     const [query, setQuery] = useState<string>("")
-    console.log(selectedTeam)
-    console.log(getTeamList)
+    const [active, setActive] = useState<boolean>(false)
 
     // Filter athletes
     const filteredTeams =
@@ -25,6 +24,14 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
                   return athlete.firstName.toLowerCase().includes(query.toLowerCase())
               })
 
+    useEffect(() => {
+        if (!selectedTeam) {
+            return
+        } else {
+            setActive(true)
+        }
+    }, [selectedTeam])
+
     return (
         <Combobox
             as="div"
@@ -32,9 +39,10 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
             value={selectedTeam}
             onChange={setSelectedTeam}
         >
-            <Combobox.Label>Team:</Combobox.Label>
+            <Combobox.Label className={`${active ? "visible" : "invisible"}`}>Team:</Combobox.Label>
             <div className="relative w-full">
                 <Combobox.Input
+                    placeholder="select team"
                     className="comboboxInput cursor-default"
                     onChange={(event) => setQuery(event.target.value)}
                     displayValue={selectedTeam}

@@ -22,18 +22,3 @@ const Team = () => {
 }
 
 export default Team
-
-// const [checked, setChecked] = useState<any>([])
-// const handleCheck = (e: { target: { checked: any; value: string } }) => {
-//   const event_id = e.target.value
-//   var updatedList = [...checked]
-//   const present = updatedList.includes(`${event_id}`,0)
-//   if (present) {
-//     console.log(present, `id found --> remove event.id ${event_id}`)
-//     updatedList.splice(updatedList.indexOf(event_id), 1)
-//   } else {
-//     console.log(present, `id not found --> add event.id ${event_id}`)
-//     updatedList = [...checked, event_id]
-//   }
-//   setChecked(updatedList)
-// }

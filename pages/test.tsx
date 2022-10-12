@@ -95,7 +95,7 @@ const Test = () => {
         return <option key={value}>{value}</option>
     }
 
-    if (athletesLoading) return <p className="loading">Loading ...</p>
+    // if (athletesLoading) return <p className="loading">Loading ...</p>
     if (athletesError) return <pre>{JSON.stringify(athletesError, null, 2)}</pre>
 
     return (
