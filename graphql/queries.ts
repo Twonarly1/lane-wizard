@@ -94,8 +94,8 @@ export const GET_EVENT_BY_ATHLETE = gql`
 `
 
 export const GET_EVENTS_BY_TEAM = gql`
-    query MyQuery($team: String!) {
-        getEventByTeam(team: $team) {
+    query MyQuery($team: String!, $first: Int, $after: Int) {
+        getEventByTeam(team: $team, first: $first, after: $after) {
             athlete
             event
             id

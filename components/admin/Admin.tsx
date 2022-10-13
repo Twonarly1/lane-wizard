@@ -46,8 +46,8 @@ const Admin = ({ selectedAthlete }: Props) => {
         selectedAthlete && (
             <div className="mt-10">
                 <p>
-                    {athletesEvents?.getEventByAthlete[0].fullName},{" "}
-                    {athletesEvents?.getEventByAthlete[0].grade}{" "}
+                    {athletesEvents?.getEventByAthlete[0]?.fullName},{" "}
+                    {athletesEvents?.getEventByAthlete[0]?.grade}{" "}
                 </p>
                 <div className="flex flex-col justify-between overflow-x-auto">
                     <div className="overflow-hidden ">
@@ -73,7 +73,7 @@ const Admin = ({ selectedAthlete }: Props) => {
                                         <tr key={idx} className="tr">
                                             <td className="row w-4 pl-2 pr-0">
                                                 <input
-                                                    className="radio"
+                                                    className="radio rounded-none"
                                                     type="radio"
                                                     value={event.id}
                                                     checked={isRadioSelected(event.id)}
@@ -93,7 +93,7 @@ const Admin = ({ selectedAthlete }: Props) => {
                                                     fill="currentColor"
                                                     className={`h-4 w-4 cursor-pointer transition-all duration-500 ease-in-out ${
                                                         selectedRadioBtn === event.id
-                                                            ? "text-gray-400"
+                                                            ? "text-red-400"
                                                             : "text-gray-300"
                                                     }`}
                                                 >

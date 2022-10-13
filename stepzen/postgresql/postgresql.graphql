@@ -88,11 +88,11 @@ type Query {
             """
             configuration: "postgresql_config"
         )
-    getEventByTeam(team: String!): [Event]
+    getEventByTeam(team: String!, first: Int, after: Int): [Event]
         @dbquery(
             type: "postgresql"
             query: """
-            select * from "event" where "team" = $1
+            select * from "event" where "team" = $1 limit $2 offset $3
             """
             configuration: "postgresql_config"
         )
@@ -150,7 +150,7 @@ type Mutation {
         athlete: ID!
         milliseconds: Int
         fullName: String!
-        grade: Int
+        grade: Int!
     ): Event
         @dbquery(
             type: "postgresql"

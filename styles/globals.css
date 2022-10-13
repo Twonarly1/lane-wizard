@@ -10,7 +10,7 @@
 
 @layer components {
     .links {
-        @apply px-3 text-xs hover:text-indigo-500 sm:text-sm;
+        @apply px-3 text-xs hover:text-blue-500 sm:text-lg;
     }
     .loading {
         @apply mx-auto w-full text-center font-light;
@@ -34,7 +34,7 @@
         @apply whitespace-nowrap px-4 pr-3 text-sm font-medium text-gray-500 last-of-type:text-right;
     }
     .radio {
-        @apply h-3 w-3 border-gray-300 bg-white  checked:text-indigo-500 focus:outline-none focus:ring-transparent;
+        @apply h-3 w-3 border-gray-300 bg-white  checked:text-green-500 focus:outline-none focus:ring-transparent;
     }
     .form {
         @apply relative flex flex-col justify-between overflow-x-auto px-1;

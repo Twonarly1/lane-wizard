@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { EventDropdown, EventsFound, Footer } from "components"
 
 const event = () => {
-    const [selectedEvent, setSelectedEvent] = useState<any>("")
+    const [selectedEvent, setSelectedEvent] = useState<any>()
 
     return (
         <>

@@ -1,34 +1,49 @@
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
 import { Combobox } from "@headlessui/react"
 import { useEffect, useState } from "react"
-import eventList from "eventList.json"
+import { classNames } from "lib/utils"
 
 type Props = {
-    selectedEvent: any
+    selectedEvent: string
     setSelectedEvent: any
 }
 
-function classNames(...classes: (string | boolean)[]) {
-    return classes.filter(Boolean).join(" ")
-}
+const event: string[] = [
+    "Med. BA",
+    "Med. BR",
+    "Med. FL",
+    "Med. FR",
+    "200 free",
+    "IM",
+    "50 free",
+    "100 fly",
+    "100 free",
+    "500 free",
+    "200 free relay",
+    "100 backstroke",
+    "100 breastroke",
+    "400 free relay",
+    "100 individual medley",
+    "diving 6",
+    "diving 11",
+]
 
 export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props) {
-    const [query, setQuery] = useState("")
+    const [query, setQuery] = useState<string>("")
     const [active, setActive] = useState<boolean>(false)
 
-    const filteredEvents: any =
+    console.log(selectedEvent)
+
+    const filteredEvents =
         query === ""
-            ? eventList
-            : eventList.filter((event) => {
-                  return event.name.toLowerCase().includes(query.toLowerCase())
+            ? event
+            : event.filter((event) => {
+                  return event.toLowerCase().includes(query.toLowerCase())
               })
 
     useEffect(() => {
-        if (!selectedEvent) {
-            return
-        } else {
-            setActive(true)
-        }
+        if (!selectedEvent) return
+        setActive(true)
     }, [selectedEvent])
 
     return (
@@ -46,7 +61,7 @@ export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props
                     placeholder="select event"
                     className="comboboxInput cursor-default"
                     onChange={(event) => setQuery(event.target.value)}
-                    displayValue={(event: any) => event?.name}
+                    displayValue={(event: string) => event}
                 />
                 <Combobox.Button className="comboboxButton cursor-default">
                     <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
@@ -54,10 +69,10 @@ export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props
 
                 {filteredEvents.length > 0 && (
                     <Combobox.Options className="comboboxOptions">
-                        {filteredEvents.map((person: any, i: number) => (
+                        {filteredEvents.map((event: string, i: number) => (
                             <Combobox.Option
                                 key={i}
-                                value={person}
+                                value={event}
                                 className={({ active }) =>
                                     classNames(
                                         "relative cursor-default select-none py-2",
@@ -73,7 +88,7 @@ export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props
                                                 selected && "font-semibold"
                                             )}
                                         >
-                                            {person.name}
+                                            {event}
                                         </span>
 
                                         {selected && (

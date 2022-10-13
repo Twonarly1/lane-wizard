@@ -31,11 +31,11 @@ export const DELETE_EVENT = gql`
     mutation MyMutation($id: ID!) {
         deleteEvent(id: $id) {
             athlete
-            event
-            fullName
-            id
-            milliseconds
             time
+            event
+            milliseconds
+            fullName
+            grade
         }
     }
 `

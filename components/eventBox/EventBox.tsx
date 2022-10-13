@@ -8,7 +8,7 @@ import { diveScore, swimTime } from "lib/utils"
 
 type Props = {
     athleteFound: string
-    eventFound: any
+    eventFound: string
 }
 
 interface IFormInput {
@@ -17,7 +17,7 @@ interface IFormInput {
     event: string
     milliseconds: string
     fullName: string
-    grade: any
+    grade: number
 }
 
 const EventBox = ({ athleteFound, eventFound }: Props) => {
@@ -25,22 +25,17 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
     const [addEvent] = useMutation(ADD_EVENT) // add event mutation
     const [getAthlete, { data: athlete, refetch }] = useLazyQuery(GET_ATHLETE)
     const [active, setActive] = useState<boolean>(false)
-    // const current = new Date()
-    // const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`
-    // console.log(date)
 
-    console.log("athFound", athlete)
+    // console.log(eventFound)
+    // console.log(athleteFound)
 
     useEffect(() => {
-        if (!athleteFound) {
-            return
-        } else {
-            getAthlete({
-                variables: {
-                    fullName: athleteFound,
-                },
-            })
-        }
+        if (!athleteFound) return
+        getAthlete({
+            variables: {
+                fullName: athleteFound,
+            },
+        })
     }, [athleteFound])
 
     //////  REACT HOOK FORM  ////////
@@ -64,10 +59,10 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
 
         // format swim time or dive score
         let formattedSwimTime: string | undefined = ""
-        let formattedDiven: string | undefined = ""
+        let formattedDiveScore: string | undefined = ""
 
-        if (eventFound.name?.includes("diving")) {
-            formattedDiven = await diveScore(time)
+        if (eventFound?.includes("diving")) {
+            formattedDiveScore = await diveScore(time)
         } else {
             formattedSwimTime = await swimTime(time)
         }
@@ -81,8 +76,8 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
                 variables: {
                     athlete: athlete.getAthlete.id,
                     grade: athlete.getAthlete.grade,
-                    event: eventFound.name,
-                    time: formattedSwimTime || formattedDiven,
+                    event: eventFound,
+                    time: formattedSwimTime || formattedDiveScore,
                     milliseconds: time * 10,
                     fullName: athlete.getAthlete.fullName,
                 },
@@ -133,14 +128,14 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
                 {/* display formatted swimTime or diveScore */}
                 <div className="my-3 text-right text-[40px]">
                     <p>
-                        {eventFound.name?.includes("diving") && time.length
+                        {eventFound?.includes("diving") && time.length
                             ? diveScore(time) || <span className="text-gray-400">000.00</span>
                             : swimTime(time) || <span className="text-gray-400">00:00.00</span>}
                     </p>
                 </div>
 
-                <div className=" flex justify-center rounded bg-white hover:text-indigo-500">
-                    <button className="rounded-lg py-2 " type="submit">
+                <div className=" flex justify-center rounded bg-white hover:text-blue-500">
+                    <button className="w-full rounded py-2" type="submit">
                         <p>Create Event</p>
                     </button>
                 </div>

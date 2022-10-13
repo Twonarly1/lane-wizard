@@ -1,78 +1,80 @@
-import { useLazyQuery, useMutation } from "@apollo/client"
+import { useLazyQuery } from "@apollo/client"
 import React, { useEffect, useState } from "react"
 import { GET_EVENT_BY_ATHLETE } from "graphql/queries"
-import { minTime } from "lib/utils"
 
 type Props = {
     selectedAthlete: any
 }
 
-type Athlete = {
-    time: string
+type Event = {
     athlete: string
     event: string
-    milliseconds: string
     fullName: string
+    grade: number
+    id: string
+    milliseconds: string
+    team: string
+    time: string
+    __typename: string
 }
 
 const AthleteEvents = ({ selectedAthlete }: Props) => {
     const [getEventsByAthlete, { loading, error, data: athletesEvents, refetch }] =
         useLazyQuery(GET_EVENT_BY_ATHLETE)
     const [eventChosenToFilterBy, setEventChosenToFilterBy] = useState<string>("")
-    const [eventsByEvent, setEventsByEvent] = useState<any>()
-    const [averageEventTime, setAverageEventTime] = useState<number | undefined>(undefined)
-    const [bestEventTime, setBestEventTime] = useState<number>(0)
+    const [eventsByEvent, setEventsByEvent] = useState<any[]>([])
+    const [averageEventTime, setAverageEventTime] = useState<any>()
     const [teamName, setTeamName] = useState<string>("")
     const [athleteGrade, setAthleteGrade] = useState<string>("")
+    const [checked, setChecked] = useState<any>(false)
+    const [selectedCheckedBtn, setSelectedRadioBtn] = React.useState<any>()
+    const isCheckedSelected = (value: string): boolean => selectedCheckedBtn === value
 
     useEffect(() => {
-        if (!selectedAthlete) {
-            return
-        } else {
-            getEventsByAthlete({
-                variables: {
-                    fullName: selectedAthlete,
-                },
-            })
-        }
-        if (!athletesEvents) {
-            return
-        } else {
-            setTeamName(athletesEvents?.getEventByAthlete[0].team)
-            setAthleteGrade(athletesEvents?.getEventByAthlete[0].grade)
-        }
-    }, [selectedAthlete, athletesEvents])
+        if (!selectedAthlete) return
+        getEventsByAthlete({
+            variables: {
+                fullName: selectedAthlete,
+            },
+        })
+    }, [selectedAthlete])
 
     const handleEventFilter = (e: any, params: any) => {
+        setSelectedRadioBtn(params.event.id)
         setEventChosenToFilterBy(params.event.event)
     }
 
-    const arrAvg = (arr: any[]) => {
-        const newArray = arr?.map((event: any) => {
-            return event.milliseconds
-        })
-        const average: number = newArray?.reduce((a, b) => a + b, 0) / newArray?.length
-        setAverageEventTime(average)
-        setBestEventTime(minTime(newArray))
+    const calculateAvgSwimTime = () => {
+        setAverageEventTime(null)
+        if (eventsByEvent.length === 1) {
+            return
+        } else {
+            const numbers = eventsByEvent?.map((n: any) => {
+                return n.milliseconds
+            })
+            const sum: number = numbers?.reduce((a: any, b: any) => Number(a) + Number(b), 0)
+            const avg: number = sum / numbers.length
+            const min: number = Math.floor(avg / 1000 / 60)
+            const sec: any = ((avg / 1000) % 60).toFixed(2)
+            const swimTime = "0" + min + ":" + sec
+            setAverageEventTime(swimTime)
+        }
     }
 
     useEffect(() => {
+        if (!athletesEvents) return
+        setTeamName(athletesEvents?.getEventByAthlete[0].team)
+        setAthleteGrade(athletesEvents?.getEventByAthlete[0].grade)
         const athleteStats = athletesEvents?.getEventByAthlete.filter((athlete: any) => {
             return athlete.event == eventChosenToFilterBy
         })
         setEventsByEvent(athleteStats)
-    }, [eventChosenToFilterBy])
+    }, [athletesEvents, eventChosenToFilterBy])
 
     useEffect(() => {
-        if (!eventsByEvent) {
-            return
-        } else {
-            arrAvg(eventsByEvent)
-        }
+        if (!eventsByEvent) return
+        calculateAvgSwimTime()
     }, [eventsByEvent])
-
-    // console.log(athletesEvents?.getEventByAthlete[0].team)
-    console.log(teamName)
 
     if (loading) return <p className="loading">Loading ...</p>
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
@@ -93,15 +95,10 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                         <table className="table">
                             <thead className="thead">
                                 <tr>
-                                    {/* <th scope="col" className="col">
-                                        #
-                                    </th> */}
-                                    <th scope="col" className="col">
+                                    <th scope="col" className="col pl-0 pr-7 text-center">
                                         Event
                                     </th>
-                                    {/* <th scope="col" className="col">
-                                        Team
-                                    </th> */}
+                                    <th scope="col" className="w-20"></th>
                                     <th scope="col" className="col text-right">
                                         Time
                                     </th>
@@ -109,20 +106,23 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                             </thead>
                             <tbody className="tbody">
                                 {athletesEvents?.getEventByAthlete?.map(
-                                    (event: any, idx: number) => (
+                                    (event: Event, idx: number) => (
                                         <tr key={idx} className="tr">
-                                            {/* <td className="row">{idx}</td> */}
-                                            <td className="row">
+                                            <td className="row w-4 pl-2 pr-0">
                                                 <button
-                                                    className="underline decoration-gray-400"
-                                                    onClick={(e: any) =>
-                                                        handleEventFilter(e, { event })
-                                                    }
+                                                    className="flex items-center"
+                                                    onClick={(e) => handleEventFilter(e, { event })}
                                                 >
-                                                    {event.event}
+                                                    <input
+                                                        className="radio mr-2"
+                                                        type="checkbox"
+                                                        readOnly={true}
+                                                        checked={isCheckedSelected(event.id)}
+                                                    />
+                                                    <p> {event.event}</p>
                                                 </button>
                                             </td>
-                                            {/* <td className="row">{event.team}</td> */}
+                                            <td className="row w-20"> </td>
                                             <td className="row">{event.time}</td>
                                         </tr>
                                     )
@@ -131,13 +131,14 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                         </table>
                     </div>
                 </div>
-                <div className="mt-10 text-xs">select individual event for more stats</div>
-                {eventsByEvent && (
+
+                {eventsByEvent.length === 0 ? (
+                    <div className="mt-10 text-xs">select individual event for more stats</div>
+                ) : (
                     <>
-                        {averageEventTime && (
-                            <div className="mt-5 flex justify-between">
+                        {eventChosenToFilterBy && (
+                            <div className="mt-10 flex justify-between">
                                 <p>{eventChosenToFilterBy}</p>
-                                <p>{(averageEventTime / 1000).toFixed(2)} avg</p>
                             </div>
                         )}
                         <div className="mt-2 flex flex-col justify-between overflow-x-auto">
@@ -148,9 +149,9 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                             <th scope="col" className="col">
                                                 #
                                             </th>
-                                            {/* <th scope="col" className="col">
-                                                Team
-                                            </th> */}
+                                            <th scope="col" className="col">
+                                                Date
+                                            </th>
                                             <th scope="col" className="col text-right">
                                                 Time
                                             </th>
@@ -160,12 +161,27 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                         {eventsByEvent?.map((event: any, idx: number) => (
                                             <tr key={idx} className="tr">
                                                 <td className="row">{idx}</td>
-                                                {/* <td className="row">{event.team}</td> */}
+                                                <td className="row">{event.date}</td>
                                                 <td className="row">{event.time}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
+
+                                {averageEventTime && (
+                                    <table className="table ">
+                                        <thead className="thead">
+                                            <tr className="bg-gray-200">
+                                                <th scope="col" className="col">
+                                                    avg
+                                                </th>
+                                                <th scope="col" className="col text-right">
+                                                    {averageEventTime}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                )}
                             </div>
                         </div>
                     </>

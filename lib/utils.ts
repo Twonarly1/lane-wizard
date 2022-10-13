@@ -51,6 +51,16 @@ export const swimTime = (time: any) => {
     }
 }
 
-export function classNames(...classes: string[]) {
+export function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ")
+}
+
+export const millisecondsToMinutes = (ms: number) => {
+    if (!ms) return
+    let min = Math.floor(ms / 1000 / 60)
+    console.log("min", min)
+    let sec: any = ((ms / 1000) % 60).toFixed(2)
+    console.log("sec", sec)
+    const swimTime = "0" + min + ":" + sec
+    return swimTime
 }

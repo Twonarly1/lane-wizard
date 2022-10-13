@@ -1,9 +1,10 @@
 import { useLazyQuery } from "@apollo/client"
-import { Dialog, Switch } from "@headlessui/react"
-import { QuestionMarkCircleIcon, XCircleIcon } from "@heroicons/react/20/solid"
+import { Switch } from "@headlessui/react"
+import { QuestionMarkCircleIcon } from "@heroicons/react/20/solid"
 import { GET_EVENTS_BY_EVENT } from "graphql/queries"
 import { classNames } from "lib/utils"
 import React, { useEffect, useState } from "react"
+import DialogDemo from "./DialogDemo"
 
 type Props = {
     selectedEvent: any
@@ -12,25 +13,27 @@ type Props = {
 const EventsFound = ({ selectedEvent }: Props) => {
     const [getEventsByEvent, { loading: eventsLoading, error: eventsError, data: getEvents }] =
         useLazyQuery(GET_EVENTS_BY_EVENT)
-    const [simulate400FR, setSimulate400FR] = useState<boolean>(false)
-    const [enabled, setEnabled] = useState(false)
+    const [simulateRelays, setSimulateRelays] = useState<boolean>(false)
+    const [simulateMedley, setSimulateMedley] = useState<boolean>(false)
+    const [enabled, setEnabled] = useState<boolean>(false)
     const [simulatedRelayTime, setSimulatedRelayTime] = useState<string | null>(null)
     const [checked, setChecked] = useState<any>([])
-    let [isOpen, setIsOpen] = useState(false)
-
-    console.log(getEvents)
+    let [isOpen, setIsOpen] = useState<boolean>(false)
+    const [flash, setFlash] = useState<boolean>(false)
+    // const [isOpen, setIsOpen = useState<boolean>(false)]
 
     useEffect(() => {
-        if (!selectedEvent) {
-            return
-        } else {
-            getEventsByEvent({
-                variables: {
-                    event: selectedEvent.name,
-                },
-            })
-            checkIfSimulationIsAvailable()
-        }
+        if (!selectedEvent) return
+        setSimulateRelays(false)
+        setSimulateMedley(false)
+        setEnabled(false)
+        getEventsByEvent({
+            variables: {
+                event: selectedEvent,
+            },
+        })
+        checkIfEventIsMedleyRelay()
+        checkIfSimulationIsAvailable()
     }, [selectedEvent])
 
     const numbers = getEvents?.getEventsByEvent.map((o: any) => {
@@ -44,10 +47,17 @@ const EventsFound = ({ selectedEvent }: Props) => {
     }
 
     const checkIfSimulationIsAvailable = () => {
-        if (selectedEvent.name.includes("relay")) {
-            return setSimulate400FR(true)
+        if (selectedEvent.includes("relay")) {
+            return setSimulateRelays(true)
         } else {
-            return setSimulate400FR(false)
+            return setSimulateRelays(false)
+        }
+    }
+    const checkIfEventIsMedleyRelay = () => {
+        if (selectedEvent.includes("Medley relay")) {
+            return setSimulateMedley(true)
+        } else {
+            return setSimulateMedley(false)
         }
     }
 
@@ -59,10 +69,10 @@ const EventsFound = ({ selectedEvent }: Props) => {
             return event.event_id == event_id
         })
         if (present) {
-            console.log(present, `id found --> remove event.id ${event_id}`)
+            // console.log(present, `id found --> remove event.id ${event_id}`)
             updatedList.splice(updatedList.indexOf(event_id), 1)
         } else {
-            console.log(present, `id not found --> add event.id ${event_id}`)
+            // console.log(present, `id not found --> add event.id ${event_id}`)
             if (checked.length !== 4) {
                 updatedList = [...checked, { event_id, event_milliseconds }]
             } else {
@@ -74,6 +84,7 @@ const EventsFound = ({ selectedEvent }: Props) => {
 
     const calculate400FRSimulationTime = () => {
         setSimulatedRelayTime(null)
+        setFlash(true)
         const numbers = checked?.map((n: any) => {
             return n.event_milliseconds
         })
@@ -82,6 +93,9 @@ const EventsFound = ({ selectedEvent }: Props) => {
         const sec: any = ((sum / 1000) % 60).toFixed(2)
         const swimTime = "0" + min + ":" + sec
         setSimulatedRelayTime(swimTime)
+        setTimeout(() => {
+            setFlash(false)
+        }, 600)
     }
 
     useEffect(() => {
@@ -97,104 +111,69 @@ const EventsFound = ({ selectedEvent }: Props) => {
     return (
         selectedEvent && (
             <div className="mt-10">
-                {simulate400FR && (
-                    <div className="mx-auto w-full justify-center">
-                        <div className="mx-auto flex items-center justify-center space-x-2">
-                            <Switch
-                                checked={enabled}
-                                onChange={setEnabled}
-                                className={classNames(
-                                    enabled ? "bg-white" : "bg-white",
-                                    "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent  duration-200 ease-in-out focus:outline-none"
-                                )}
-                            >
-                                <span className="sr-only">relay simulation</span>
-                                <span
-                                    aria-hidden="true"
-                                    className={classNames(
-                                        enabled
-                                            ? "translate-x-5 bg-red-200"
-                                            : "translate-x-0 bg-green-200",
-                                        "pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out focus:outline-none"
-                                    )}
-                                />
-                            </Switch>
-                            <p className="ml-12">
-                                {!enabled ? "relay simulation" : "close simulation"}
-                            </p>
-                            <QuestionMarkCircleIcon
-                                onClick={() => setIsOpen(true)}
-                                className="h-5 w-5 cursor-pointer rounded-full text-gray-500/60"
-                            />
-
-                            <Dialog
-                                open={isOpen}
-                                onClose={() => setIsOpen(false)}
-                                className="relative z-50 "
-                            >
-                                {/* The backdrop, rendered as a fixed sibling to the panel container */}
-                                <div
-                                    className="fixed inset-0 w-full bg-black/60"
-                                    aria-hidden="true"
-                                />
-
-                                {/* Full-screen container to center the panel */}
-                                <div className="  fixed inset-0 mt-[12%] flex h-fit  justify-center">
-                                    <Dialog.Panel className="relative w-full max-w-lg rounded-2xl bg-white">
-                                        <Dialog.Title className=" h-12 text-center text-lg">
-                                            <p className="pt-3">How to simulate?</p>
-                                        </Dialog.Title>
-
-                                        {/* here */}
-                                        <video controls className="rounded-b-2xl">
-                                            <source
-                                                src="./demoSimulation.mp4"
-                                                className="rounded-xl"
-                                                type="video/mp4"
-                                            />
-                                        </video>
-
-                                        <button
-                                            className="absolute top-2 right-2"
-                                            onClick={() => setIsOpen(false)}
-                                        >
-                                            <XCircleIcon className="h-8 w-8 rounded-full text-gray-500" />
-                                        </button>
-                                    </Dialog.Panel>
-                                </div>
-                            </Dialog>
+                <div
+                    className={` mx-auto flex w-full justify-center ${
+                        simulateRelays ? "visible" : "invisible"
+                    }`}
+                >
+                    <div
+                        className={` flex w-full items-center space-x-2 ${
+                            enabled && simulateRelays ? "visible" : "invisible"
+                        }`}
+                    >
+                        <button
+                            disabled={checked.length != 4}
+                            className={`bg-white px-4 text-lg ${
+                                checked.length != 4 && "cursor-not-allowed"
+                            }`}
+                            onClick={calculate400FRSimulationTime}
+                        >
+                            calculate
+                        </button>
+                        <div
+                            className={`items-center px-4 text-lg  ${
+                                flash ? "bg-green-100" : "bg-white"
+                            } `}
+                        >
+                            <p> {simulatedRelayTime ? simulatedRelayTime : "00:00.00"}</p>
                         </div>
-                        <div className="mt-5 flex w-full justify-between">
-                            {enabled && (
-                                <>
-                                    <div className="flex space-x-2">
-                                        <button
-                                            disabled={checked.length != 4}
-                                            className={`bg-white px-4 py-1 ${
-                                                checked.length != 4 && "cursor-not-allowed"
-                                            }`}
-                                            onClick={calculate400FRSimulationTime}
-                                        >
-                                            get time
-                                        </button>
-                                    </div>
-                                    <p className="bg-white px-4 py-1">
-                                        {simulatedRelayTime ? simulatedRelayTime : "00:00.00"}
-                                    </p>
-                                </>
-                            )}
-                        </div>
+                        <QuestionMarkCircleIcon
+                            onClick={() => setIsOpen(true)}
+                            className="h-3 w-3 cursor-pointer rounded-full bg-gray-400 text-gray-200 shadow"
+                        />
                     </div>
-                )}
+                    <div className="mx-auto  flex items-center justify-center space-x-2">
+                        <p className="ml-12">{!enabled ? "simulate" : "close"}</p>
+                        <Switch
+                            checked={enabled}
+                            onChange={setEnabled}
+                            className={classNames(
+                                enabled ? "bg-white" : "bg-white",
+                                "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 focus:outline-none"
+                            )}
+                        >
+                            <span
+                                aria-hidden="true"
+                                className={classNames(
+                                    enabled
+                                        ? "translate-x-5 bg-red-200"
+                                        : "translate-x-0 bg-green-200",
+                                    "pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 focus:outline-none"
+                                )}
+                            />
+                        </Switch>
+                        <DialogDemo isOpen={isOpen} setIsOpen={setIsOpen} />
+                    </div>
+                </div>
                 <div className="mt-2 flex flex-col justify-between overflow-x-auto">
                     <table className="table">
                         <thead className="thead">
                             <tr>
-                                {enabled && <th scope="col" className="col pl-2"></th>}
+                                <th scope="col" className="col pl-2"></th>
                                 <th scope="col" className="col">
                                     Rank
                                 </th>
-                                <th scope="col" className="col">
+                                <th scope="col" className="col ">
                                     Name
                                 </th>
                                 <th scope="col" className="col">
@@ -211,16 +190,16 @@ const EventsFound = ({ selectedEvent }: Props) => {
                         <tbody className="tbody">
                             {numbers?.map((event: any, idx: number) => (
                                 <tr key={idx} className="tr">
-                                    {enabled && (
-                                        <td className="row w-4 pl-2 pr-0">
-                                            <input
-                                                className="radio"
-                                                type="checkbox"
-                                                value={event.id}
-                                                onChange={(e: any) => handleCheck(e, { event })}
-                                            />
-                                        </td>
-                                    )}
+                                    <td className="row w-4 pl-2 pr-0">
+                                        <input
+                                            className={` radio ${
+                                                enabled && simulateRelays ? "visible" : "invisible"
+                                            } `}
+                                            type="checkbox"
+                                            value={event.id}
+                                            onChange={(e: any) => handleCheck(e, { event })}
+                                        />
+                                    </td>
                                     <td className="row">{idx + 1}</td>
                                     <td className="row">{event.fullName}</td>
                                     <td className="row">{event.grade}</td>

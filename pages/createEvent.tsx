@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client"
 import React, { useEffect, useState } from "react"
-import { AthleteDropdown, EventBox, AthleteEvents, Footer, EventDropdown, Admin } from "components"
+import { AthleteDropdown, EventBox, Footer, EventDropdown, Admin } from "components"
 import { GET_ADMIN_BY_EMAIL, GET_ATHLETES_BY_TEAM } from "graphql/queries"
 import { useSession } from "next-auth/react"
 
@@ -14,45 +14,38 @@ const Home = () => {
         useLazyQuery(GET_ATHLETES_BY_TEAM)
 
     useEffect(() => {
-        if (!session) {
-            return
-        } else {
-            getAdminByEmail({
-                variables: {
-                    email: session.user.email,
-                },
-            })
-        }
+        if (!session) return
+        getAdminByEmail({
+            variables: {
+                email: session.user.email,
+            },
+        })
     }, [session])
 
     useEffect(() => {
-        if (!getAdminTeam) {
-            return
-        } else {
-            getAthletesByTeam({
-                variables: {
-                    team: getAdminTeam?.getAdminByEmail[0].team,
-                },
-            })
-        }
+        if (!getAdminTeam) return
+        getAthletesByTeam({
+            variables: {
+                team: getAdminTeam?.getAdminByEmail[0].team,
+            },
+        })
     }, [getAdminTeam])
 
-    // console.log(session?.user)
-    // console.log("admin Team", getAdminTeam?.getAdminByEmail[0].team)
-    console.log("selected", selectedAthlete)
-
-    console.log("admin Athletes", getAthleteList)
-
-    if (admingLoading) return <p className="loading">Loading ...</p>
+    if (admingLoading || teamLoading) return <p className="loading">Loading ...</p>
     if (adminError || teamError)
         return <pre>{JSON.stringify(adminError || teamError, null, 2)}</pre>
 
     return (
         <>
             <div className="mx-auto w-fit text-left">
-                <p className="">
-                    {session?.user.name} , {getAdminTeam?.getAdminByEmail[0].team}
-                </p>
+                <div className="flex space-x-2">
+                    <b className="w-16">Admin:</b>
+                    {session?.user.name}
+                </div>
+                <div className="flex space-x-2">
+                    <b className="w-16">Team:</b>
+                    {getAdminTeam?.getAdminByEmail[0].team}
+                </div>
             </div>
             <div className="mx-auto mt-10 flex min-h-screen w-full max-w-7xl flex-col items-center">
                 <AthleteDropdown

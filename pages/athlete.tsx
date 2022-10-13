@@ -30,22 +30,3 @@ const Athlete = () => {
 }
 
 export default Athlete
-
-{
-    /* <div className="mx-auto mb-2   max-w-sm items-center">
-                <div className="sm:flex sm:items-center">
-                    <div className="text-left md:flex-auto">
-                        <h1 className="text-xl font-semibold text-gray-900">Athletes</h1>
-                        <p className="mt-2 text-sm">A list of all athletes in the database.</p>
-                    </div>
-                    <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <button
-                            type="button"
-                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-opacity-30 sm:w-auto"
-                            disabled={session?.user?.email !== "INSERT ADMIN EMAIL HERE"}
-                        >
-                            Add Athlete
-                        </button>
-                    </div>
-                </div> */
-}

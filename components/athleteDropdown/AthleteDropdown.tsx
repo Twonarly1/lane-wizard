@@ -1,22 +1,37 @@
+import { useLazyQuery } from "@apollo/client"
 import { Combobox } from "@headlessui/react"
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
+import { GET_ADMIN_BY_EMAIL } from "graphql/queries"
+import { classNames } from "lib/utils"
+import { useSession } from "next-auth/react"
 import React, { useEffect, useState } from "react"
 
 type Props = {
-    selectedAthlete: any
+    selectedAthlete: string
     setSelectedAthlete: any
     getAthleteList: any
-}
-
-function classNames(...classes: any) {
-    return classes.filter(Boolean).join(" ")
 }
 
 const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }: Props) => {
     const [query, setQuery] = useState<string>("")
     const [active, setActive] = useState<boolean>(false)
+    const [checked, setChecked] = useState<boolean>(false)
+    const { data: session }: any = useSession()
+    const [getAdminByEmail, { error: adminError, loading: admingLoading, data: adminApproved }] =
+        useLazyQuery(GET_ADMIN_BY_EMAIL)
 
-    // Filter athletes
+    useEffect(() => {
+        if (!session) return
+
+        getAdminByEmail({
+            variables: {
+                email: session.user.email,
+            },
+        })
+    }, [session])
+
+    console.log(adminApproved)
+
     const filteredAthletes =
         query === ""
             ? getAthleteList
@@ -25,15 +40,22 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
               })
 
     useEffect(() => {
-        if (!selectedAthlete) {
-            return
-        } else {
-            setActive(true)
-        }
+        if (!filteredAthletes) return
+        filteredAthletes?.sort((a: any, b: any) => a.firstName.localeCompare(b.firstName))
+    }, [filteredAthletes])
+
+    useEffect(() => {
+        if (!selectedAthlete) return
+        setActive(true)
     }, [selectedAthlete])
 
-    // console.log(getAthleteList)
-    // console.log(filteredAthletes)
+    const handleInputClick = () => {
+        if (checked) {
+            setChecked(false)
+        } else {
+            setChecked(true)
+        }
+    }
 
     return (
         <Combobox
@@ -44,13 +66,21 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
         >
             <Combobox.Label className={`${active ? "visible" : "invisible"}`}>
                 Athlete:
+                <input
+                    type="checkbox"
+                    className={` radio ml-1 -mt-1 border-none ${
+                        adminApproved && active ? "visible" : "invisible"
+                    } `}
+                    onChange={handleInputClick}
+                />
             </Combobox.Label>
+
             <div className="relative w-full">
                 <Combobox.Input
                     placeholder="select athlete"
                     className="comboboxInput cursor-default"
                     onChange={(event) => setQuery(event.target.value)}
-                    displayValue={selectedAthlete}
+                    displayValue={checked ? (event: string) => event : () => ""}
                 />
                 <Combobox.Button className="comboboxButton cursor-default">
                     <ChevronDownIcon className="h-5 w-5 " aria-hidden="true" />

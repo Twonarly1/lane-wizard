@@ -1,55 +1,73 @@
 import { Combobox } from "@headlessui/react"
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
 import { classNames } from "lib/utils"
-import React, { useEffect, useState } from "react"
+import React, { SVGProps, useEffect } from "react"
+import { useState, Fragment } from "react"
+import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
 
 type Props = {
-    selectedTeam: any
-    setSelectedTeam: any
-    getTeamList: any
+    active: boolean
+    getAthleteList: any
 }
 
-const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => {
-    const [query, setQuery] = useState<string>("")
-    const [active, setActive] = useState<boolean>(false)
+type Athlete = {
+    firstName: string
+    grade: number
+    id: string
+    lastName: string
+    __typename: string
+}
 
-    const filteredTeams =
+const Dropdown = ({ active, getAthleteList }: Props) => {
+    const [selectedAthlete, setSelectedAthlete] = useState<any>("")
+    const [query, setQuery] = useState("")
+
+    // console.log(selectedAthlete)
+    // console.log(getAthleteList)
+
+    // Filter athletes
+    const filteredAthletes =
         query === ""
-            ? getTeamList
-            : getTeamList?.filter((athlete: { firstName: string; lastName: string }) => {
+            ? getAthleteList
+            : getAthleteList?.filter((athlete: Athlete) => {
                   return athlete.firstName.toLowerCase().includes(query.toLowerCase())
               })
 
     useEffect(() => {
-        if (!selectedTeam) return
-        setActive(true)
-    }, [selectedTeam])
+        console.log(
+            "filtered",
+            getAthleteList?.filter((athlete: Athlete) => {
+                return athlete.firstName
+            })
+        )
+    }, [])
 
     return (
         <Combobox
             as="div"
-            className="cursor mx-auto items-center"
-            value={selectedTeam}
-            onChange={setSelectedTeam}
+            className="cursor mx-auto mb-2 items-center"
+            value={selectedAthlete}
+            onChange={setSelectedAthlete}
         >
-            <Combobox.Label className={`${active ? "visible" : "invisible"}`}>Team:</Combobox.Label>
-            <div className="relative w-full">
+            <Combobox.Label className={`${active ? "visible" : "invisible"}`}>
+                Athlete:
+            </Combobox.Label>
+            <div className="relative  w-full">
                 <Combobox.Input
-                    placeholder="select team"
+                    placeholder="select athlete"
                     className="comboboxInput cursor-default"
                     onChange={(event) => setQuery(event.target.value)}
-                    displayValue={selectedTeam}
+                    displayValue={selectedAthlete}
                 />
                 <Combobox.Button className="comboboxButton cursor-default">
                     <ChevronDownIcon className="h-5 w-5 " aria-hidden="true" />
                 </Combobox.Button>
 
-                {filteredTeams?.length > 0 && (
+                {filteredAthletes?.length > 0 && (
                     <Combobox.Options className="comboboxOptions">
-                        {filteredTeams.map((team: any, i: number) => (
+                        {filteredAthletes.map((athlete: any) => (
                             <Combobox.Option
-                                key={i}
-                                value={team}
+                                key={athlete.id}
+                                value={athlete.firstName + " " + athlete.lastName}
                                 className={({ active }) =>
                                     classNames(
                                         "relative cursor-default select-none py-2",
@@ -63,10 +81,11 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
                                             <span
                                                 className={classNames(
                                                     "ml-3 truncate",
+                                                    //@ts-ignore
                                                     selected && "font-semibold"
                                                 )}
                                             >
-                                                {team}
+                                                {athlete.firstName + " " + athlete.lastName}
                                             </span>
                                         </div>
 
@@ -91,4 +110,4 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
     )
 }
 
-export default TeamDropdown
+export default Dropdown

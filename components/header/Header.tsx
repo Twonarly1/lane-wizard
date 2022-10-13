@@ -24,9 +24,8 @@ const Header = () => {
     }
 
     useEffect(() => {
-        if (session) {
-            handlePrivileges(session.user.email)
-        }
+        if (!session) return
+        handlePrivileges(session.user.email)
     }, [session])
 
     // if (loading) return <p className="loading">Loading ...</p>
@@ -44,12 +43,12 @@ const Header = () => {
                 <a className="links rounded-r bg-gray-100">Athlete</a>
             </Link>
             {session && (
-                <Link href="/createEvent" className="">
-                    <button className="-mt-[2px]" disabled={!adminPrivileges}>
-                        <a className={`links ${!adminPrivileges && " cursor-not-allowed"}`}>
-                            {" "}
-                            Create
-                        </a>
+                <Link href="/createEvent" className="items-center">
+                    <button
+                        className={`links ${!adminPrivileges && "cursor-not-allowed"}`}
+                        disabled={!adminPrivileges}
+                    >
+                        Create
                     </button>
                 </Link>
             )}
