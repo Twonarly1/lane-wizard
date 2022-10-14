@@ -4,6 +4,7 @@ import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
 import { GET_ADMIN_BY_EMAIL } from "graphql/queries"
 import { classNames } from "lib/utils"
 import { useSession } from "next-auth/react"
+import Athlete from "pages/athlete"
 import React, { useEffect, useState } from "react"
 
 type Props = {
@@ -30,19 +31,12 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
         })
     }, [session])
 
-    console.log(adminApproved)
-
     const filteredAthletes =
         query === ""
             ? getAthleteList
             : getAthleteList?.filter((athlete: { firstName: string; lastName: string }) => {
                   return athlete.firstName.toLowerCase().includes(query.toLowerCase())
               })
-
-    useEffect(() => {
-        if (!filteredAthletes) return
-        filteredAthletes?.sort((a: any, b: any) => a.firstName.localeCompare(b.firstName))
-    }, [filteredAthletes])
 
     useEffect(() => {
         if (!selectedAthlete) return

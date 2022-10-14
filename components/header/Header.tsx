@@ -42,6 +42,9 @@ const Header = () => {
             <Link href="/athlete" className="">
                 <a className="links rounded-r bg-gray-100">Athlete</a>
             </Link>
+            <Link href="/medley" className="">
+                <a className="links rounded-r bg-gray-100">Medley</a>
+            </Link>
             {session && (
                 <Link href="/createEvent" className="items-center">
                     <button

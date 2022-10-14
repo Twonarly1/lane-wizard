@@ -79,7 +79,6 @@ const EventsFound = ({ selectedEvent }: Props) => {
 
     const calculate400FRSimulationTime = () => {
         setSimulatedRelayTime(null)
-        setFlash(true)
         const numbers = checked?.map((n: any) => {
             return n.event_milliseconds
         })
@@ -88,6 +87,7 @@ const EventsFound = ({ selectedEvent }: Props) => {
         const sec: any = ((sum / 1000) % 60).toFixed(2)
         const swimTime = "0" + min + ":" + sec
         setSimulatedRelayTime(swimTime)
+        setFlash(true)
         setTimeout(() => {
             setFlash(false)
         }, 600)
