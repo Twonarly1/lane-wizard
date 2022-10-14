@@ -105,105 +105,119 @@ const EventsFound = ({ selectedEvent }: Props) => {
 
     return (
         selectedEvent && (
-            <div className="mt-10">
-                <div
-                    className={` mx-auto flex w-full justify-center ${
-                        simulateRelays ? "visible" : "invisible"
-                    }`}
-                >
+            <div className="mt-10 px-4 sm:px-6 lg:px-8">
+                <div className="sm:flex sm:items-center">
+                    {" "}
                     <div
-                        className={` flex w-full items-center space-x-2 ${
-                            enabled && simulateRelays ? "visible" : "invisible"
+                        className={` mx-auto flex w-full justify-center ${
+                            simulateRelays ? "visible" : "invisible"
                         }`}
                     >
-                        <button
-                            disabled={checked.length != 4}
-                            className={`bg-white px-4 text-lg ${
-                                checked.length != 4 && "cursor-not-allowed"
-                            }`}
-                            onClick={calculate400FRSimulationTime}
-                        >
-                            calculate
-                        </button>
                         <div
-                            className={`items-center px-4 text-lg  ${
-                                flash ? "bg-green-100" : "bg-white"
-                            } `}
+                            className={` flex w-full items-center space-x-2 ${
+                                enabled && simulateRelays ? "visible" : "invisible"
+                            }`}
                         >
-                            <p> {simulatedRelayTime ? simulatedRelayTime : "00:00.00"}</p>
-                        </div>
-                        <QuestionMarkCircleIcon
-                            onClick={() => setIsOpen(true)}
-                            className="h-3 w-3 cursor-pointer rounded-full bg-gray-400 text-gray-200 shadow"
-                        />
-                    </div>
-                    <div className="mx-auto  flex items-center justify-center space-x-2">
-                        <p className="ml-12">{!enabled ? "simulate" : "close"}</p>
-                        <Switch
-                            checked={enabled}
-                            onChange={setEnabled}
-                            className={classNames(
-                                enabled ? "bg-white" : "bg-white",
-                                "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 focus:outline-none"
-                            )}
-                        >
-                            <span
-                                aria-hidden="true"
-                                className={classNames(
-                                    enabled
-                                        ? "translate-x-5 bg-red-200"
-                                        : "translate-x-0 bg-green-200",
-                                    "pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 focus:outline-none"
-                                )}
+                            <button
+                                disabled={checked.length != 4}
+                                className={`bg-white px-4 text-lg ${
+                                    checked.length != 4 && "cursor-not-allowed"
+                                }`}
+                                onClick={calculate400FRSimulationTime}
+                            >
+                                calculate
+                            </button>
+                            <div
+                                className={`items-center px-4 text-lg  ${
+                                    flash ? "bg-green-100" : "bg-white"
+                                } `}
+                            >
+                                <p> {simulatedRelayTime ? simulatedRelayTime : "00:00.00"}</p>
+                            </div>
+                            <QuestionMarkCircleIcon
+                                onClick={() => setIsOpen(true)}
+                                className="h-3 w-3 cursor-pointer rounded-full bg-gray-400 text-gray-200 shadow"
                             />
-                        </Switch>
-                        <DialogDemo isOpen={isOpen} setIsOpen={setIsOpen} />
+                        </div>
+                        <div className="mx-auto  flex items-center justify-center space-x-2">
+                            <p className="ml-12">{!enabled ? "simulate" : "close"}</p>
+                            <Switch
+                                checked={enabled}
+                                onChange={setEnabled}
+                                className={classNames(
+                                    enabled ? "bg-white" : "bg-white",
+                                    "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 focus:outline-none"
+                                )}
+                            >
+                                <span
+                                    aria-hidden="true"
+                                    className={classNames(
+                                        enabled
+                                            ? "translate-x-5 bg-red-200"
+                                            : "translate-x-0 bg-green-200",
+                                        "pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 focus:outline-none"
+                                    )}
+                                />
+                            </Switch>
+                            <DialogDemo isOpen={isOpen} setIsOpen={setIsOpen} />
+                        </div>
                     </div>
-                </div>
-                <div className="mt-2 flex flex-col justify-between overflow-x-auto">
-                    <table className="table">
-                        <thead className="thead">
-                            <tr>
-                                <th scope="col" className="col pl-2"></th>
-                                <th scope="col" className="col">
-                                    Rank
-                                </th>
-                                <th scope="col" className="col ">
-                                    Name
-                                </th>
-                                <th scope="col" className="col">
-                                    Grade
-                                </th>
-                                <th scope="col" className="col">
-                                    Team
-                                </th>
-                                <th scope="col" className="col text-right">
-                                    Time
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="tbody">
-                            {numbers?.map((event: any, idx: number) => (
-                                <tr key={idx} className="tr">
-                                    <td className="row w-4 pl-2 pr-0">
-                                        <input
-                                            className={` radio ${
-                                                enabled && simulateRelays ? "visible" : "invisible"
-                                            } `}
-                                            type="checkbox"
-                                            value={event.id}
-                                            onChange={(e: any) => handleCheck(e, { event })}
-                                        />
-                                    </td>
-                                    <td className="row">{idx + 1}</td>
-                                    <td className="row">{event.fullName}</td>
-                                    <td className="row">{event.grade}</td>
-                                    <td className="row">{event.team}</td>
-                                    <td className="row">{event.time}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <div className="mt-8 flex flex-col">
+                        <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                    {" "}
+                                    <table className="table">
+                                        <thead className="thead">
+                                            <tr>
+                                                <th scope="col" className="col pl-2"></th>
+                                                <th scope="col" className="col">
+                                                    Rank
+                                                </th>
+                                                <th scope="col" className="col ">
+                                                    Name
+                                                </th>
+                                                <th scope="col" className="col">
+                                                    Grade
+                                                </th>
+                                                <th scope="col" className="col">
+                                                    Team
+                                                </th>
+                                                <th scope="col" className="col text-right">
+                                                    Time
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="tbody">
+                                            {numbers?.map((event: any, idx: number) => (
+                                                <tr key={idx} className="tr">
+                                                    <td className="row w-4 pl-2 pr-0">
+                                                        <input
+                                                            className={` radio ${
+                                                                enabled && simulateRelays
+                                                                    ? "visible"
+                                                                    : "invisible"
+                                                            } `}
+                                                            type="checkbox"
+                                                            value={event.id}
+                                                            onChange={(e: any) =>
+                                                                handleCheck(e, { event })
+                                                            }
+                                                        />
+                                                    </td>
+                                                    <td className="row">{idx + 1}</td>
+                                                    <td className="row">{event.fullName}</td>
+                                                    <td className="row">{event.grade}</td>
+                                                    <td className="row">{event.team}</td>
+                                                    <td className="row">{event.time}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

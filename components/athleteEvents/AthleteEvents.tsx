@@ -81,54 +81,72 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
 
     return (
         selectedAthlete && (
-            <div className="mt-5">
-                <div className="mt-5 flex flex-col">
-                    <div className="flex justify-between">
-                        <p>
-                            {selectedAthlete}, {athleteGrade}
-                        </p>
-                        <p>{teamName}</p>
+            <div className="mt-10 px-4 sm:px-6 lg:px-8">
+                <div className="sm:flex sm:items-center">
+                    {" "}
+                    <div className="mt-5 flex flex-col">
+                        <div className="flex justify-between">
+                            <p>
+                                {selectedAthlete}, {athleteGrade}
+                            </p>
+                            <p>{teamName}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="mt-2 flex flex-col justify-between overflow-x-auto">
-                    <div className="overflow-hidden ">
-                        <table className="table">
-                            <thead className="thead">
-                                <tr>
-                                    <th scope="col" className="col pl-0 pr-7 text-center">
-                                        Event
-                                    </th>
-                                    <th scope="col" className="w-20"></th>
-                                    <th scope="col" className="col text-right">
-                                        Time
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="tbody">
-                                {athletesEvents?.getEventByAthlete?.map(
-                                    (event: Event, idx: number) => (
-                                        <tr key={idx} className="tr">
-                                            <td className="row w-4 pl-2 pr-0">
-                                                <button
-                                                    className="flex items-center"
-                                                    onClick={(e) => handleEventFilter(e, { event })}
-                                                >
-                                                    <input
-                                                        className="radio mr-2"
-                                                        type="checkbox"
-                                                        readOnly={true}
-                                                        checked={isCheckedSelected(event.id)}
-                                                    />
-                                                    <p> {event.event}</p>
-                                                </button>
-                                            </td>
-                                            <td className="row w-20"> </td>
-                                            <td className="row">{event.time}</td>
-                                        </tr>
-                                    )
-                                )}
-                            </tbody>
-                        </table>
+                    <div className="mt-2 flex flex-col justify-between overflow-x-auto">
+                        <div className="mt-8 flex flex-col">
+                            <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                    <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                        <table className="table">
+                                            <thead className="thead">
+                                                <tr>
+                                                    <th
+                                                        scope="col"
+                                                        className="col pl-0 pr-7 text-center"
+                                                    >
+                                                        Event
+                                                    </th>
+                                                    <th scope="col" className="w-20"></th>
+                                                    <th scope="col" className="col text-right">
+                                                        Time
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="tbody">
+                                                {athletesEvents?.getEventByAthlete?.map(
+                                                    (event: Event, idx: number) => (
+                                                        <tr key={idx} className="tr">
+                                                            <td className="row w-4 pl-2 pr-0">
+                                                                <button
+                                                                    className="flex items-center"
+                                                                    onClick={(e) =>
+                                                                        handleEventFilter(e, {
+                                                                            event,
+                                                                        })
+                                                                    }
+                                                                >
+                                                                    <input
+                                                                        className="radio mr-2"
+                                                                        type="checkbox"
+                                                                        readOnly={true}
+                                                                        checked={isCheckedSelected(
+                                                                            event.id
+                                                                        )}
+                                                                    />
+                                                                    <p> {event.event}</p>
+                                                                </button>
+                                                            </td>
+                                                            <td className="row w-20"> </td>
+                                                            <td className="row">{event.time}</td>
+                                                        </tr>
+                                                    )
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -141,47 +159,51 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                 <p>{eventChosenToFilterBy}</p>
                             </div>
                         )}
-                        <div className="mt-2 flex flex-col justify-between overflow-x-auto">
-                            <div className="overflow-hidden ">
-                                <table className="table">
-                                    <thead className="thead">
-                                        <tr>
-                                            <th scope="col" className="col">
-                                                #
-                                            </th>
-                                            <th scope="col" className="col">
-                                                Date
-                                            </th>
-                                            <th scope="col" className="col text-right">
-                                                Time
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="tbody">
-                                        {eventsByEvent?.map((event: any, idx: number) => (
-                                            <tr key={idx} className="tr">
-                                                <td className="row">{idx}</td>
-                                                <td className="row">{event.date}</td>
-                                                <td className="row">{event.time}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                        <div className="mt-8 flex flex-col">
+                            <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                    <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                        <table className="table">
+                                            <thead className="thead">
+                                                <tr>
+                                                    <th scope="col" className="col">
+                                                        #
+                                                    </th>
+                                                    <th scope="col" className="col">
+                                                        Date
+                                                    </th>
+                                                    <th scope="col" className="col text-right">
+                                                        Time
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="tbody">
+                                                {eventsByEvent?.map((event: any, idx: number) => (
+                                                    <tr key={idx} className="tr">
+                                                        <td className="row">{idx}</td>
+                                                        <td className="row">{event.date}</td>
+                                                        <td className="row">{event.time}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
 
-                                {averageEventTime && (
-                                    <table className="table ">
-                                        <thead className="thead">
-                                            <tr className="bg-gray-200">
-                                                <th scope="col" className="col">
-                                                    avg
-                                                </th>
-                                                <th scope="col" className="col text-right">
-                                                    {averageEventTime}
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                )}
+                                        {averageEventTime && (
+                                            <table className="table ">
+                                                <thead className="thead">
+                                                    <tr className="bg-gray-200">
+                                                        <th scope="col" className="col">
+                                                            avg
+                                                        </th>
+                                                        <th scope="col" className="col text-right">
+                                                            {averageEventTime}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </>
