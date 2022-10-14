@@ -75,13 +75,13 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
                     onClickRight={async () => handleSkipForward()}
                     showCount={true}
                 />
-                <div className="overflow-y-auto">
+                <div className="w-full overflow-x-auto  overflow-y-auto">
                     <table className="table">
                         <thead className="thead">
                             <tr>
-                                <th scope="col" className="col">
+                                {/* <th scope="col" className="col">
                                     #
-                                </th>
+                                </th> */}
                                 <th scope="col" className="col">
                                     Name
                                 </th>
@@ -99,7 +99,7 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
                         <tbody className="tbody">
                             {teamEvents?.getEventByTeam?.map((event: Event, idx: number) => (
                                 <tr key={idx} className="tr">
-                                    <td className="row">{idx + 1}</td>
+                                    {/* <td className="row">{idx + 1}</td> */}
                                     <td className="row">{event.fullName}</td>
                                     <td className="row">{event.grade}</td>
                                     <td className="row">{event.event}</td>

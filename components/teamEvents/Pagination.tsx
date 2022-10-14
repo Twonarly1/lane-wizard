@@ -12,7 +12,7 @@ type Props = {
 
 const Pagination = ({ max, skip, lastPage, onClickLeft, onClickRight, showCount }: Props) => {
     return (
-        <div className="mx-auto mb-2 mt-2 flex w-full items-center justify-between">
+        <div className="mx-auto mb-2 mt-2 flex w-full justify-center space-x-6 sm:justify-between sm:space-x-0">
             {showCount && (
                 <div className="-mb-2">
                     {skip} / {max} records

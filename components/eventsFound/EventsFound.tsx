@@ -20,7 +20,6 @@ const EventsFound = ({ selectedEvent }: Props) => {
     const [checked, setChecked] = useState<any>([])
     let [isOpen, setIsOpen] = useState<boolean>(false)
     const [flash, setFlash] = useState<boolean>(false)
-    // const [isOpen, setIsOpen = useState<boolean>(false)]
 
     useEffect(() => {
         if (!selectedEvent) return
@@ -36,15 +35,11 @@ const EventsFound = ({ selectedEvent }: Props) => {
         checkIfSimulationIsAvailable()
     }, [selectedEvent])
 
-    const numbers = getEvents?.getEventsByEvent.map((o: any) => {
-        return o
-    })
-
-    numbers?.sort(compareFunction)
-
-    function compareFunction(a: any, b: any) {
-        return a.milliseconds - b.milliseconds
-    }
+    const numbers = getEvents?.getEventsByEvent
+        .map((o: any) => {
+            return o
+        })
+        .sort((a: any, b: any) => a.milliseconds - b.milliseconds)
 
     const checkIfSimulationIsAvailable = () => {
         if (selectedEvent.includes("relay")) {
@@ -54,7 +49,7 @@ const EventsFound = ({ selectedEvent }: Props) => {
         }
     }
     const checkIfEventIsMedleyRelay = () => {
-        if (selectedEvent.includes("Medley relay")) {
+        if (selectedEvent.includes("Med.")) {
             return setSimulateMedley(true)
         } else {
             return setSimulateMedley(false)
