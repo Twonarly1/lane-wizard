@@ -85,13 +85,13 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
                                     <table className="table min-w-full">
                                         <thead className="thead">
                                             <tr>
-                                                {/* <th scope="col" className="col">
-                                    #
-                                </th> */}
+                                                <th scope="col" className="col">
+                                                    #
+                                                </th>
                                                 <th scope="col" className="col">
                                                     Name
                                                 </th>
-                                                <th scope="col" className="sm:col hidden">
+                                                <th scope="col" className="col">
                                                     Grade
                                                 </th>
                                                 <th scope="col" className="col">
@@ -106,11 +106,9 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
                                             {teamEvents?.getEventByTeam?.map(
                                                 (event: Event, idx: number) => (
                                                     <tr key={idx} className="tr ">
-                                                        {/* <td className="row">{idx + 1}</td> */}
+                                                        <td className="row">{idx + 1}</td>
                                                         <td className="row">{event.fullName}</td>
-                                                        <td className="sm:row hidden">
-                                                            {event.grade}
-                                                        </td>
+                                                        <td className="row">{event.grade}</td>
                                                         <td className="row">{event.event}</td>
                                                         <td className="row text-right">
                                                             {event.time}
