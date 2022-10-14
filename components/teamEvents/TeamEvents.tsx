@@ -75,39 +75,45 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
                     onClickRight={async () => handleSkipForward()}
                     showCount={true}
                 />
-                <div className="w-full overflow-x-auto  overflow-y-auto">
-                    <table className="table">
-                        <thead className="thead">
-                            <tr>
-                                {/* <th scope="col" className="col">
+                <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                        <div className="overflow-hidden ">
+                            <table className="table">
+                                <thead className="thead">
+                                    <tr>
+                                        {/* <th scope="col" className="col">
                                     #
                                 </th> */}
-                                <th scope="col" className="col">
-                                    Name
-                                </th>
-                                <th scope="col" className="col">
-                                    Grade
-                                </th>
-                                <th scope="col" className="col">
-                                    Events
-                                </th>
-                                <th scope="col" className="col text-right">
-                                    Time
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="tbody">
-                            {teamEvents?.getEventByTeam?.map((event: Event, idx: number) => (
-                                <tr key={idx} className="tr">
-                                    {/* <td className="row">{idx + 1}</td> */}
-                                    <td className="row">{event.fullName}</td>
-                                    <td className="row">{event.grade}</td>
-                                    <td className="row">{event.event}</td>
-                                    <td className="row text-right">{event.time}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                        <th scope="col" className="col">
+                                            Name
+                                        </th>
+                                        <th scope="col" className="col">
+                                            Grade
+                                        </th>
+                                        <th scope="col" className="col">
+                                            Events
+                                        </th>
+                                        <th scope="col" className="col text-right">
+                                            Time
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="tbody">
+                                    {teamEvents?.getEventByTeam?.map(
+                                        (event: Event, idx: number) => (
+                                            <tr key={idx} className="tr ">
+                                                {/* <td className="row">{idx + 1}</td> */}
+                                                <td className="row">{event.fullName}</td>
+                                                <td className="row">{event.grade}</td>
+                                                <td className="row">{event.event}</td>
+                                                <td className="row text-right">{event.time}</td>
+                                            </tr>
+                                        )
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div className="flex w-full justify-end">
                     <div>
