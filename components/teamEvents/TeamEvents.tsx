@@ -66,64 +66,74 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
 
     return (
         selectedTeam && (
-            <div className="my-10">
-                <Pagination
-                    max={max}
-                    skip={skip}
-                    lastPage={lastPage}
-                    onClickLeft={async () => handleSkipBackward()}
-                    onClickRight={async () => handleSkipForward()}
-                    showCount={true}
-                />
-                <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                        <div className="overflow-hidden ">
-                            <table className="table">
-                                <thead className="thead">
-                                    <tr>
-                                        {/* <th scope="col" className="col">
+            <div className="mt-10 px-4 sm:px-6 lg:px-8">
+                <div className="sm:flex sm:items-center">
+                    {" "}
+                    <Pagination
+                        max={max}
+                        skip={skip}
+                        lastPage={lastPage}
+                        onClickLeft={async () => handleSkipBackward()}
+                        onClickRight={async () => handleSkipForward()}
+                        showCount={true}
+                    />
+                    <div className="mt-8 flex flex-col">
+                        <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                    {" "}
+                                    <table className="table min-w-full">
+                                        <thead className="thead">
+                                            <tr>
+                                                {/* <th scope="col" className="col">
                                     #
                                 </th> */}
-                                        <th scope="col" className="col">
-                                            Name
-                                        </th>
-                                        <th scope="col" className="col">
-                                            Grade
-                                        </th>
-                                        <th scope="col" className="col">
-                                            Events
-                                        </th>
-                                        <th scope="col" className="col text-right">
-                                            Time
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="tbody">
-                                    {teamEvents?.getEventByTeam?.map(
-                                        (event: Event, idx: number) => (
-                                            <tr key={idx} className="tr ">
-                                                {/* <td className="row">{idx + 1}</td> */}
-                                                <td className="row">{event.fullName}</td>
-                                                <td className="row">{event.grade}</td>
-                                                <td className="row">{event.event}</td>
-                                                <td className="row text-right">{event.time}</td>
+                                                <th scope="col" className="col">
+                                                    Name
+                                                </th>
+                                                <th scope="col" className="sm:col hidden">
+                                                    Grade
+                                                </th>
+                                                <th scope="col" className="col">
+                                                    Events
+                                                </th>
+                                                <th scope="col" className="col text-right">
+                                                    Time
+                                                </th>
                                             </tr>
-                                        )
-                                    )}
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody className="tbody">
+                                            {teamEvents?.getEventByTeam?.map(
+                                                (event: Event, idx: number) => (
+                                                    <tr key={idx} className="tr ">
+                                                        {/* <td className="row">{idx + 1}</td> */}
+                                                        <td className="row">{event.fullName}</td>
+                                                        <td className="sm:row hidden">
+                                                            {event.grade}
+                                                        </td>
+                                                        <td className="row">{event.event}</td>
+                                                        <td className="row text-right">
+                                                            {event.time}
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="flex w-full justify-end">
-                    <div>
-                        <Pagination
-                            max={max}
-                            skip={skip}
-                            lastPage={lastPage}
-                            onClickLeft={async () => handleSkipBackward()}
-                            onClickRight={async () => handleSkipForward()}
-                        />
+                    <div className="flex w-full justify-end">
+                        <div>
+                            <Pagination
+                                max={max}
+                                skip={skip}
+                                lastPage={lastPage}
+                                onClickLeft={async () => handleSkipBackward()}
+                                onClickRight={async () => handleSkipForward()}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
