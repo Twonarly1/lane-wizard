@@ -47,7 +47,13 @@ const DialogDemo = ({}: Props) => {
         const sum: number = numbers?.reduce((a: any, b: any) => Number(a) + Number(b), 0)
         const min: number = Math.floor(sum / 1000 / 60)
         const sec: any = ((sum / 1000) % 60).toFixed(2)
-        const swimTime = "0" + min + ":" + sec
+        console.log(sec.length)
+        let swimTime = ""
+        if (sec.length === 4) {
+            swimTime = "0" + min + ":0" + sec
+        } else {
+            swimTime = "0" + min + ":" + sec
+        }
         setSimulatedRelayTime(swimTime)
         setFlash(true)
         setTimeout(() => {
@@ -115,8 +121,10 @@ const DialogDemo = ({}: Props) => {
                 }`}
             >
                 {/* Med. BA */}
-                <div className=" w-fit flex-col text-left">
-                    <p className="mr-2 uppercase tracking-tighter">Back</p>
+                <div className=" w-full flex-col text-left md:w-fit">
+                    <p className="mr-2 text-center uppercase tracking-tighter md:ml-0">
+                        Backstroke
+                    </p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
@@ -159,8 +167,10 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. BR */}
-                <div className=" w-fit flex-col text-left">
-                    <p className="mr-2 uppercase tracking-tighter">Breast</p>
+                <div className=" w-full flex-col text-left md:w-fit">
+                    <p className="mr-2 text-center uppercase tracking-tighter md:ml-0">
+                        Backstroke
+                    </p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
@@ -203,8 +213,8 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. FL */}
-                <div className=" w-fit flex-col text-left">
-                    <p className="mr-2 uppercase tracking-tighter">Fly</p>
+                <div className=" w-full flex-col text-left md:w-fit">
+                    <p className="mr-2 text-center uppercase tracking-tighter md:ml-0">Fly</p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
@@ -247,8 +257,8 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. FR */}
-                <div className=" w-fit flex-col text-left">
-                    <p className="mr-2 uppercase tracking-tighter">FREE</p>
+                <div className=" w-full flex-col text-left md:w-fit">
+                    <p className="mr-2 text-center uppercase tracking-tighter md:ml-0">Freestlye</p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
