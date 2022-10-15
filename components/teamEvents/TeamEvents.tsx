@@ -103,14 +103,12 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
                                         <tbody className="tbody">
                                             {teamEvents?.getEventByTeam?.map(
                                                 (event: Event, idx: number) => (
-                                                    <tr key={idx} className="tr ">
-                                                        <td className="row">{idx + 1}</td>
+                                                    <tr key={idx} className="tr">
+                                                        <td className="row pl-4">{idx + 1}</td>
                                                         <td className="row">{event.fullName}</td>
                                                         <td className="row">{event.grade}</td>
                                                         <td className="row">{event.event}</td>
-                                                        <td className="row text-right">
-                                                            {event.time}
-                                                        </td>
+                                                        <td className="row ">{event.time}</td>
                                                     </tr>
                                                 )
                                             )}

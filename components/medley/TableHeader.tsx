@@ -12,7 +12,7 @@ const TableHeader = (props: Props) => {
                 <th scope="col" className="col text-xs">
                     Grade
                 </th>
-                <th scope="col" className="col text-xss text-right">
+                <th scope="col" className="col text-right text-xs">
                     Time
                 </th>
             </tr>

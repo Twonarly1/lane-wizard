@@ -39,3 +39,15 @@ export const DELETE_EVENT = gql`
         }
     }
 `
+
+export const ADD_FEEDBACK = gql`
+    mutation MyMutation($admin: Boolean!, $email: String!, $feedback: String!, $name: String!) {
+        insertFeedback(admin: $admin, email: $email, feedback: $feedback, name: $name) {
+            admin
+            email
+            feedback
+            id
+            name
+        }
+    }
+`

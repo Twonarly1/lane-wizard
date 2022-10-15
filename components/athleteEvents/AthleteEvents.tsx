@@ -160,7 +160,7 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                     <tbody className="tbody">
                                         {eventsByEvent?.map((event: any, idx: number) => (
                                             <tr key={idx} className="tr">
-                                                <td className="row">{idx}</td>
+                                                <td className="row pl-4">{idx}</td>
                                                 <td className="row">{event.date}</td>
                                                 <td className="row">{event.time}</td>
                                             </tr>

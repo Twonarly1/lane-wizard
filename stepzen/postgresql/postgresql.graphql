@@ -27,6 +27,14 @@ type Admin {
     team: String
 }
 
+type Feedback {
+    id: ID!
+    email: String
+    name: String
+    feedback: String
+    admin: Boolean
+}
+
 """
 These are some examples of queries generated from the schema. Feel free to modify them or add your own.
 """
@@ -149,6 +157,15 @@ type Mutation {
             schema: "public"
             table: "Athlete"
             dml: DELETE
+            configuration: "postgresql_config"
+        )
+
+    insertFeedback(email: String!, name: String!, feedback: String!, admin: Boolean!): Feedback
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "feedback"
+            dml: INSERT
             configuration: "postgresql_config"
         )
 

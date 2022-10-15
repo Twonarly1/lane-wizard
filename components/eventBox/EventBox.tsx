@@ -134,7 +134,7 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
                     </p>
                 </div>
 
-                <div className=" flex justify-center rounded bg-white hover:text-blue-500">
+                <div className=" flex justify-center rounded bg-white shadow ring-1 ring-black ring-opacity-5 hover:text-blue-500">
                     <button className="w-full rounded py-2" type="submit">
                         <p>Create Event</p>
                     </button>

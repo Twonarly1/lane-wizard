@@ -4,7 +4,7 @@ import { ApolloProvider } from "@apollo/client"
 import { SessionProvider } from "next-auth/react"
 import client from "apollo-client"
 import { Toaster } from "react-hot-toast"
-import { Header } from "components"
+import { Header, Slideover } from "components"
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <ApolloProvider client={client}>
                 <Toaster />
                 <div className="min-h-screen bg-gray-200 px-4">
-                    <Header />
+                    <Slideover />
                     <Component {...pageProps} />
                 </div>
             </ApolloProvider>

@@ -90,9 +90,9 @@ const DialogDemo = ({}: Props) => {
     }, [teamSelected])
 
     return (
-        <div className="w-full items-center justify-center px-4  text-center ">
+        <div className="w-full items-center  justify-center text-center ">
             <div className="mx-auto flex w-fit">
-                <div className=" ml-4  w-full items-center space-x-2 md:ml-0 md:justify-center">
+                <div className="  w-full items-center space-x-2 md:justify-center">
                     <TeamDropdown
                         selectedTeam={teamSelected}
                         setSelectedTeam={setTeamSelected}
@@ -116,15 +116,13 @@ const DialogDemo = ({}: Props) => {
                 </div>
             </div>
             <div
-                className={` mx-auto mt-10 flex flex-col justify-center gap-y-6 pb-20 md:grid md:max-w-2xl md:grid-cols-2 md:gap-6 ${
+                className={`mx-auto mt-10 flex flex-col justify-center gap-y-6 pb-20 md:grid md:max-w-2xl md:grid-cols-2 ${
                     teamSelected ? "visible" : "invisible"
                 }`}
             >
                 {/* Med. BA */}
-                <div className=" w-full flex-col text-left md:w-fit">
-                    <p className="mr-2 text-center uppercase tracking-tighter md:ml-0">
-                        Backstroke
-                    </p>
+                <div className=" mx-auto w-fit flex-col text-left md:w-fit">
+                    <p className=" uppercase tracking-tighter">Backstroke</p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
@@ -167,10 +165,8 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. BR */}
-                <div className=" w-full flex-col text-left md:w-fit">
-                    <p className="mr-2 text-center uppercase tracking-tighter md:ml-0">
-                        Backstroke
-                    </p>
+                <div className=" mx-auto w-fit flex-col text-left md:w-fit">
+                    <p className=" uppercase tracking-tighter">Breaststroke</p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
@@ -213,8 +209,8 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. FL */}
-                <div className=" w-full flex-col text-left md:w-fit">
-                    <p className="mr-2 text-center uppercase tracking-tighter md:ml-0">Fly</p>
+                <div className=" mx-auto w-fit flex-col text-left md:w-fit">
+                    <p className=" uppercase tracking-tighter">Fly</p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
@@ -257,8 +253,8 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. FR */}
-                <div className=" w-full flex-col text-left md:w-fit">
-                    <p className="mr-2 text-center uppercase tracking-tighter md:ml-0">Freestlye</p>
+                <div className=" mx-auto w-fit flex-col text-left md:w-fit">
+                    <p className=" uppercase tracking-tighter">Freestyle</p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
