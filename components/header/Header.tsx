@@ -32,7 +32,7 @@ const Header = () => {
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
     return (
-        <header className="mx-auto flex w-full items-center justify-center bg-gray-200 pt-4 pb-12">
+        <header className=" mx-auto flex w-full items-center justify-center bg-gray-200 pt-4 pb-12">
             <Link href="/" className="">
                 <a className="links rounded-l bg-gray-100">Team</a>
             </Link>

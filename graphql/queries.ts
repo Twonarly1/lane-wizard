@@ -117,3 +117,17 @@ export const GET_ADMIN_BY_EMAIL = gql`
         }
     }
 `
+export const GET_EVENTS_BY_TEAM_AND_EVENT = gql`
+    query MyQuery($event: String!, $team: String!) {
+        getEventsByTeamAndEvent(event: $event, team: $team) {
+            athlete
+            event
+            fullName
+            grade
+            id
+            milliseconds
+            team
+            time
+        }
+    }
+`

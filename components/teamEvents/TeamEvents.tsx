@@ -66,9 +66,8 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
 
     return (
         selectedTeam && (
-            <div className="mt-10 px-4 sm:px-6 lg:px-8">
-                <div className="sm:flex sm:items-center">
-                    {" "}
+            <div className="mt-10">
+                <div className="">
                     <Pagination
                         max={max}
                         skip={skip}
@@ -77,7 +76,7 @@ const TeamEvents = ({ selectedTeam, max }: Props) => {
                         onClickRight={async () => handleSkipForward()}
                         showCount={true}
                     />
-                    <div className="mt-8 flex flex-col">
+                    <div className="mt-2 flex flex-col">
                         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
