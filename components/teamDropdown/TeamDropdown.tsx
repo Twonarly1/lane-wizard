@@ -28,7 +28,7 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
     return (
         <Combobox
             as="div"
-            className="cursor mx-auto items-center"
+            className="cursor mx-auto mt-10 flex items-center space-x-2 "
             value={selectedTeam}
             onChange={setSelectedTeam}
         >

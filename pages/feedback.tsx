@@ -123,7 +123,7 @@ export default function Feedback() {
     }, [session])
 
     return (
-        <div className="mx-auto max-w-lg ">
+        <div className="mx-auto mt-8 max-w-lg ">
             {session ? (
                 <div className="flex flex-shrink-0 items-center space-x-3">
                     <img className="inline-block h-10 w-10 rounded-full" src={image} alt="" />

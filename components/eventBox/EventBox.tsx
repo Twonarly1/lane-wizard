@@ -25,9 +25,10 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
     const [addEvent] = useMutation(ADD_EVENT) // add event mutation
     const [getAthlete, { data: athlete, refetch }] = useLazyQuery(GET_ATHLETE)
     const [active, setActive] = useState<boolean>(false)
-
-    // console.log(eventFound)
-    // console.log(athleteFound)
+    const current = new Date()
+    const date = `${
+        current.getFullYear() + "-" + (current.getMonth() + 1 + "-" + current.getDate())
+    }`
 
     useEffect(() => {
         if (!athleteFound) return
@@ -80,6 +81,7 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
                     time: formattedSwimTime || formattedDiveScore,
                     milliseconds: time * 10,
                     fullName: athlete.getAthlete.fullName,
+                    date: date,
                 },
             })
             console.log("New event added:", newEvent)
@@ -107,23 +109,25 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
     return (
         <div>
             <form onSubmit={onSubmit} className="form">
-                <label className={`mt-2 ${active ? "visible" : "invisible"}`}>Time:</label>
-                <input
-                    type="number"
-                    placeholder="enter time"
-                    className="comboboxInput"
-                    autoComplete="off"
-                    {...register("time", {
-                        required: true,
-                        minLength: 2,
-                        maxLength: 6,
-                        valueAsNumber: true,
-                    })}
-                    onChange={(e) => {
-                        setTime(e.target.value)
-                        setActive(true)
-                    }}
-                />
+                <div className="mt-4 flex space-x-2">
+                    <label className={`mt-2 ml-1 ${active ? "visible" : "invisible"}`}>Time:</label>
+                    <input
+                        type="number"
+                        placeholder="enter time"
+                        className="comboboxInput"
+                        autoComplete="off"
+                        {...register("time", {
+                            required: true,
+                            minLength: 2,
+                            maxLength: 6,
+                            valueAsNumber: true,
+                        })}
+                        onChange={(e) => {
+                            setTime(e.target.value)
+                            setActive(true)
+                        }}
+                    />
+                </div>
 
                 {/* display formatted swimTime or diveScore */}
                 <div className="my-3 text-right text-[40px]">
@@ -134,11 +138,13 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
                     </p>
                 </div>
 
-                <div className=" flex justify-center rounded bg-white shadow ring-1 ring-black ring-opacity-5 hover:text-blue-500">
-                    <button className="w-full rounded py-2" type="submit">
-                        <p>Create Event</p>
-                    </button>
-                </div>
+                {athleteFound && (
+                    <div className=" mb-1 flex justify-center rounded bg-white shadow ring-1 ring-black ring-opacity-5 hover:text-blue-500">
+                        <button className="w-full rounded py-2" type="submit">
+                            <p>Create Event</p>
+                        </button>
+                    </div>
+                )}
             </form>
         </div>
     )

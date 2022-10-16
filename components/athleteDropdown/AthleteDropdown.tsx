@@ -4,7 +4,6 @@ import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
 import { GET_ADMIN_BY_EMAIL } from "graphql/queries"
 import { classNames } from "lib/utils"
 import { useSession } from "next-auth/react"
-import Athlete from "pages/athlete"
 import React, { useEffect, useState } from "react"
 
 type Props = {
@@ -54,19 +53,12 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
     return (
         <Combobox
             as="div"
-            className="cursor mx-auto mb-2 items-center"
+            className="cursor mx-auto mt-10 mb-2 flex items-center space-x-2"
             value={selectedAthlete}
             onChange={setSelectedAthlete}
         >
-            <Combobox.Label className={`${active ? "visible" : "invisible"}`}>
+            <Combobox.Label className={`flex items-center ${active ? "visible" : "invisible"}`}>
                 Athlete:
-                <input
-                    type="checkbox"
-                    className={` radio ml-1 -mt-1 border-none ${
-                        adminApproved && active ? "visible" : "invisible"
-                    } `}
-                    onChange={handleInputClick}
-                />
             </Combobox.Label>
 
             <div className="relative w-full">
@@ -123,6 +115,11 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
                     </Combobox.Options>
                 )}
             </div>
+            <input
+                type="checkbox"
+                className={`radio h-5 w-5 ${adminApproved && active ? "visible" : "invisible"} `}
+                onChange={handleInputClick}
+            />
         </Combobox>
     )
 }

@@ -2,7 +2,7 @@ import { useLazyQuery } from "@apollo/client"
 import { TeamDropdown } from "components"
 import { CommonColumns, TableHeader } from "components/medley"
 import { GET_EVENTS_BY_TEAM_AND_EVENT } from "graphql/queries"
-import React, { LegacyRef, useRef, useState } from "react"
+import React, { useState } from "react"
 import { useEffect } from "react"
 
 type Props = {
@@ -41,13 +41,28 @@ const DialogDemo = ({}: Props) => {
     const [simulatedRelayTime, setSimulatedRelayTime] = useState<string | null>(null)
     const [flash, setFlash] = useState<boolean>(false)
 
+    useEffect(() => {
+        if (!teamSelected) return
+        const numbers = teamBA?.getEventsByTeamAndEvent
+            .map((o: any) => {
+                return o
+            })
+            .sort((a: any, b: any) => a.milliseconds - b.milliseconds)
+    }, [teamSelected])
+
+    // const sort = (events: any) => {
+    //     const numbers = events?.getEventsByTeamAndEvent
+    //         .map((o: any) => {
+    //             return o
+    //         })
+    //         .sort((a: any, b: any) => a.milliseconds - b.milliseconds)
+    // }
+
     const calculateMedleySimulationTime = () => {
         const numbers = [BA[1], BR[1], FL[1], FR[1]]
-        console.log(numbers)
         const sum: number = numbers?.reduce((a: any, b: any) => Number(a) + Number(b), 0)
         const min: number = Math.floor(sum / 1000 / 60)
         const sec: any = ((sum / 1000) % 60).toFixed(2)
-        console.log(sec.length)
         let swimTime = ""
         if (sec.length === 4) {
             swimTime = "0" + min + ":0" + sec
@@ -98,7 +113,7 @@ const DialogDemo = ({}: Props) => {
                         setSelectedTeam={setTeamSelected}
                         getTeamList={team}
                     />
-                    <div className="flex space-x-2">
+                    <div className="mx-auto flex justify-center space-x-2 pl-11">
                         <button
                             className=" mt-8 bg-white px-4 text-lg"
                             onClick={calculateMedleySimulationTime}
@@ -129,8 +144,14 @@ const DialogDemo = ({}: Props) => {
                                 <table className="px- table">
                                     <TableHeader />
                                     <tbody className="tbody">
-                                        {teamBA?.getEventsByTeamAndEvent?.map(
-                                            (event: Event, idx: number) => (
+                                        {teamBA?.getEventsByTeamAndEvent
+                                            ?.map((o: any) => {
+                                                return o
+                                            })
+                                            .sort(
+                                                (a: any, b: any) => a.milliseconds - b.milliseconds
+                                            )
+                                            .map((event: Event, idx: number) => (
                                                 <tr key={idx} className="tr">
                                                     <td>
                                                         <button
@@ -156,8 +177,7 @@ const DialogDemo = ({}: Props) => {
                                                         time={event.time}
                                                     />
                                                 </tr>
-                                            )
-                                        )}
+                                            ))}
                                     </tbody>
                                 </table>
                             </div>
@@ -173,8 +193,14 @@ const DialogDemo = ({}: Props) => {
                                 <table className="table ">
                                     <TableHeader />
                                     <tbody className="tbody">
-                                        {teamBR?.getEventsByTeamAndEvent?.map(
-                                            (event: Event, idx: number) => (
+                                        {teamBR?.getEventsByTeamAndEvent
+                                            ?.map((o: any) => {
+                                                return o
+                                            })
+                                            .sort(
+                                                (a: any, b: any) => a.milliseconds - b.milliseconds
+                                            )
+                                            .map((event: Event, idx: number) => (
                                                 <tr key={idx} className="tr ">
                                                     <td>
                                                         <button
@@ -200,8 +226,7 @@ const DialogDemo = ({}: Props) => {
                                                         time={event.time}
                                                     />
                                                 </tr>
-                                            )
-                                        )}
+                                            ))}
                                     </tbody>
                                 </table>
                             </div>
@@ -217,8 +242,14 @@ const DialogDemo = ({}: Props) => {
                                 <table className="table ">
                                     <TableHeader />
                                     <tbody className="tbody">
-                                        {teamFL?.getEventsByTeamAndEvent?.map(
-                                            (event: Event, idx: number) => (
+                                        {teamFL?.getEventsByTeamAndEvent
+                                            ?.map((o: any) => {
+                                                return o
+                                            })
+                                            .sort(
+                                                (a: any, b: any) => a.milliseconds - b.milliseconds
+                                            )
+                                            .map((event: Event, idx: number) => (
                                                 <tr key={idx} className="tr ">
                                                     <td>
                                                         <button
@@ -244,8 +275,7 @@ const DialogDemo = ({}: Props) => {
                                                         time={event.time}
                                                     />
                                                 </tr>
-                                            )
-                                        )}
+                                            ))}
                                     </tbody>
                                 </table>
                             </div>
@@ -261,8 +291,14 @@ const DialogDemo = ({}: Props) => {
                                 <table className="table ">
                                     <TableHeader />
                                     <tbody className="tbody">
-                                        {teamFR?.getEventsByTeamAndEvent?.map(
-                                            (event: Event, idx: number) => (
+                                        {teamFR?.getEventsByTeamAndEvent
+                                            ?.map((o: any) => {
+                                                return o
+                                            })
+                                            .sort(
+                                                (a: any, b: any) => a.milliseconds - b.milliseconds
+                                            )
+                                            .map((event: Event, idx: number) => (
                                                 <tr key={idx} className="tr">
                                                     <td>
                                                         <button
@@ -288,8 +324,7 @@ const DialogDemo = ({}: Props) => {
                                                         time={event.time}
                                                     />
                                                 </tr>
-                                            )
-                                        )}
+                                            ))}
                                     </tbody>
                                 </table>
                             </div>

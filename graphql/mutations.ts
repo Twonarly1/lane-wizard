@@ -8,6 +8,7 @@ export const ADD_EVENT = gql`
         $milliseconds: Int
         $fullName: String!
         $grade: Int!
+        $date: String!
     ) {
         insertEvent(
             athlete: $athlete
@@ -16,6 +17,7 @@ export const ADD_EVENT = gql`
             milliseconds: $milliseconds
             fullName: $fullName
             grade: $grade
+            date: $date
         ) {
             athlete
             time
@@ -23,6 +25,7 @@ export const ADD_EVENT = gql`
             milliseconds
             fullName
             grade
+            date
         }
     }
 `
@@ -36,6 +39,7 @@ export const DELETE_EVENT = gql`
             milliseconds
             fullName
             grade
+            date
         }
     }
 `

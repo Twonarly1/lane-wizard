@@ -37,7 +37,7 @@ const Home = () => {
 
     return (
         <>
-            <div className="mx-auto w-fit text-left">
+            <div className="mx-auto mt-10 w-fit text-left">
                 <div className="flex space-x-2">
                     <b className="w-16">Admin:</b>
                     {session?.user.name}
@@ -47,13 +47,20 @@ const Home = () => {
                     {getAdminTeam?.getAdminByEmail[0].team}
                 </div>
             </div>
-            <div className="mx-auto mt-10 flex min-h-screen w-full max-w-7xl flex-col items-center">
-                <AthleteDropdown
-                    selectedAthlete={selectedAthlete}
-                    setSelectedAthlete={setSelectedAthlete}
-                    getAthleteList={getAthleteList?.getAthleteByTeam}
-                />
-                <EventDropdown selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />
+            <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col items-center">
+                <div className="ml-4">
+                    <AthleteDropdown
+                        selectedAthlete={selectedAthlete}
+                        setSelectedAthlete={setSelectedAthlete}
+                        getAthleteList={getAthleteList?.getAthleteByTeam}
+                    />
+                </div>
+                <div className="-mt-8 mr-[1px]">
+                    <EventDropdown
+                        selectedEvent={selectedEvent}
+                        setSelectedEvent={setSelectedEvent}
+                    />
+                </div>
                 <EventBox athleteFound={selectedAthlete} eventFound={selectedEvent} />
                 <Admin selectedAthlete={selectedAthlete} />
             </div>

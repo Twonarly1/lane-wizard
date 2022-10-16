@@ -167,17 +167,17 @@ const EventsFound = ({ selectedEvent }: Props) => {
                             <thead className="thead">
                                 <tr>
                                     <th scope="col" className="col pl-2"></th>
-                                    <th scope="col" className="col">
-                                        Rank
+                                    <th scope="col" className="col text-[10px]">
+                                        #
                                     </th>
-                                    <th scope="col" className="col ">
+                                    <th scope="col" className="col pl-0">
                                         Name
                                     </th>
                                     <th scope="col" className="col">
-                                        Grade
+                                        Team
                                     </th>
                                     <th scope="col" className="col">
-                                        Team
+                                        Date
                                     </th>
                                     <th scope="col" className="col text-right">
                                         Time
@@ -199,10 +199,14 @@ const EventsFound = ({ selectedEvent }: Props) => {
                                                 onChange={(e: any) => handleCheck(e, { event })}
                                             />
                                         </td>
-                                        <td className="row">{idx + 1}</td>
+                                        <td className="row pl-4 text-[10px]">{idx + 1}</td>
                                         <td className="row">{event.fullName}</td>
-                                        <td className="row">{event.grade}</td>
-                                        <td className="row">{event.team}</td>
+                                        <td className="row pl-4 text-[10px]">
+                                            {event.team},{event.grade}
+                                        </td>
+                                        <td className="row pl-4 text-[10px]">
+                                            {event.date.slice(5, 10) + "/" + event.date.slice(2, 4)}
+                                        </td>
                                         <td className="row">{event.time}</td>
                                     </tr>
                                 ))}

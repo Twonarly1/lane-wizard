@@ -10,6 +10,7 @@ export const GET_EVENT_USING_ATHLETE = gql`
             milliseconds
             fullName
             grade
+            date
         }
     }
 `
@@ -62,6 +63,7 @@ export const GET_EVENTS_BY_EVENT = gql`
             fullName
             team
             grade
+            date
         }
     }
 `
@@ -89,6 +91,7 @@ export const GET_EVENT_BY_ATHLETE = gql`
             time
             team
             grade
+            date
         }
     }
 `
@@ -104,6 +107,7 @@ export const GET_EVENTS_BY_TEAM = gql`
             team
             time
             grade
+            date
         }
     }
 `
@@ -128,6 +132,7 @@ export const GET_EVENTS_BY_TEAM_AND_EVENT = gql`
             milliseconds
             team
             time
+            date
         }
     }
 `
