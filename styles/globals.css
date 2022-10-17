@@ -31,7 +31,7 @@
         @apply py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900;
     }
     .row {
-        @apply whitespace-nowrap px-0 pr-3 text-xs font-medium text-gray-500 last-of-type:text-right  md:text-sm;
+        @apply whitespace-nowrap px-0 pr-3 text-xs font-medium text-gray-500 last-of-type:text-right sm:text-sm  md:text-lg;
     }
     .radio {
         @apply h-3 w-3 border-gray-300 bg-white  checked:text-green-500 focus:outline-none focus:ring-transparent;

@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client"
 import { Switch } from "@headlessui/react"
-import { QuestionMarkCircleIcon } from "@heroicons/react/20/solid"
+import { CalculatorIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import { GET_EVENTS_BY_EVENT } from "graphql/queries"
 import { classNames } from "lib/utils"
 import React, { useEffect, useState } from "react"
@@ -138,11 +138,12 @@ const EventsFound = ({ selectedEvent }: Props) => {
                         </div>
                         <QuestionMarkCircleIcon
                             onClick={() => setIsOpen(true)}
-                            className="h-3 w-3 cursor-pointer rounded-full bg-gray-400 text-gray-200 shadow"
+                            className="h-5 w-5 cursor-pointer rounded-full  text-gray-500"
                         />
                     </div>
-                    <div className="mx-auto  flex items-center justify-center space-x-2">
-                        <p className="ml-12">{!enabled ? "simulate" : "close"}</p>
+                    <div className="mx-auto  flex items-center justify-center space-x-1">
+                        {/* <p className="ml-12">{!enabled ? "simulate" : "close"}</p> */}
+                        <CalculatorIcon className="h-5 w-5 text-gray-500" />
                         <Switch
                             checked={enabled}
                             onChange={setEnabled}
@@ -177,9 +178,9 @@ const EventsFound = ({ selectedEvent }: Props) => {
                                     <th scope="col" className="col pl-0">
                                         Name
                                     </th>
-                                    <th scope="col" className="col">
+                                    {/* <th scope="col" className="col">
                                         Team
-                                    </th>
+                                    </th> */}
                                     <th scope="col" className="col">
                                         Date
                                     </th>
@@ -204,12 +205,19 @@ const EventsFound = ({ selectedEvent }: Props) => {
                                             />
                                         </td>
                                         <td className="row pl-4 text-[10px]">{idx + 1}</td>
-                                        <td className="row">{event.fullName}</td>
-                                        <td className="row pl-4 text-[10px]">
-                                            {event.team},{event.grade}
+                                        <td className="row ">
+                                            {event.fullName}
+                                            <span className="text-[8px]">, {event.grade}</span>
                                         </td>
+                                        {/* <td className="row pl-4 text-[10px]">
+                                            {event.team},{event.grade}
+                                        </td> */}
                                         <td className="row pl-4 text-[10px]">
-                                            {event.date.slice(5, 10) + "/" + event.date.slice(2, 4)}
+                                            {event.date.slice(5, 7) +
+                                                "," +
+                                                event.date.slice(8, 10) +
+                                                "/" +
+                                                event.date.slice(2, 4)}
                                         </td>
                                         <td className="row">{event.time}</td>
                                     </tr>
