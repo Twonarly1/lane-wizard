@@ -69,7 +69,7 @@ const Header = () => {
                 {navTabs.slice(0, 4).map((tab: Tab, index: number) => (
                     <Link href={tab.path} key={index} className="">
                         <a
-                            className={`cursor-pointer rounded-md px-3 py-2 text-lg font-medium outline-none  ${
+                            className={`cursor-pointer rounded-md px-3 py-2 font-medium outline-none md:text-lg  ${
                                 tab.name == activeTab
                                     ? "text-blue-500  "
                                     : "text-gray-500 hover:bg-gray-50"

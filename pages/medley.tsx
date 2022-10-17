@@ -107,13 +107,13 @@ const DialogDemo = ({}: Props) => {
     return (
         <div className="w-full items-center  justify-center text-center ">
             <div className="mx-auto flex w-fit">
-                <div className="  w-full items-center space-x-2 md:justify-center">
+                <div className="  mx-auto w-full items-center">
                     <TeamDropdown
                         selectedTeam={teamSelected}
                         setSelectedTeam={setTeamSelected}
                         getTeamList={team}
                     />
-                    <div className="mx-auto flex justify-center space-x-2 pl-11">
+                    <div className="mx-auto flex justify-center space-x-2">
                         <button
                             className=" mt-8 bg-white px-4 text-lg"
                             onClick={calculateMedleySimulationTime}
@@ -136,7 +136,7 @@ const DialogDemo = ({}: Props) => {
                 }`}
             >
                 {/* Med. BA */}
-                <div className=" mx-auto w-fit flex-col text-left md:w-fit">
+                <div className=" mx-auto w-fit flex-col text-left">
                     <p className=" uppercase tracking-tighter">Backstroke</p>
                     <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
                         <div className="inline-block align-middle ">

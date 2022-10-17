@@ -42,10 +42,14 @@ const EventsFound = ({ selectedEvent }: Props) => {
         .sort((a: any, b: any) => a.milliseconds - b.milliseconds)
 
     const checkIfSimulationIsAvailable = () => {
-        if (selectedEvent.includes("relay")) {
-            return setSimulateRelays(true)
+        if (selectedEvent.includes("400 FR")) {
+            setSimulateRelays(true)
         } else {
-            return setSimulateRelays(false)
+            if (selectedEvent.includes("200 FR")) {
+                setSimulateRelays(true)
+            } else {
+                setSimulateRelays(false)
+            }
         }
     }
     const checkIfEventIsMedleyRelay = () => {

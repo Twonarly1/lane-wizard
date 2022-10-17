@@ -28,19 +28,19 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
     return (
         <Combobox
             as="div"
-            className="cursor mx-auto mt-10 flex items-center space-x-2 "
+            className="cursor mx-auto mt-10 items-center"
             value={selectedTeam}
             onChange={setSelectedTeam}
         >
-            <Combobox.Label className={`${active ? "visible" : "invisible"}`}>Team:</Combobox.Label>
+            {/* <Combobox.Label className={`${active ? "visible" : "invisible"}`}>Team:</Combobox.Label> */}
             <div className="relative w-full">
                 <Combobox.Input
                     placeholder="select team"
-                    className="comboboxInput cursor-default"
+                    className="comboboxInput cursor-text"
                     onChange={(event) => setQuery(event.target.value)}
                     displayValue={selectedTeam}
                 />
-                <Combobox.Button className="comboboxButton cursor-default">
+                <Combobox.Button className="comboboxButton cursor-pointer">
                     <ChevronDownIcon className="h-5 w-5 " aria-hidden="true" />
                 </Combobox.Button>
 
@@ -52,7 +52,7 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
                                 value={team}
                                 className={({ active }) =>
                                     classNames(
-                                        "relative cursor-default select-none py-2",
+                                        "relative cursor-pointer select-none py-2",
                                         active ? "bg-indigo-500 text-white" : "text-gray-900"
                                     )
                                 }

@@ -110,7 +110,6 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
         <div>
             <form onSubmit={onSubmit} className="form">
                 <div className="mt-4 flex space-x-2">
-                    <label className={`mt-2 ml-1 ${active ? "visible" : "invisible"}`}>Time:</label>
                     <input
                         type="number"
                         placeholder="enter time"

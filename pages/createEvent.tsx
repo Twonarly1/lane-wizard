@@ -48,13 +48,11 @@ const Home = () => {
                 </div>
             </div>
             <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col items-center">
-                <div className="ml-4">
-                    <AthleteDropdown
-                        selectedAthlete={selectedAthlete}
-                        setSelectedAthlete={setSelectedAthlete}
-                        getAthleteList={getAthleteList?.getAthleteByTeam}
-                    />
-                </div>
+                <AthleteDropdown
+                    selectedAthlete={selectedAthlete}
+                    setSelectedAthlete={setSelectedAthlete}
+                    getAthleteList={getAthleteList?.getAthleteByTeam}
+                />
                 <div className="-mt-8 mr-[1px]">
                     <EventDropdown
                         selectedEvent={selectedEvent}

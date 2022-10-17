@@ -13,17 +13,17 @@ const event: string[] = [
     "Med. BR",
     "Med. FL",
     "Med. FR",
-    "200 free",
+    "200",
     "IM",
-    "50 free",
-    "100 fly",
-    "100 free",
-    "500 free",
-    "200 free relay",
-    "100 backstroke",
-    "100 breastroke",
-    "400 free relay",
-    "100 individual medley",
+    "50",
+    "Fly",
+    "100",
+    "500",
+    "200 FR",
+    "Back",
+    "Breast",
+    "400 FR",
+    "100 IM",
     "diving 6",
     "diving 11",
 ]
@@ -49,21 +49,21 @@ export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props
     return (
         <Combobox
             as="div"
-            className="mx-auto mt-10 flex items-center space-x-2"
+            className="mx-auto mt-10 items-center"
             value={selectedEvent}
             onChange={setSelectedEvent}
         >
-            <Combobox.Label className={`${active ? "visible" : "invisible"}`}>
+            {/* <Combobox.Label className={`${active ? "visible" : "invisible"}`}>
                 Event:
-            </Combobox.Label>
+            </Combobox.Label> */}
             <div className="relative w-full">
                 <Combobox.Input
                     placeholder="select event"
-                    className="comboboxInput cursor-default"
+                    className="comboboxInput cursor-text"
                     onChange={(event) => setQuery(event.target.value)}
                     displayValue={(event: string) => event}
                 />
-                <Combobox.Button className="comboboxButton cursor-default">
+                <Combobox.Button className="comboboxButton cursor-pointer">
                     <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
                 </Combobox.Button>
 
@@ -75,7 +75,7 @@ export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props
                                 value={event}
                                 className={({ active }) =>
                                     classNames(
-                                        "relative cursor-default select-none py-2",
+                                        "relative cursor-pointer select-none py-2",
                                         active ? "bg-indigo-500 text-white" : "text-gray-900"
                                     )
                                 }

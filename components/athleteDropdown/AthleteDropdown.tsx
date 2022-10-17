@@ -1,9 +1,10 @@
 import { useLazyQuery } from "@apollo/client"
 import { Combobox } from "@headlessui/react"
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
+import { CheckIcon, ChevronDownIcon, LockClosedIcon, LockOpenIcon } from "@heroicons/react/20/solid"
 import { GET_ADMIN_BY_EMAIL } from "graphql/queries"
 import { classNames } from "lib/utils"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 
 type Props = {
@@ -13,16 +14,17 @@ type Props = {
 }
 
 const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }: Props) => {
+    const router = useRouter()
     const [query, setQuery] = useState<string>("")
     const [active, setActive] = useState<boolean>(false)
     const [checked, setChecked] = useState<boolean>(false)
     const { data: session }: any = useSession()
     const [getAdminByEmail, { error: adminError, loading: admingLoading, data: adminApproved }] =
         useLazyQuery(GET_ADMIN_BY_EMAIL)
+    const [admin, setAdmin] = useState<boolean>(false)
 
     useEffect(() => {
         if (!session) return
-
         getAdminByEmail({
             variables: {
                 email: session.user.email,
@@ -43,32 +45,36 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
     }, [selectedAthlete])
 
     const handleInputClick = () => {
-        if (checked) {
-            setChecked(false)
-        } else {
+        if (!checked) {
             setChecked(true)
+        } else {
+            setChecked(false)
         }
     }
+
+    useEffect(() => {
+        if (router.pathname == "/createEvent") setAdmin(true)
+    }, [router.pathname])
 
     return (
         <Combobox
             as="div"
-            className="cursor mx-auto mt-10 mb-2 flex items-center space-x-2"
+            className="mx-auto mt-10 mb-2 cursor-pointer items-center"
             value={selectedAthlete}
             onChange={setSelectedAthlete}
         >
-            <Combobox.Label className={`flex items-center ${active ? "visible" : "invisible"}`}>
+            {/* <Combobox.Label className={`flex items-center ${active ? "visible" : "invisible"}`}>
                 Athlete:
-            </Combobox.Label>
+            </Combobox.Label> */}
 
             <div className="relative w-full">
                 <Combobox.Input
                     placeholder="select athlete"
-                    className="comboboxInput cursor-default"
+                    className="comboboxInput cursor-text"
                     onChange={(event) => setQuery(event.target.value)}
                     displayValue={checked ? (event: string) => event : () => ""}
                 />
-                <Combobox.Button className="comboboxButton cursor-default">
+                <Combobox.Button className="comboboxButton cursor-pointer">
                     <ChevronDownIcon className="h-5 w-5 " aria-hidden="true" />
                 </Combobox.Button>
 
@@ -80,7 +86,7 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
                                 value={athlete.firstName + " " + athlete.lastName}
                                 className={({ active }) =>
                                     classNames(
-                                        "relative cursor-default select-none py-2",
+                                        "relative cursor-pointer select-none py-2",
                                         active ? "bg-indigo-500 text-white" : "text-gray-900"
                                     )
                                 }
@@ -115,11 +121,46 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
                     </Combobox.Options>
                 )}
             </div>
-            <input
-                type="checkbox"
-                className={`radio h-5 w-5 ${adminApproved && active ? "visible" : "invisible"} `}
-                onChange={handleInputClick}
-            />
+
+            {checked ? (
+                <button
+                    onClick={() => {
+                        setChecked(false)
+                    }}
+                    className={` relative mx-auto mt-2 flex cursor-pointer  justify-end text-right text-gray-500 outline-none  ${
+                        admin ? "visible" : "invisible"
+                    } `}
+                >
+                    <div className="flex items-center space-x-2">
+                        <LockOpenIcon
+                            onClick={() => {
+                                setChecked(false)
+                            }}
+                            className="h-4 w-4"
+                        />
+                        <p className="text-xs">lock athlete</p>
+                    </div>
+                </button>
+            ) : (
+                <button
+                    onClick={() => {
+                        setChecked(true)
+                    }}
+                    className={`relative mx-auto mt-2 flex cursor-pointer justify-end text-right text-gray-500 outline-none ${
+                        admin ? "visible" : "invisible"
+                    } `}
+                >
+                    <div className="flex items-center space-x-2">
+                        <LockClosedIcon
+                            onClick={() => {
+                                setChecked(false)
+                            }}
+                            className="h-4 w-4"
+                        />
+                        <p className="text-xs">unlock athlete</p>
+                    </div>
+                </button>
+            )}
         </Combobox>
     )
 }
