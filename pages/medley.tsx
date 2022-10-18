@@ -22,7 +22,7 @@ type Event = {
     __typename: string
 }
 
-const team: string[] = ["Sartell", "foo", "bar"]
+const team: string[] = ["Sartell", "foo", "bar", "test"]
 
 const DialogDemo = ({}: Props) => {
     const [teamSelected, setTeamSelected] = useState<any>()
@@ -49,14 +49,6 @@ const DialogDemo = ({}: Props) => {
             })
             .sort((a: any, b: any) => a.milliseconds - b.milliseconds)
     }, [teamSelected])
-
-    // const sort = (events: any) => {
-    //     const numbers = events?.getEventsByTeamAndEvent
-    //         .map((o: any) => {
-    //             return o
-    //         })
-    //         .sort((a: any, b: any) => a.milliseconds - b.milliseconds)
-    // }
 
     const calculateMedleySimulationTime = () => {
         const numbers = [BA[1], BR[1], FL[1], FR[1]]
@@ -115,13 +107,13 @@ const DialogDemo = ({}: Props) => {
                     />
                     <div className="mx-auto flex justify-center space-x-2">
                         <button
-                            className=" mt-8 bg-white px-4 text-lg"
+                            className=" mt-8 rounded bg-white px-4 text-lg shadow ring-1 ring-black ring-opacity-5"
                             onClick={calculateMedleySimulationTime}
                         >
                             calculate
                         </button>
                         <div
-                            className={`mt-8 items-center px-4 text-lg  ${
+                            className={`mt-8 items-center rounded px-4 text-lg shadow ring-1 ring-black ring-opacity-5  ${
                                 flash ? "bg-green-100" : "bg-white"
                             } `}
                         >
@@ -136,11 +128,15 @@ const DialogDemo = ({}: Props) => {
                 }`}
             >
                 {/* Med. BA */}
-                <div className=" mx-auto w-fit flex-col text-left">
-                    <p className=" uppercase tracking-tighter">Backstroke</p>
-                    <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
-                        <div className="inline-block align-middle ">
-                            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
+                <div
+                    className={`  mx-auto w-fit flex-col text-left ${
+                        teamBA?.getEventsByTeamAndEvent.length > 0 ? "visible" : "invisible"
+                    } `}
+                >
+                    <p>Backstroke</p>
+                    <div className="mx-auto flex h-fit max-h-40 w-fit flex-col overflow-y-auto rounded-l text-center shadow ring-1 ring-black ring-opacity-5 md:h-fit md:max-h-80">
+                        <div className="inline-block rounded align-middle">
+                            <div className="overflow-hidden ">
                                 <table className="px- table">
                                     <TableHeader />
                                     <tbody className="tbody">
@@ -185,11 +181,15 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. BR */}
-                <div className=" mx-auto w-fit flex-col text-left md:w-fit">
-                    <p className=" uppercase tracking-tighter">Breaststroke</p>
-                    <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
+                <div
+                    className={`  mx-auto w-fit flex-col text-left ${
+                        teamBR?.getEventsByTeamAndEvent.length > 0 ? "visible" : "invisible"
+                    } `}
+                >
+                    <p>Breaststroke</p>
+                    <div className="mx-auto flex h-fit max-h-40 w-fit flex-col overflow-y-auto rounded-l text-center shadow ring-1 ring-black ring-opacity-5 md:h-fit md:max-h-80">
                         <div className="inline-block align-middle ">
-                            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
+                            <div className="overflow-hidden ">
                                 <table className="table ">
                                     <TableHeader />
                                     <tbody className="tbody">
@@ -234,11 +234,15 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. FL */}
-                <div className=" mx-auto w-fit flex-col text-left md:w-fit">
-                    <p className=" uppercase tracking-tighter">Fly</p>
-                    <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
+                <div
+                    className={`  mx-auto w-fit flex-col text-left ${
+                        teamFL?.getEventsByTeamAndEvent.length > 0 ? "visible" : "invisible"
+                    } `}
+                >
+                    <p>Fly</p>
+                    <div className="mx-auto flex h-fit max-h-40 w-fit flex-col overflow-y-auto rounded-l text-center shadow ring-1 ring-black ring-opacity-5 md:h-fit md:max-h-80">
                         <div className="inline-block align-middle ">
-                            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
+                            <div className="overflow-hidden">
                                 <table className="table ">
                                     <TableHeader />
                                     <tbody className="tbody">
@@ -283,11 +287,15 @@ const DialogDemo = ({}: Props) => {
                     </div>
                 </div>
                 {/* Med. FR */}
-                <div className=" mx-auto w-fit flex-col text-left md:w-fit">
-                    <p className=" uppercase tracking-tighter">Freestyle</p>
-                    <div className="mx-auto flex h-40 w-fit flex-col overflow-y-auto text-center md:h-80">
+                <div
+                    className={` mx-auto w-fit flex-col text-left ${
+                        teamFR?.getEventsByTeamAndEvent.length > 0 ? "visible" : "invisible"
+                    } `}
+                >
+                    <p>Freestyle</p>
+                    <div className="mx-auto flex h-fit max-h-40 w-fit flex-col overflow-y-auto rounded-l text-center shadow ring-1 ring-black ring-opacity-5 md:h-fit md:max-h-80">
                         <div className="inline-block align-middle ">
-                            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5">
+                            <div className="overflow-hidden">
                                 <table className="table ">
                                     <TableHeader />
                                     <tbody className="tbody">

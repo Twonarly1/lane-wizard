@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client"
 import React, { useEffect, useState } from "react"
-import { AthleteDropdown, EventBox, Footer, EventDropdown, Admin } from "components"
+import { AthleteDropdown, EventBox, EventDropdown, Admin } from "components"
 import { GET_ADMIN_BY_EMAIL, GET_ATHLETES_BY_TEAM } from "graphql/queries"
 import { useSession } from "next-auth/react"
 
@@ -36,34 +36,40 @@ const Home = () => {
         return <pre>{JSON.stringify(adminError || teamError, null, 2)}</pre>
 
     return (
-        <>
+        <div className="items-cente mx-auto flex min-h-screen w-full flex-col">
             <div className="mx-auto mt-10 w-fit text-left">
-                <div className="flex space-x-2">
-                    <b className="w-16">Admin:</b>
-                    {session?.user.name}
+                <div className="mx-auto flex w-fit items-center space-x-3">
+                    <img
+                        src={getAdminTeam?.getAdminByEmail[0].image}
+                        className="h-10 w-fit object-cover"
+                    />
+                    <div className="flex flex-col text-left">
+                        <p> {session?.user.name}</p>
+                        <p>{getAdminTeam?.getAdminByEmail[0].team}</p>
+                    </div>
                 </div>
-                <div className="flex space-x-2">
-                    <b className="w-16">Team:</b>
-                    {getAdminTeam?.getAdminByEmail[0].team}
-                </div>
-            </div>
-            <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col items-center">
+
                 <AthleteDropdown
                     selectedAthlete={selectedAthlete}
                     setSelectedAthlete={setSelectedAthlete}
                     getAthleteList={getAthleteList?.getAthleteByTeam}
                 />
-                <div className="-mt-8 mr-[1px]">
+                <div className="-mt-8">
                     <EventDropdown
                         selectedEvent={selectedEvent}
                         setSelectedEvent={setSelectedEvent}
                     />
                 </div>
-                <EventBox athleteFound={selectedAthlete} eventFound={selectedEvent} />
-                <Admin selectedAthlete={selectedAthlete} />
+                <div>
+                    <EventBox
+                        athleteFound={selectedAthlete}
+                        eventFound={selectedEvent}
+                        adminTeam={getAdminTeam?.getAdminByEmail[0].team}
+                    />
+                    <Admin selectedAthlete={selectedAthlete} />
+                </div>
             </div>
-            <Footer />
-        </>
+        </div>
     )
 }
 

@@ -64,118 +64,134 @@ const Header = () => {
     }
 
     return (
-        <div className=" mx-auto flex h-[55px] max-w-lg items-center justify-between">
-            <div>
-                {navTabs.slice(0, 4).map((tab: Tab, index: number) => (
-                    <Link href={tab.path} key={index} className="">
-                        <a
-                            className={`cursor-pointer rounded-md px-3 py-2 font-medium outline-none md:text-lg  ${
-                                tab.name == activeTab
-                                    ? "text-blue-500  "
-                                    : "text-gray-500 hover:bg-gray-50"
-                            }`}
-                        >
-                            {capitalizeFirstLetter(tab.name)}
-                        </a>
-                    </Link>
-                ))}
-            </div>
-            <div className="links cursor-pointer">
-                <Bars3Icon
-                    onClick={() => setOpen(true)}
-                    className="h-8 w-8 rounded border bg-gray-200 p-1 font-medium text-gray-500 hover:bg-gray-50"
-                />
-            </div>
-            <Transition.Root show={open} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={setOpen}>
-                    <div className="fixed inset-0" />
-                    <div className="fixed inset-0 overflow-hidden">
-                        <div className="absolute inset-0 overflow-hidden">
-                            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full">
-                                <Transition.Child
-                                    as={Fragment}
-                                    enter="transform transition ease-in-out duration-500 sm:duration-700"
-                                    enterFrom="translate-x-full"
-                                    enterTo="translate-x-0"
-                                    leave="transform transition ease-in-out duration-500 sm:duration-700"
-                                    leaveFrom="translate-x-0"
-                                    leaveTo="translate-x-full"
-                                >
-                                    <Dialog.Panel className="pointer-events-auto w-screen md:w-[377px]">
-                                        <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                                            <div className="flex h-[55px] items-center justify-between bg-blue-200">
-                                                <Dialog.Title className="ml-3 text-3xl font-semibold text-gray-600">
-                                                    Meets
-                                                </Dialog.Title>
-                                                <div className="mr-3 flex items-center">
-                                                    <button
-                                                        type="button"
-                                                        className=" rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
-                                                        onClick={() => setOpen(false)}
-                                                    >
-                                                        <span className="sr-only">Close panel</span>
-                                                        <XMarkIcon
-                                                            className=" h-8 w-8"
-                                                            aria-hidden="true"
-                                                        />
-                                                    </button>
+        <div className=" mx-auto flex h-[55px] w-full  max-w-md">
+            <div className="flex w-full  items-center justify-between">
+                <div>
+                    {navTabs.slice(0, 4).map((tab: Tab, index: number) => (
+                        <Link href={tab.path} key={index} className="">
+                            <a
+                                className={`cursor-pointer rounded-md px-3 py-2 font-medium outline-none md:text-lg  ${
+                                    tab.name == activeTab
+                                        ? " text-gray-800 "
+                                        : "text-gray-500 hover:bg-gray-50"
+                                }`}
+                            >
+                                {capitalizeFirstLetter(tab.name)}
+                            </a>
+                        </Link>
+                    ))}
+                </div>
+                <div className="links cursor-pointer">
+                    <Bars3Icon
+                        onClick={() => setOpen(true)}
+                        className="h-8 w-8 rounded border bg-gray-200 p-1 font-medium text-gray-500 hover:bg-gray-50"
+                    />
+                </div>
+                <Transition.Root show={open} as={Fragment}>
+                    <Dialog as="div" className="relative z-10" onClose={setOpen}>
+                        <div className="fixed inset-0" />
+                        <div className="fixed inset-0 overflow-hidden">
+                            <div className="absolute inset-0 overflow-hidden">
+                                <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full">
+                                    <Transition.Child
+                                        as={Fragment}
+                                        enter="transform transition ease-in-out duration-500 sm:duration-700"
+                                        enterFrom="translate-x-full"
+                                        enterTo="translate-x-0"
+                                        leave="transform transition ease-in-out duration-500 sm:duration-700"
+                                        leaveFrom="translate-x-0"
+                                        leaveTo="translate-x-full"
+                                    >
+                                        <Dialog.Panel className="pointer-events-auto w-screen md:w-[377px]">
+                                            <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                                                <div className="flex h-[55px] items-center justify-between bg-blue-200">
+                                                    <Dialog.Title className="ml-3 text-3xl font-semibold text-gray-600">
+                                                        Meets
+                                                    </Dialog.Title>
+                                                    <div className="mr-3 flex items-center">
+                                                        <button
+                                                            type="button"
+                                                            className=" rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
+                                                            onClick={() => setOpen(false)}
+                                                        >
+                                                            <span className="sr-only">
+                                                                Close panel
+                                                            </span>
+                                                            <XMarkIcon
+                                                                className=" h-8 w-8"
+                                                                aria-hidden="true"
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className=" flex flex-col divide-y text-left">
+                                                    {navTabs.map((tab: Tab, index: number) => {
+                                                        if (!tab.disabled)
+                                                            return (
+                                                                <Link
+                                                                    href={tab.path}
+                                                                    key={index}
+                                                                    className=""
+                                                                >
+                                                                    <a
+                                                                        onClick={() =>
+                                                                            setOpen(false)
+                                                                        }
+                                                                        className={`cursor-pointer px-3 py-2 text-lg font-medium outline-none  ${
+                                                                            tab.name.replace(
+                                                                                " ",
+                                                                                ""
+                                                                            ) == activeTab
+                                                                                ? "text-gray-800  "
+                                                                                : "text-gray-500 hover:bg-gray-50"
+                                                                        }`}
+                                                                    >
+                                                                        {capitalizeFirstLetter(
+                                                                            tab.name
+                                                                        )}
+                                                                    </a>
+                                                                </Link>
+                                                            )
+                                                    })}
+                                                    {session ? (
+                                                        <button
+                                                            onClick={() => {
+                                                                signOut()
+                                                                setOpen(false)
+                                                            }}
+                                                            className="cursor-pointer px-3 py-2 text-lg font-medium text-gray-500 outline-none hover:bg-gray-50"
+                                                        >
+                                                            <p className="text-left">Logout</p>
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() => {
+                                                                signIn()
+                                                                setOpen(false)
+                                                            }}
+                                                            className="cursor-pointer px-3 py-2 text-lg font-medium text-gray-500 outline-none hover:bg-gray-50"
+                                                        >
+                                                            <p className="text-left">Login</p>
+                                                        </button>
+                                                    )}
+                                                    <footer>
+                                                        <a
+                                                            className="absolute right-6 bottom-2 cursor-pointer text-sm text-gray-400 outline-none"
+                                                            href="https://beau-hawkinson.vercel.app/"
+                                                        >
+                                                            ©️ bhawkinson
+                                                        </a>
+                                                    </footer>
                                                 </div>
                                             </div>
-                                            <div className=" flex flex-col divide-y text-left">
-                                                {navTabs.map((tab: Tab, index: number) => {
-                                                    if (!tab.disabled)
-                                                        return (
-                                                            <Link
-                                                                href={tab.path}
-                                                                key={index}
-                                                                className=""
-                                                            >
-                                                                <a
-                                                                    onClick={() => setOpen(false)}
-                                                                    className={`cursor-pointer px-3 py-2 text-lg font-medium outline-none  ${
-                                                                        tab.name.replace(" ", "") ==
-                                                                        activeTab
-                                                                            ? "text-blue-500  "
-                                                                            : "text-gray-500 hover:bg-gray-50"
-                                                                    }`}
-                                                                >
-                                                                    {capitalizeFirstLetter(
-                                                                        tab.name
-                                                                    )}
-                                                                </a>
-                                                            </Link>
-                                                        )
-                                                })}
-                                                {session ? (
-                                                    <button
-                                                        onClick={() => {
-                                                            signOut()
-                                                            setOpen(false)
-                                                        }}
-                                                        className="cursor-pointer px-3 py-2 text-lg font-medium text-gray-500 outline-none hover:bg-gray-50"
-                                                    >
-                                                        <p className="text-left">Logout</p>
-                                                    </button>
-                                                ) : (
-                                                    <button
-                                                        onClick={() => {
-                                                            signIn()
-                                                            setOpen(false)
-                                                        }}
-                                                        className="cursor-pointer px-3 py-2 text-lg font-medium text-gray-500 outline-none hover:bg-gray-50"
-                                                    >
-                                                        <p className="text-left">Login</p>
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </Dialog.Panel>
-                                </Transition.Child>
+                                        </Dialog.Panel>
+                                    </Transition.Child>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Dialog>
-            </Transition.Root>
+                    </Dialog>
+                </Transition.Root>
+            </div>
         </div>
     )
 }

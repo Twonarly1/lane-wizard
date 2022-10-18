@@ -5,12 +5,22 @@ import { GET_ADMIN_BY_EMAIL } from "graphql/queries"
 import { classNames } from "lib/utils"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
+import { stringify } from "querystring"
 import React, { useEffect, useState } from "react"
 
 type Props = {
     selectedAthlete: string
     setSelectedAthlete: any
     getAthleteList: any
+}
+
+type Athlete = {
+    firstName: string
+    lastName: string
+    fullName: string
+    grade: number
+    team: string
+    id: number
 }
 
 const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }: Props) => {
@@ -32,11 +42,22 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
         })
     }, [session])
 
+    // console.log(getAthleteList.map((ath: Athlete, idx: number) => ath.fullName))
+    // ?.sort((a: any, b: any) => a.fullName.localeCompare(b.fullName)))
+
+    // const alphebetize = () => {
+    //     let newArray = getAthleteList.map((ath: Athlete, idx: number) => ath.fullName)
+    //     console.log("new!!", newArray)
+    //     newArray.sort((a: { name: string }, b: { name: any }) => a.name?.localeCompare(b.name))
+    // }
+
+    // console.log(alphebetize())
+
     const filteredAthletes =
         query === ""
             ? getAthleteList
-            : getAthleteList?.filter((athlete: { firstName: string; lastName: string }) => {
-                  return athlete.firstName.toLowerCase().includes(query.toLowerCase())
+            : getAthleteList?.filter((athlete: { fullName: string }) => {
+                  return athlete.fullName.toLowerCase().includes(query.toLowerCase())
               })
 
     useEffect(() => {
@@ -59,7 +80,7 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
     return (
         <Combobox
             as="div"
-            className="mx-auto mt-10 mb-2 cursor-pointer items-center"
+            className=" mx-1 mt-10 mb-2 cursor-default items-center"
             value={selectedAthlete}
             onChange={setSelectedAthlete}
         >
@@ -74,7 +95,7 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
                     onChange={(event) => setQuery(event.target.value)}
                     displayValue={checked ? (event: string) => event : () => ""}
                 />
-                <Combobox.Button className="comboboxButton cursor-pointer">
+                <Combobox.Button className="absolute inset-y-0 right-0 flex cursor-pointer items-center rounded-r-md px-2 focus:outline-none">
                     <ChevronDownIcon className="h-5 w-5 " aria-hidden="true" />
                 </Combobox.Button>
 
@@ -83,7 +104,7 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
                         {filteredAthletes.map((athlete: any) => (
                             <Combobox.Option
                                 key={athlete.id}
-                                value={athlete.firstName + " " + athlete.lastName}
+                                value={athlete.fullName}
                                 className={({ active }) =>
                                     classNames(
                                         "relative cursor-pointer select-none py-2",
@@ -100,7 +121,7 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
                                                     selected && "font-semibold"
                                                 )}
                                             >
-                                                {athlete.firstName + " " + athlete.lastName}
+                                                {athlete.fullName}
                                             </span>
                                         </div>
 
@@ -127,18 +148,18 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
                     onClick={() => {
                         setChecked(false)
                     }}
-                    className={` relative mx-auto mt-2 flex cursor-pointer  justify-end text-right text-gray-500 outline-none  ${
+                    className={` relative mx-auto mt-2 flex w-fit   justify-end text-right text-gray-500 outline-none  ${
                         admin ? "visible" : "invisible"
                     } `}
                 >
-                    <div className="flex items-center space-x-2">
+                    <div className="flex cursor-pointer  items-center space-x-2">
                         <LockOpenIcon
                             onClick={() => {
                                 setChecked(false)
                             }}
                             className="h-4 w-4"
                         />
-                        <p className="text-xs">lock athlete</p>
+                        <p className="text-xs">unlock athlete</p>
                     </div>
                 </button>
             ) : (
@@ -146,18 +167,18 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
                     onClick={() => {
                         setChecked(true)
                     }}
-                    className={`relative mx-auto mt-2 flex cursor-pointer justify-end text-right text-gray-500 outline-none ${
+                    className={`relative mx-auto mt-2 flex w-fit  justify-end text-right text-gray-500 outline-none ${
                         admin ? "visible" : "invisible"
                     } `}
                 >
-                    <div className="flex items-center space-x-2">
+                    <div className="flex cursor-pointer items-center space-x-2">
                         <LockClosedIcon
                             onClick={() => {
                                 setChecked(false)
                             }}
                             className="h-4 w-4"
                         />
-                        <p className="text-xs">unlock athlete</p>
+                        <p className="text-xs">lock athlete</p>
                     </div>
                 </button>
             )}

@@ -83,10 +83,10 @@ export default function Feedback() {
     } = useForm<FormData>()
 
     const onSubmit = handleSubmit(async (formData) => {
-        const notification = toast.loading("Creating new event")
+        const notification = toast.loading("Submitting...")
 
         try {
-            console.log("Creating Feedback...", formData)
+            console.log("Adding Feedback...", formData)
             const data = await addFeedback({
                 variables: {
                     admin: false,
@@ -97,19 +97,16 @@ export default function Feedback() {
             })
             console.log("New feedback added!", data)
 
-            //set value fields to empty string after event is created
             setValue("admin", false)
             setValue("email", "")
             setValue("name", "")
             setValue("feedback", "")
 
-            //alert success
-            toast.success("New Event Created!", {
+            toast.success("Feedback submitted!", {
                 id: notification,
             })
         } catch (error) {
-            //alert error
-            toast.error("Whoops something went wrong!", {
+            toast.error("Whoops, something went wrong!", {
                 id: notification,
             })
         }
@@ -128,31 +125,30 @@ export default function Feedback() {
                 <div className="flex flex-shrink-0 items-center space-x-3">
                     <img className="inline-block h-10 w-10 rounded-full" src={image} alt="" />
                     <div className="text-xs">
-                        <p>{name}</p>
-                        <p>{email}</p>
+                        <b>{name}</b>
+                        <br />
+                        <i>{email}</i>
                     </div>
                 </div>
             ) : (
-                <Link href={"/auth/signin"}>
-                    <a>Please Login</a>
-                </Link>
-            )}
-            <form onSubmit={onSubmit} className="static z-50 mt-2 rounded-md">
-                <div className="flex flex-col py-2">
-                    <div className="  flex">
-                        <textarea
-                            className="h-40 flex-1 rounded border-none p-2 shadow outline-none ring-1 ring-black ring-opacity-5 placeholder:absolute "
-                            {...register("feedback", { required: true })}
-                            // type="text"
-                            placeholder="feedback..."
-                        />
-                    </div>
+                <div className="mt-2 flex w-32 justify-center rounded bg-white py-2 shadow ring-1 ring-black ring-opacity-5 hover:text-blue-500">
+                    <Link href={"/auth/signin"}>
+                        <a>Please Login</a>
+                    </Link>
                 </div>
+            )}
+            <form onSubmit={onSubmit} className="static z-50 mt-2 rounded">
+                <textarea
+                    disabled={!session}
+                    className="h-40 w-full rounded border-none p-2 shadow outline-none ring-1 ring-black ring-opacity-5 placeholder:absolute disabled:cursor-not-allowed "
+                    {...register("feedback", { required: true })}
+                    placeholder="Feedback, requests, inquiries all accepted..."
+                />
 
                 {!!watch("feedback") && (
-                    <div className=" mt-2 flex justify-center rounded bg-white shadow ring-1 ring-black ring-opacity-5 hover:text-blue-500">
+                    <div className="mt-2 flex w-full justify-end rounded bg-white shadow ring-1 ring-black ring-opacity-5 hover:text-blue-500">
                         <button className="w-full rounded py-2" type="submit">
-                            Create Post
+                            Send Feedback
                         </button>
                     </div>
                 )}

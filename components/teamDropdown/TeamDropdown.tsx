@@ -17,7 +17,7 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
         query === ""
             ? getTeamList
             : getTeamList?.filter((athlete: { firstName: string; lastName: string }) => {
-                  return athlete.firstName.toLowerCase().includes(query.toLowerCase())
+                  return athlete.firstName?.toLowerCase().includes(query.toLowerCase())
               })
 
     useEffect(() => {

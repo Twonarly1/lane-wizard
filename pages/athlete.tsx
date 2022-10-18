@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client"
 import React, { useState } from "react"
 import { GET_ATHLETES } from "graphql/queries"
-import { AthleteDropdown, AthleteEvents, Footer } from "components"
+import { AthleteDropdown, AthleteEvents } from "components"
 
 const Athlete = () => {
     const [selectedAthlete, setSelectedAthlete] = useState<any>()
@@ -15,17 +15,14 @@ const Athlete = () => {
     if (athletesError) return <pre>{JSON.stringify(athletesError, null, 2)}</pre>
 
     return (
-        <>
-            <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col items-center">
-                <AthleteDropdown
-                    selectedAthlete={selectedAthlete}
-                    setSelectedAthlete={setSelectedAthlete}
-                    getAthleteList={getAthleteList?.getAthleteList}
-                />
-                <AthleteEvents selectedAthlete={selectedAthlete} />
-            </div>
-            <Footer />
-        </>
+        <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col items-center">
+            <AthleteDropdown
+                selectedAthlete={selectedAthlete}
+                setSelectedAthlete={setSelectedAthlete}
+                getAthleteList={getAthleteList?.getAthleteList}
+            />
+            <AthleteEvents selectedAthlete={selectedAthlete} />
+        </div>
     )
 }
 

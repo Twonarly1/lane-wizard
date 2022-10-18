@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { ADD_EVENT } from "graphql/mutations"
 import { GET_ATHLETE } from "graphql/queries"
-import { diveScore, swimTime } from "lib/utils"
+import { diveScore, swimMilliseconds, swimTime } from "lib/utils"
 
 type Props = {
     athleteFound: string
     eventFound: string
+    adminTeam: string
 }
 
 interface IFormInput {
@@ -20,7 +21,7 @@ interface IFormInput {
     grade: number
 }
 
-const EventBox = ({ athleteFound, eventFound }: Props) => {
+const EventBox = ({ athleteFound, eventFound, adminTeam }: Props) => {
     const [time, setTime] = useState<any>("")
     const [addEvent] = useMutation(ADD_EVENT) // add event mutation
     const [getAthlete, { data: athlete, refetch }] = useLazyQuery(GET_ATHLETE)
@@ -29,6 +30,7 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
     const date = `${
         current.getFullYear() + "-" + (current.getMonth() + 1 + "-" + current.getDate())
     }`
+    // console.log(current.getDate())
 
     useEffect(() => {
         if (!athleteFound) return
@@ -59,15 +61,21 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
         }
 
         // format swim time or dive score
-        let formattedSwimTime: string | undefined = ""
+        let formattedSwimTime: any | undefined = ""
         let formattedDiveScore: string | undefined = ""
+        let milliseconds: any | undefined = ""
 
         if (eventFound?.includes("diving")) {
             formattedDiveScore = await diveScore(time)
+            milliseconds = 0
         } else {
             formattedSwimTime = await swimTime(time)
+            milliseconds = swimMilliseconds(time)
         }
         // console.log("dive...", diveScore(time), "swim...", swimTime(time))
+        // console.log("milliseconds", swimMilliseconds(time))
+        // if (formattedSwimTime.length > 0) {
+        // }
 
         try {
             console.log("Creating event...", formData)
@@ -79,9 +87,10 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
                     grade: athlete.getAthlete.grade,
                     event: eventFound,
                     time: formattedSwimTime || formattedDiveScore,
-                    milliseconds: time * 10,
+                    milliseconds: milliseconds,
                     fullName: athlete.getAthlete.fullName,
                     date: date,
+                    team: adminTeam.toString(),
                 },
             })
             console.log("New event added:", newEvent)
@@ -108,12 +117,15 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
 
     return (
         <div>
-            <form onSubmit={onSubmit} className="form">
-                <div className="mt-4 flex space-x-2">
+            <form
+                onSubmit={onSubmit}
+                className="relative flex flex-col justify-between overflow-x-auto"
+            >
+                <div className=" mx-1 mt-4 flex w-fit space-x-2">
                     <input
                         type="number"
-                        placeholder="enter time"
-                        className="comboboxInput"
+                        placeholder="time/score"
+                        className="w-[233px]  rounded border-none "
                         autoComplete="off"
                         {...register("time", {
                             required: true,
@@ -129,7 +141,7 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
                 </div>
 
                 {/* display formatted swimTime or diveScore */}
-                <div className="my-3 text-right text-[40px]">
+                <div className="my-3 mx-1 text-right text-[40px]">
                     <p>
                         {eventFound?.includes("diving") && time.length
                             ? diveScore(time) || <span className="text-gray-400">000.00</span>
@@ -138,7 +150,7 @@ const EventBox = ({ athleteFound, eventFound }: Props) => {
                 </div>
 
                 {athleteFound && (
-                    <div className=" mb-1 flex justify-center rounded bg-white shadow ring-1 ring-black ring-opacity-5 hover:text-blue-500">
+                    <div className=" mx-1 mb-1 flex justify-center rounded bg-white shadow ring-1 ring-black ring-opacity-5 hover:text-blue-500">
                         <button className="w-full rounded py-2" type="submit">
                             <p>Create Event</p>
                         </button>

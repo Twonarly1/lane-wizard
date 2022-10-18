@@ -51,6 +51,26 @@ export const swimTime = (time: any) => {
     }
 }
 
+export const swimMilliseconds = (time: any) => {
+    if (!time) return
+    if (!isNaN(time) && time.length === 1) return
+    if (time.length === 2) {
+        return (time[0] + time[1]) * 1000
+    }
+    if (time.length === 3) {
+        return (time[0] + time[1] + time[2]) * 100
+    }
+    if (time.length === 4) {
+        return (time[0] + time[1] + time[2] + time[3]) * 10
+    }
+    if (time.length === 5) {
+        return (time[0] + time[1] + time[2] + time[3] + time[4]) * 10
+    }
+    if (time.length === 6) {
+        return (time[0] + time[1] + time[2] + time[3] + time[4] + time[5]) * 10
+    }
+}
+
 export function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ")
 }
@@ -58,9 +78,23 @@ export function classNames(...classes: any[]) {
 export const millisecondsToMinutes = (ms: number) => {
     if (!ms) return
     let min = Math.floor(ms / 1000 / 60)
-    console.log("min", min)
     let sec: any = ((ms / 1000) % 60).toFixed(2)
-    console.log("sec", sec)
     const swimTime = "0" + min + ":" + sec
     return swimTime
+}
+
+export const byDate = (a: any, b: any) => {
+    let d1: any = new Date(a.date)
+    let d2: any = new Date(b.date)
+    if (d1.getYear() < d2.getYear()) {
+        return 1
+    } else if (d1.getYear() > d2.getYear()) {
+        return -1
+    } else if (d1.getMonth() > d2.getMonth()) {
+        return 1
+    } else if (d1.getMonth() < d2.getMonth()) {
+        return -1
+    } else {
+        return d2.getDate() - d1.getDate()
+    }
 }

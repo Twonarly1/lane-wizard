@@ -1,6 +1,7 @@
 import { useLazyQuery } from "@apollo/client"
 import React, { useEffect, useState } from "react"
 import { GET_EVENT_BY_ATHLETE } from "graphql/queries"
+import { byDate } from "lib/utils"
 
 type Props = {
     selectedAthlete: any
@@ -12,9 +13,10 @@ type Event = {
     fullName: string
     grade: number
     id: string
-    milliseconds: string
+    milliseconds: any
     team: string
     time: string
+    date: string
     __typename: string
 }
 
@@ -29,7 +31,7 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
     const [checked, setChecked] = useState<any>(false)
     const [selectedCheckedBtn, setSelectedRadioBtn] = React.useState<any>()
     const isCheckedSelected = (value: string): boolean => selectedCheckedBtn === value
-
+    const [eventsByEventSortedByDate, setEventsByEventSortedByDate] = useState<any>([])
     useEffect(() => {
         if (!selectedAthlete) return
         getEventsByAthlete({
@@ -61,11 +63,28 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
         }
     }
 
+    // const times: any = [
+    //     { id: 1, time: "00:25.51", ms: "25510" },
+    //     { id: 2, time: "00:24.95", ms: "24950" },
+    //     { id: 3, time: "00:26.12", ms: "26120" },
+    //     { id: 4, time: "00:26.44", ms: "26440" },
+    //     { id: 5, time: "00:23.32", ms: "23320" },
+    // ]
+    // console.log(
+    //     times.map((x: any, i: number) => {
+    //         if (x.id == times.length) {
+    //             return 0
+    //         } else {
+    //             return (((times[i + 1].ms - x.ms) / times[i + 1].ms) * 100).toFixed(2)
+    //         }
+    //     })
+    // )
+
     useEffect(() => {
         if (!athletesEvents) return
-        setTeamName(athletesEvents?.getEventByAthlete[0].team)
-        setAthleteGrade(athletesEvents?.getEventByAthlete[0].grade)
-        const athleteStats = athletesEvents?.getEventByAthlete.filter((athlete: any) => {
+        setTeamName(athletesEvents.getEventByAthlete[0].team)
+        setAthleteGrade(athletesEvents.getEventByAthlete[0].grade)
+        const athleteStats = athletesEvents.getEventByAthlete.filter((athlete: any) => {
             return athlete.event == eventChosenToFilterBy
         })
         setEventsByEvent(athleteStats)
@@ -74,7 +93,10 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
     useEffect(() => {
         if (!eventsByEvent) return
         calculateAvgSwimTime()
+        setEventsByEventSortedByDate(eventsByEvent.sort(byDate))
     }, [eventsByEvent])
+
+    console.log(eventsByEvent.length)
 
     if (loading) return <p className="loading">Loading ...</p>
     if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
@@ -90,16 +112,21 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                         <p>{teamName}</p>
                     </div>
                 </div>
-                <div className="mt-2 flex flex-col justify-between overflow-x-auto">
+                <div className="mt-2 flex flex-col justify-between overflow-x-auto rounded shadow ring-1 ring-black ring-opacity-5">
                     <div className="overflow-hidden ">
                         <table className="table">
                             <thead className="thead">
                                 <tr>
-                                    <th scope="col" className="col pl-0 pr-7 text-center">
+                                    <th scope="col" className="col pl-2">
+                                        #
+                                    </th>
+                                    <th scope="col" className="col">
+                                        Date
+                                    </th>
+                                    <th scope="col" className="col w-20 pl-0 pr-7 text-center">
                                         Event
                                     </th>
-                                    <th scope="col" className="w-20"></th>
-                                    <th scope="col" className="col text-right">
+                                    <th scope="col" className="col w-20 text-right">
                                         Time
                                     </th>
                                 </tr>
@@ -108,6 +135,14 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                 {athletesEvents?.getEventByAthlete?.map(
                                     (event: Event, idx: number) => (
                                         <tr key={idx} className="tr">
+                                            <td className="row pl-2">{idx + 1}</td>
+                                            <td className="row pl-4">
+                                                {event.date.slice(5, 7) +
+                                                    "," +
+                                                    event.date.slice(8, 10) +
+                                                    "/" +
+                                                    event.date.slice(2, 4)}
+                                            </td>
                                             <td className="row w-4 pl-2 pr-0">
                                                 <button
                                                     className="flex items-center"
@@ -122,8 +157,7 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                                     <p> {event.event}</p>
                                                 </button>
                                             </td>
-                                            <td className="row w-20"> </td>
-                                            <td className="row">{event.time}</td>
+                                            <td className="row w-20">{event.time}</td>
                                         </tr>
                                     )
                                 )}
@@ -137,20 +171,73 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                 ) : (
                     <>
                         {eventChosenToFilterBy && (
-                            <div className="mt-10 flex justify-between">
-                                <p>{eventChosenToFilterBy}</p>
+                            <div className="mt-10 flex items-center justify-between">
+                                <p className="">{eventChosenToFilterBy}</p>
+                                <p className="rounded bg-white px-4 text-lg shadow ring-1 ring-black ring-opacity-5">
+                                    <span className="mr-2">
+                                        <b>avg:</b>
+                                    </span>
+                                    {averageEventTime}
+                                </p>
                             </div>
                         )}
-                        <div className="mt-2 flex flex-col justify-between overflow-x-auto">
+                        <div className="mt-2 flex flex-col justify-between overflow-x-auto rounded shadow ring-1 ring-black ring-opacity-5">
                             <div className="overflow-hidden ">
                                 <table className="table">
                                     <thead className="thead">
                                         <tr>
-                                            <th scope="col" className="col">
+                                            <th scope="col" className="col pl-2">
                                                 #
                                             </th>
                                             <th scope="col" className="col">
                                                 Date
+                                            </th>
+                                            <th scope="col" className="w-20 pl-0 pr-7"></th>
+                                            <th
+                                                scope="col"
+                                                className="col w-20 bg-blue-50 text-right"
+                                            >
+                                                Time
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="tbody">
+                                        {eventsByEvent
+                                            ?.sort(
+                                                (a: any, b: any) => a.milliseconds - b.milliseconds
+                                            )
+                                            .map((event: Event, idx: number) => (
+                                                <tr key={idx} className="tr">
+                                                    <td className="row pl-2">{idx + 1}</td>
+                                                    {/* <td className="row">{event.date}</td> */}
+                                                    <td className="row pl-4">
+                                                        {event.date.slice(5, 7) +
+                                                            "," +
+                                                            event.date.slice(8, 10) +
+                                                            "/" +
+                                                            event.date.slice(2, 4)}
+                                                    </td>
+                                                    <td className="row"></td>
+                                                    <td className="row bg-blue-50">{event.time}</td>
+                                                </tr>
+                                            ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div className="mt-2 mb-10 flex flex-col justify-between overflow-x-auto rounded shadow ring-1 ring-black ring-opacity-5">
+                            <div className="overflow-hidden ">
+                                <table className="table">
+                                    <thead className="thead">
+                                        <tr>
+                                            <th scope="col" className="col pl-2">
+                                                #
+                                            </th>
+                                            <th scope="col" className="col bg-blue-50">
+                                                Date
+                                            </th>
+                                            <th scope="col" className="col pr-6 text-right">
+                                                %∆
                                             </th>
                                             <th scope="col" className="col text-right">
                                                 Time
@@ -158,30 +245,42 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                         </tr>
                                     </thead>
                                     <tbody className="tbody">
-                                        {eventsByEvent?.map((event: any, idx: number) => (
-                                            <tr key={idx} className="tr">
-                                                <td className="row pl-4">{idx}</td>
-                                                <td className="row">{event.date}</td>
-                                                <td className="row">{event.time}</td>
-                                            </tr>
-                                        ))}
+                                        {eventsByEvent
+                                            ?.sort(byDate)
+                                            .map((event: any, idx: number) => (
+                                                <tr key={idx} className="tr">
+                                                    <td className="row pl-2">{idx + 1}</td>
+                                                    {/* <td className="row">{event.date}</td> */}
+                                                    <td className="row bg-blue-50 pl-4">
+                                                        {event.date.slice(5, 7) +
+                                                            "," +
+                                                            event.date.slice(8, 10) +
+                                                            "/" +
+                                                            event.date.slice(2, 4)}
+                                                    </td>
+                                                    {/* <td className="row">
+                                                        {(
+                                                            ((eventsByEvent[idx + 1].milliseconds -
+                                                                event.milliseconds) /
+                                                                eventsByEvent[idx + 1]
+                                                                    .milliseconds) *
+                                                            100
+                                                        ).toFixed(2)}
+                                                            </td> */}
+                                                    <td className="row pl-2 pr-6 text-right">
+                                                        {(
+                                                            ((eventsByEvent[idx + 1]?.milliseconds -
+                                                                event.milliseconds) /
+                                                                eventsByEvent[idx + 1]
+                                                                    ?.milliseconds) *
+                                                            100
+                                                        ).toFixed(2)}
+                                                    </td>
+                                                    <td className="row w-20">{event.time}</td>
+                                                </tr>
+                                            ))}
                                     </tbody>
                                 </table>
-
-                                {averageEventTime && (
-                                    <table className="table ">
-                                        <thead className="thead">
-                                            <tr className="bg-gray-200">
-                                                <th scope="col" className="col">
-                                                    avg
-                                                </th>
-                                                <th scope="col" className="col text-right">
-                                                    {averageEventTime}
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                )}
                             </div>
                         </div>
                     </>

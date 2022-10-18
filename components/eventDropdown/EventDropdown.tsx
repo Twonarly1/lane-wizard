@@ -49,7 +49,7 @@ export default function EventDropdown({ selectedEvent, setSelectedEvent }: Props
     return (
         <Combobox
             as="div"
-            className="mx-auto mt-10 items-center"
+            className="mx-1 mt-10 items-center"
             value={selectedEvent}
             onChange={setSelectedEvent}
         >

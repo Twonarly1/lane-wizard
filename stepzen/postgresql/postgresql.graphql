@@ -26,6 +26,7 @@ type Admin {
     id: ID!
     email: String
     team: String
+    image: String
 }
 
 type Feedback {
@@ -178,6 +179,7 @@ type Mutation {
         fullName: String!
         grade: Int!
         date: String!
+        team: String!
     ): Event
         @dbquery(
             type: "postgresql"

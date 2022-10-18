@@ -9,6 +9,7 @@ export const ADD_EVENT = gql`
         $fullName: String!
         $grade: Int!
         $date: String!
+        $team: String!
     ) {
         insertEvent(
             athlete: $athlete
@@ -18,6 +19,7 @@ export const ADD_EVENT = gql`
             fullName: $fullName
             grade: $grade
             date: $date
+            team: $team
         ) {
             athlete
             time
@@ -26,6 +28,7 @@ export const ADD_EVENT = gql`
             fullName
             grade
             date
+            team
         }
     }
 `
@@ -40,6 +43,7 @@ export const DELETE_EVENT = gql`
             fullName
             grade
             date
+            team
         }
     }
 `

@@ -11,6 +11,7 @@ export const GET_EVENT_USING_ATHLETE = gql`
             fullName
             grade
             date
+            team
         }
     }
 `
@@ -22,6 +23,7 @@ export const GET_ATHLETES = gql`
             id
             lastName
             grade
+            fullName
         }
     }
 `
@@ -118,6 +120,7 @@ export const GET_ADMIN_BY_EMAIL = gql`
             email
             id
             team
+            image
         }
     }
 `

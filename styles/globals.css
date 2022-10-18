@@ -31,7 +31,7 @@
         @apply py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900;
     }
     .row {
-        @apply whitespace-nowrap px-0 pr-3 text-xs font-medium text-gray-500 last-of-type:text-right sm:text-sm  md:text-lg;
+        @apply whitespace-nowrap px-0 pr-3 text-xs font-medium text-gray-500 last-of-type:text-right md:text-sm;
     }
     .radio {
         @apply h-3 w-3 border-gray-300 bg-white  checked:text-green-500 focus:outline-none focus:ring-transparent;
@@ -47,6 +47,6 @@
         bg-neutral-200 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none;
     }
     .comboboxInput {
-        @apply w-[233px] rounded border-none;
+        @apply w-[233px] rounded border-none shadow ring-1 ring-black ring-opacity-5;
     }
 }

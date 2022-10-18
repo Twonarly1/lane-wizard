@@ -1,6 +1,7 @@
 import { useLazyQuery } from "@apollo/client"
 import { Switch } from "@headlessui/react"
 import { CalculatorIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
+import { CommonColumns, TableHeader } from "components/medley"
 import { GET_EVENTS_BY_EVENT } from "graphql/queries"
 import { classNames } from "lib/utils"
 import React, { useEffect, useState } from "react"
@@ -122,7 +123,7 @@ const EventsFound = ({ selectedEvent }: Props) => {
                     >
                         <button
                             disabled={checked.length != 4}
-                            className={`bg-white px-4 text-lg ${
+                            className={`rounded bg-white px-4 text-lg shadow ring-1 ring-black ring-opacity-5 ${
                                 checked.length != 4 && "cursor-not-allowed"
                             }`}
                             onClick={calculate400FRSimulationTime}
@@ -130,7 +131,7 @@ const EventsFound = ({ selectedEvent }: Props) => {
                             calculate
                         </button>
                         <div
-                            className={`items-center px-4 text-lg  ${
+                            className={`items-center rounded px-4 text-lg shadow ring-1 ring-black ring-opacity-5 ${
                                 flash ? "bg-green-100" : "bg-white"
                             } `}
                         >
@@ -169,32 +170,13 @@ const EventsFound = ({ selectedEvent }: Props) => {
                     <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                         {" "}
                         <table className="table">
-                            <thead className="thead">
-                                <tr>
-                                    <th scope="col" className="col pl-2"></th>
-                                    <th scope="col" className="col text-[10px]">
-                                        #
-                                    </th>
-                                    <th scope="col" className="col pl-0">
-                                        Name
-                                    </th>
-                                    {/* <th scope="col" className="col">
-                                        Team
-                                    </th> */}
-                                    <th scope="col" className="col">
-                                        Date
-                                    </th>
-                                    <th scope="col" className="col text-right">
-                                        Time
-                                    </th>
-                                </tr>
-                            </thead>
+                            <TableHeader />
                             <tbody className="tbody">
                                 {numbers?.map((event: any, idx: number) => (
                                     <tr key={idx} className="tr">
-                                        <td className="row w-4 pl-2 pr-0">
+                                        <td className="flex items-center">
                                             <input
-                                                className={` radio ${
+                                                className={`radio mr-2 ml-2 cursor-pointer ${
                                                     enabled && simulateRelays
                                                         ? "visible"
                                                         : "invisible"
@@ -202,24 +184,25 @@ const EventsFound = ({ selectedEvent }: Props) => {
                                                 type="checkbox"
                                                 value={event.id}
                                                 onChange={(e: any) => handleCheck(e, { event })}
+                                                // checked={}
                                             />
+                                            <p className="items-center"> {event.fullName}</p>
                                         </td>
-                                        <td className="row pl-4 text-[10px]">{idx + 1}</td>
-                                        <td className="row ">
+                                        {/* <td className="row ">
                                             {event.fullName}
                                             <span className="text-[8px]">, {event.grade}</span>
-                                        </td>
+                                        </td> */}
                                         {/* <td className="row pl-4 text-[10px]">
                                             {event.team},{event.grade}
                                         </td> */}
-                                        <td className="row pl-4 text-[10px]">
+                                        {/* <td className="row pl-4 text-[10px]">
                                             {event.date.slice(5, 7) +
                                                 "," +
                                                 event.date.slice(8, 10) +
                                                 "/" +
                                                 event.date.slice(2, 4)}
-                                        </td>
-                                        <td className="row">{event.time}</td>
+                                        </td> */}
+                                        <CommonColumns grade={event.grade} time={event.time} />
                                     </tr>
                                 ))}
                             </tbody>

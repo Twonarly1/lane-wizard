@@ -1,15 +1,15 @@
 import React from "react"
 
 type Props = {
-    grade: number
-    time: number
+    grade?: number
+    time?: number
 }
 
 const CommonColumns = ({ grade, time }: Props) => {
     return (
         <>
-            <td className="row text-xs">{grade}</td>
-            <td className="row text-right text-xs">{time}</td>
+            {grade && <td className="row pl-4 text-xs">{grade}</td>}
+            {time && <td className="row text-right text-xs">{time}</td>}
         </>
     )
 }

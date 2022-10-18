@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <SessionProvider session={pageProps.session}>
             <ApolloProvider client={client}>
                 <Toaster />
-                <div className="min-h-screen bg-gray-200 px-4">
+                <div className=" min-h-screen bg-gray-200">
                     <Header />
                     <Component {...pageProps} />
                 </div>

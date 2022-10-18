@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { EventDropdown, EventsFound, Footer } from "components"
+import { EventDropdown, EventsFound } from "components"
 
 const event = () => {
     const [selectedEvent, setSelectedEvent] = useState<any>()
