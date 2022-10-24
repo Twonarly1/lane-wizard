@@ -32,7 +32,6 @@ const TeamDropdown = ({ selectedTeam, setSelectedTeam, getTeamList }: Props) => 
             value={selectedTeam}
             onChange={setSelectedTeam}
         >
-            {/* <Combobox.Label className={`${active ? "visible" : "invisible"}`}>Team:</Combobox.Label> */}
             <div className="relative w-full">
                 <Combobox.Input
                     placeholder="select team"

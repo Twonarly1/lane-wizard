@@ -14,12 +14,13 @@ type Tab = {
     disabled: boolean
 }
 let navTabs: Tab[] = [
-    { name: "team", path: "/", disabled: false },
+    { name: "home", path: "/", disabled: false },
     { name: "event", path: "/event", disabled: false },
     { name: "athlete", path: "/athlete", disabled: false },
     { name: "medley", path: "/medley", disabled: false },
     { name: "feedback", path: "/feedback", disabled: false },
     { name: "create Event", path: "/createEvent", disabled: true },
+    { name: "create Team Event", path: "/createTeamEvent", disabled: true },
 ]
 
 const Header = () => {
@@ -40,9 +41,11 @@ const Header = () => {
         if (check) {
             setAdminPrivileges(true)
             navTabs[5].disabled = false
+            navTabs[6].disabled = false
         } else {
             setAdminPrivileges(false)
             navTabs[5].disabled = true
+            navTabs[6].disabled = true
         }
     }
 
@@ -53,7 +56,7 @@ const Header = () => {
 
     useEffect(() => {
         if (router.pathname == "/") {
-            setActiveTab("team")
+            setActiveTab("home")
         } else {
             setActiveTab(router.pathname.substring(1))
         }

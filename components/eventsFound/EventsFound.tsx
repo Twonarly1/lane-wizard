@@ -1,19 +1,24 @@
 import { useLazyQuery } from "@apollo/client"
 import { Switch } from "@headlessui/react"
 import { CalculatorIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
-import { CommonColumns, TableHeader } from "components/medley"
-import { GET_EVENTS_BY_EVENT } from "graphql/queries"
+import { CommonColumns, TableHeader } from "components/table"
+import { GET_EVENTS_BY_TEAM_AND_EVENT, GET_TEAMEVENTS_BY_TEAM_AND_EVENT } from "graphql/queries"
 import { classNames } from "lib/utils"
 import React, { useEffect, useState } from "react"
 import DialogDemo from "./DialogDemo"
 
 type Props = {
     selectedEvent: any
+    selectedTeam: string
 }
 
-const EventsFound = ({ selectedEvent }: Props) => {
-    const [getEventsByEvent, { loading: eventsLoading, error: eventsError, data: getEvents }] =
-        useLazyQuery(GET_EVENTS_BY_EVENT)
+const EventsFound = ({ selectedEvent, selectedTeam }: Props) => {
+    const [
+        getEventsByTeamAndEvent,
+        { loading: eventsLoading, error: eventsError, data: getEvents },
+    ] = useLazyQuery(GET_EVENTS_BY_TEAM_AND_EVENT)
+    const [getTeamEventsByTeamAndEvent, { loading, error, data: getTeamEvents, refetch }] =
+        useLazyQuery(GET_TEAMEVENTS_BY_TEAM_AND_EVENT)
     const [simulateRelays, setSimulateRelays] = useState<boolean>(false)
     const [simulateMedley, setSimulateMedley] = useState<boolean>(false)
     const [enabled, setEnabled] = useState<boolean>(false)
@@ -22,13 +27,22 @@ const EventsFound = ({ selectedEvent }: Props) => {
     let [isOpen, setIsOpen] = useState<boolean>(false)
     const [flash, setFlash] = useState<boolean>(false)
 
+    console.log(selectedEvent)
+
     useEffect(() => {
         if (!selectedEvent) return
         setSimulateRelays(false)
         setSimulateMedley(false)
         setEnabled(false)
-        getEventsByEvent({
+        getEventsByTeamAndEvent({
             variables: {
+                team: selectedTeam,
+                event: selectedEvent,
+            },
+        })
+        getTeamEventsByTeamAndEvent({
+            variables: {
+                team: selectedTeam,
                 event: selectedEvent,
             },
         })
@@ -36,17 +50,22 @@ const EventsFound = ({ selectedEvent }: Props) => {
         checkIfSimulationIsAvailable()
     }, [selectedEvent])
 
-    const numbers = getEvents?.getEventsByEvent
+    const events = getEvents?.getEventsByTeamAndEvent
+        .map((o: any) => {
+            return o
+        })
+        .sort((a: any, b: any) => a.milliseconds - b.milliseconds)
+    const teamEvents = getTeamEvents?.getTeamEventsByTeamAndEvent
         .map((o: any) => {
             return o
         })
         .sort((a: any, b: any) => a.milliseconds - b.milliseconds)
 
     const checkIfSimulationIsAvailable = () => {
-        if (selectedEvent.includes("400 FR")) {
+        if (selectedEvent == "400 FR") {
             setSimulateRelays(true)
         } else {
-            if (selectedEvent.includes("200 FR")) {
+            if (selectedEvent == "200 FR") {
                 setSimulateRelays(true)
             } else {
                 setSimulateRelays(false)
@@ -143,7 +162,6 @@ const EventsFound = ({ selectedEvent }: Props) => {
                         />
                     </div>
                     <div className="mx-auto  flex items-center justify-center space-x-1">
-                        {/* <p className="ml-12">{!enabled ? "simulate" : "close"}</p> */}
                         <CalculatorIcon className="h-5 w-5 text-gray-500" />
                         <Switch
                             checked={enabled}
@@ -166,49 +184,122 @@ const EventsFound = ({ selectedEvent }: Props) => {
                         <DialogDemo isOpen={isOpen} setIsOpen={setIsOpen} />
                     </div>
                 </div>
-                <div className="mt-2 flex flex-col">
-                    <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                        {" "}
-                        <table className="table">
-                            <TableHeader />
-                            <tbody className="tbody">
-                                {numbers?.map((event: any, idx: number) => (
-                                    <tr key={idx} className="tr">
-                                        <td className="flex items-center">
-                                            <input
-                                                className={`radio mr-2 ml-2 cursor-pointer ${
-                                                    enabled && simulateRelays
-                                                        ? "visible"
-                                                        : "invisible"
-                                                } `}
-                                                type="checkbox"
-                                                value={event.id}
-                                                onChange={(e: any) => handleCheck(e, { event })}
-                                                // checked={}
+                {!selectedEvent.includes("Team") ? (
+                    <div className="mt-2 flex flex-col">
+                        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                            <table className="table ">
+                                <TableHeader name={true} grade={true} date={true} time={true} />
+                                <tbody className="tbody">
+                                    {events?.map((event: any, idx: number) => (
+                                        <tr key={idx} className="tr">
+                                            {/* <CommonColumns id={idx + 1} /> */}
+                                            <td className="flex items-center">
+                                                <p className="pl-2 pr-0"> {event.fullName}</p>
+
+                                                <input
+                                                    className={`radio  ml-2 cursor-pointer ${
+                                                        enabled && simulateRelays
+                                                            ? "visible"
+                                                            : "invisible"
+                                                    } `}
+                                                    type="checkbox"
+                                                    value={event.id}
+                                                    onChange={(e: any) => handleCheck(e, { event })}
+                                                    // checked={}
+                                                />
+                                            </td>
+                                            <CommonColumns
+                                                grade={event.grade}
+                                                time={event.time}
+                                                date={event.date}
                                             />
-                                            <p className="items-center"> {event.fullName}</p>
-                                        </td>
-                                        {/* <td className="row ">
-                                            {event.fullName}
-                                            <span className="text-[8px]">, {event.grade}</span>
-                                        </td> */}
-                                        {/* <td className="row pl-4 text-[10px]">
-                                            {event.team},{event.grade}
-                                        </td> */}
-                                        {/* <td className="row pl-4 text-[10px]">
-                                            {event.date.slice(5, 7) +
-                                                "," +
-                                                event.date.slice(8, 10) +
-                                                "/" +
-                                                event.date.slice(2, 4)}
-                                        </td> */}
-                                        <CommonColumns grade={event.grade} time={event.time} />
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="mt-2 flex flex-col">
+                        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                            <table className="table ">
+                                <TableHeader
+                                    id={true}
+                                    event={true}
+                                    name={true}
+                                    grade={true}
+                                    date={true}
+                                    time={true}
+                                    total={true}
+                                />
+                                {teamEvents?.map((event: any, idx: number) => (
+                                    <tbody key={idx} className="tbody">
+                                        <tr className="tr">
+                                            <CommonColumns
+                                                id={idx + 1}
+                                                event={event.ath1.event}
+                                                name={event.ath1.fullName}
+                                                grade={event.ath1.grade}
+                                                date={event.ath1.date}
+                                                time={event.ath1.time}
+                                                ms={event.ath1.milliseconds}
+                                                last={false}
+                                            />
+                                        </tr>
+                                        <tr className="tr">
+                                            <CommonColumns
+                                                id={idx + 1}
+                                                event={event.ath2.event}
+                                                name={event.ath2.fullName}
+                                                grade={event.ath2.grade}
+                                                date={event.ath2.date}
+                                                time={event.ath2.time}
+                                                ms={
+                                                    event.ath1.milliseconds +
+                                                    event.ath2.milliseconds
+                                                }
+                                                last={false}
+                                            />
+                                        </tr>
+                                        <tr className="tr">
+                                            <CommonColumns
+                                                id={idx + 1}
+                                                event={event.ath3.event}
+                                                name={event.ath3.fullName}
+                                                grade={event.ath3.grade}
+                                                date={event.ath3.date}
+                                                time={event.ath3.time}
+                                                ms={
+                                                    event.ath1.milliseconds +
+                                                    event.ath2.milliseconds +
+                                                    event.ath3.milliseconds
+                                                }
+                                                last={false}
+                                            />
+                                        </tr>
+                                        <tr className="tr ">
+                                            <CommonColumns
+                                                id={idx + 1}
+                                                event={event.ath4.event}
+                                                name={event.ath4.fullName}
+                                                grade={event.ath4.grade}
+                                                date={event.ath4.date}
+                                                time={event.ath4.time}
+                                                ms={
+                                                    event.ath1.milliseconds +
+                                                    event.ath2.milliseconds +
+                                                    event.ath3.milliseconds +
+                                                    event.ath4.milliseconds
+                                                }
+                                                last={true}
+                                            />
+                                        </tr>
+                                    </tbody>
+                                ))}
+                            </table>
+                        </div>
+                    </div>
+                )}
             </div>
         )
     )

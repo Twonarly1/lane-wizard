@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client"
 import { TeamDropdown } from "components"
-import { CommonColumns, TableHeader } from "components/medley"
+import { CommonColumns, TableHeader } from "components/table"
 import { GET_EVENTS_BY_TEAM_AND_EVENT } from "graphql/queries"
 import React, { useState } from "react"
 import { useEffect } from "react"
@@ -19,10 +19,11 @@ type Event = {
     milliseconds: number
     team: string
     time: any
+    date: string
     __typename: string
 }
 
-const team: string[] = ["Sartell", "foo", "bar", "test"]
+const team: string[] = ["Sartell", "test"]
 
 const DialogDemo = ({}: Props) => {
     const [teamSelected, setTeamSelected] = useState<any>()
@@ -138,7 +139,7 @@ const DialogDemo = ({}: Props) => {
                         <div className="inline-block rounded align-middle">
                             <div className="overflow-hidden ">
                                 <table className="px- table">
-                                    <TableHeader />
+                                    <TableHeader name={true} grade={true} date={true} time={true} />
                                     <tbody className="tbody">
                                         {teamBA?.getEventsByTeamAndEvent
                                             ?.map((o: any) => {
@@ -171,6 +172,7 @@ const DialogDemo = ({}: Props) => {
                                                     <CommonColumns
                                                         grade={event.grade}
                                                         time={event.time}
+                                                        date={event.date}
                                                     />
                                                 </tr>
                                             ))}
@@ -191,7 +193,7 @@ const DialogDemo = ({}: Props) => {
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden ">
                                 <table className="table ">
-                                    <TableHeader />
+                                    <TableHeader name={true} grade={true} date={true} time={true} />
                                     <tbody className="tbody">
                                         {teamBR?.getEventsByTeamAndEvent
                                             ?.map((o: any) => {
@@ -224,6 +226,7 @@ const DialogDemo = ({}: Props) => {
                                                     <CommonColumns
                                                         grade={event.grade}
                                                         time={event.time}
+                                                        date={event.date}
                                                     />
                                                 </tr>
                                             ))}
@@ -244,7 +247,7 @@ const DialogDemo = ({}: Props) => {
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden">
                                 <table className="table ">
-                                    <TableHeader />
+                                    <TableHeader name={true} grade={true} date={true} time={true} />
                                     <tbody className="tbody">
                                         {teamFL?.getEventsByTeamAndEvent
                                             ?.map((o: any) => {
@@ -277,6 +280,7 @@ const DialogDemo = ({}: Props) => {
                                                     <CommonColumns
                                                         grade={event.grade}
                                                         time={event.time}
+                                                        date={event.date}
                                                     />
                                                 </tr>
                                             ))}
@@ -297,7 +301,7 @@ const DialogDemo = ({}: Props) => {
                         <div className="inline-block align-middle ">
                             <div className="overflow-hidden">
                                 <table className="table ">
-                                    <TableHeader />
+                                    <TableHeader name={true} grade={true} date={true} time={true} />
                                     <tbody className="tbody">
                                         {teamFR?.getEventsByTeamAndEvent
                                             ?.map((o: any) => {
@@ -330,6 +334,7 @@ const DialogDemo = ({}: Props) => {
                                                     <CommonColumns
                                                         grade={event.grade}
                                                         time={event.time}
+                                                        date={event.date}
                                                     />
                                                 </tr>
                                             ))}

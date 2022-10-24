@@ -71,6 +71,10 @@ export const swimMilliseconds = (time: any) => {
     }
 }
 
+export const msToTime = (ms: any) => {
+    console.log(ms)
+}
+
 export function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ")
 }

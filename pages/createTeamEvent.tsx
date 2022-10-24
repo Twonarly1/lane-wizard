@@ -1,10 +1,10 @@
 import { useLazyQuery } from "@apollo/client"
 import React, { useEffect, useState } from "react"
-import { AthleteDropdown, EventBox, EventDropdown, Admin } from "components"
+import { AthleteDropdown, TeamEventBox, EventDropdown, Admin, AdminTeamEvent } from "components"
 import { GET_ADMIN_BY_EMAIL, GET_ATHLETES_BY_TEAM } from "graphql/queries"
 import { useSession } from "next-auth/react"
 
-const CreateEvent = () => {
+const CreateTeamEvent = () => {
     const [selectedEvent, setSelectedEvent] = useState<any>("")
     const [selectedAthlete, setSelectedAthlete] = useState<string>("")
     const { data: session }: any = useSession()
@@ -36,7 +36,7 @@ const CreateEvent = () => {
         return <pre>{JSON.stringify(adminError || teamError, null, 2)}</pre>
 
     return (
-        <div className="items-cente mx-auto flex min-h-screen w-full flex-col">
+        <div className="mx-auto flex min-h-screen w-full flex-col items-center">
             <div className="mx-auto mt-10 w-fit text-left">
                 <div className="mx-auto flex w-fit items-center space-x-3">
                     <img
@@ -48,29 +48,23 @@ const CreateEvent = () => {
                         <p>{getAdminTeam?.getAdminByEmail[0].team}</p>
                     </div>
                 </div>
-
-                <AthleteDropdown
-                    selectedAthlete={selectedAthlete}
-                    setSelectedAthlete={setSelectedAthlete}
-                    getAthleteList={getAthleteList?.getAthleteByTeam}
-                />
-                <div className="-mt-8">
+                <div className="mx-auto flex flex-col items-center justify-center">
                     <EventDropdown
                         selectedEvent={selectedEvent}
                         setSelectedEvent={setSelectedEvent}
                     />
                 </div>
-                <div>
-                    <EventBox
-                        athleteFound={selectedAthlete}
-                        eventFound={selectedEvent}
-                        adminTeam={getAdminTeam?.getAdminByEmail[0].team}
-                    />
-                    <Admin selectedAthlete={selectedAthlete} />
-                </div>
+                <TeamEventBox
+                    eventFound={selectedEvent}
+                    adminTeam={getAdminTeam?.getAdminByEmail[0].team}
+                />
+                <AdminTeamEvent
+                    teamFound={getAdminTeam?.getAdminByEmail[0].team}
+                    selectedEvent={selectedEvent}
+                />
             </div>
         </div>
     )
 }
 
-export default CreateEvent
+export default CreateTeamEvent

@@ -5,7 +5,6 @@ import { GET_ADMIN_BY_EMAIL } from "graphql/queries"
 import { classNames } from "lib/utils"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
-import { stringify } from "querystring"
 import React, { useEffect, useState } from "react"
 
 type Props = {
@@ -84,10 +83,6 @@ const AthleteDropdown = ({ selectedAthlete, setSelectedAthlete, getAthleteList }
             value={selectedAthlete}
             onChange={setSelectedAthlete}
         >
-            {/* <Combobox.Label className={`flex items-center ${active ? "visible" : "invisible"}`}>
-                Athlete:
-            </Combobox.Label> */}
-
             <div className="relative w-full">
                 <Combobox.Input
                     placeholder="select athlete"

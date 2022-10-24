@@ -54,24 +54,27 @@ const Admin = ({ selectedAthlete }: Props) => {
                             </span>
                         </p>
                     )}
-                    <div className="mt-2 flex flex-col">
-                        <div className="-my-2 overflow-x-auto sm:-mx-6">
-                            <div className="inline-block min-w-full py-2 align-middle">
-                                <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                    <div className="mx-auto mt-2 flex flex-col">
+                        <div className="-my-2 overflow-x-auto">
+                            <div className="mx-auto inline-block min-w-full py-2 align-middle">
+                                <div className="overflow-hidden rounded shadow ring-1 ring-black ring-opacity-5">
                                     <table className="table">
                                         <thead className="thead">
                                             <tr>
                                                 <th scope="col" className="col"></th>
-                                                <th scope="col" className="col">
+                                                <th scope="col" className="col pl-0">
                                                     #
                                                 </th>
-                                                <th scope="col" className="col">
+                                                <th scope="col" className="col pl-0">
                                                     Event
                                                 </th>
-                                                <th scope="col" className="col text-right">
+                                                <th scope="col" className="col pl-8">
                                                     Time
                                                 </th>
-                                                <th scope="col" className="col text-right"></th>
+                                                <th
+                                                    scope="col"
+                                                    className="col w-2 pl-0 text-right"
+                                                ></th>
                                             </tr>
                                         </thead>
                                         <tbody className="tbody">
@@ -89,8 +92,8 @@ const Admin = ({ selectedAthlete }: Props) => {
                                                         </td>
                                                         <td className="row">{idx}</td>
                                                         <td className="row">{event.event}</td>
-                                                        <td className="row">{event.time}</td>
-                                                        <td className="row pr-1">
+                                                        <td className="row pl-8">{event.time}</td>
+                                                        <td className="row w-4 pl-0 pr-0">
                                                             <svg
                                                                 onClick={(e: any) =>
                                                                     handleOnSubmit(e, { event })

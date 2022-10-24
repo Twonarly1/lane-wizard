@@ -1,64 +1,10 @@
 import { useSession } from "next-auth/react"
-import { useEffect, useState, Fragment } from "react"
+import { useEffect, useState } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
-import {
-    FaceFrownIcon,
-    FaceSmileIcon,
-    FireIcon,
-    HandThumbUpIcon,
-    HeartIcon,
-    XMarkIcon,
-} from "@heroicons/react/20/solid"
-import { Listbox, Transition } from "@headlessui/react"
 import { useMutation } from "@apollo/client"
 import { ADD_FEEDBACK } from "graphql/mutations"
 import toast from "react-hot-toast"
 import Link from "next/link"
-
-const moods = [
-    {
-        name: "Excited",
-        value: "excited",
-        icon: FireIcon,
-        iconColor: "text-white",
-        bgColor: "bg-red-500",
-    },
-    {
-        name: "Loved",
-        value: "loved",
-        icon: HeartIcon,
-        iconColor: "text-white",
-        bgColor: "bg-pink-400",
-    },
-    {
-        name: "Happy",
-        value: "happy",
-        icon: FaceSmileIcon,
-        iconColor: "text-white",
-        bgColor: "bg-green-400",
-    },
-    {
-        name: "Sad",
-        value: "sad",
-        icon: FaceFrownIcon,
-        iconColor: "text-white",
-        bgColor: "bg-yellow-400",
-    },
-    {
-        name: "Thumbsy",
-        value: "thumbsy",
-        icon: HandThumbUpIcon,
-        iconColor: "text-white",
-        bgColor: "bg-blue-500",
-    },
-    {
-        name: "I feel nothing",
-        value: null,
-        icon: XMarkIcon,
-        iconColor: "text-gray-400",
-        bgColor: "bg-transparent",
-    },
-]
 
 type FormData = {
     name: string
@@ -120,7 +66,7 @@ export default function Feedback() {
     }, [session])
 
     return (
-        <div className="mx-auto mt-8 max-w-lg ">
+        <div className="mx-auto mt-8 max-w-md ">
             {session ? (
                 <div className="flex flex-shrink-0 items-center space-x-3">
                     <img className="inline-block h-10 w-10 rounded-full" src={image} alt="" />
