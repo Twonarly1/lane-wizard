@@ -1,5 +1,4 @@
 type Athlete {
-    eventList: [Event] @materializer(query: "getEventUsingAthlete")
     firstName: String
     grade: Int
     id: ID!
@@ -10,16 +9,15 @@ type Athlete {
 
 type Event {
     athlete: ID
-    athleteUsingAthlete: Athlete
-        @materializer(query: "getAthlete", arguments: [{ name: "id", field: "athlete" }])
     event: String
     id: ID!
-    time: String
-    milliseconds: Int
-    fullName: String
+    time: String!
+    milliseconds: Int!
+    fullName: String!
     team: String!
     grade: Int
     date: String!
+    created_at: DateTime
 }
 
 type Admin {
@@ -37,9 +35,23 @@ type Feedback {
     admin: Boolean
 }
 
-"""
-These are some examples of queries generated from the schema. Feel free to modify them or add your own.
-"""
+type TeamEvent {
+    id: ID!
+    event_id_1: ID
+    event_id_2: ID
+    event_id_3: ID
+    event_id_4: ID
+    ath1: Event @materializer(query: "getEvent", arguments: [{ name: "id", field: "event_id_1" }])
+    ath2: Event @materializer(query: "getEvent", arguments: [{ name: "id", field: "event_id_2" }])
+    ath3: Event @materializer(query: "getEvent", arguments: [{ name: "id", field: "event_id_3" }])
+    ath4: Event @materializer(query: "getEvent", arguments: [{ name: "id", field: "event_id_4" }])
+    date: String!
+    team: String!
+    event: String!
+    time: String!
+    milliseconds: Int!
+}
+
 type Query {
     getAthleteList: [Athlete]
         @dbquery(
@@ -138,6 +150,38 @@ type Query {
             table: "event"
             configuration: "postgresql_config"
         )
+    getTeamEventsByTeamAndEvent(team: String!, event: String!): [TeamEvent]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "teamEvent" where "team" = $1 and "event" = $2
+            """
+            configuration: "postgresql_config"
+        )
+    getTeamEventsByEvent(event: String!): [TeamEvent]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "teamEvent" where "event" = $1
+            """
+            configuration: "postgresql_config"
+        )
+    getTeamEventsByTeam(team: String!): [TeamEvent]
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "teamEvent" where "team" = $1
+            """
+            configuration: "postgresql_config"
+        )
+    getTeamEventById(id: ID!): TeamEvent
+        @dbquery(
+            type: "postgresql"
+            query: """
+            select * from "teamEvent" where "id" = $1
+            """
+            configuration: "postgresql_config"
+        )
 }
 
 """
@@ -189,11 +233,39 @@ type Mutation {
             configuration: "postgresql_config"
         )
 
+    insertTeamEvent(
+        event_id_1: ID!
+        event_id_2: ID!
+        event_id_3: ID!
+        event_id_4: ID!
+        date: String!
+        team: String!
+        event: String!
+        time: String!
+        milliseconds: Int!
+    ): TeamEvent
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "teamEvent"
+            dml: INSERT
+            configuration: "postgresql_config"
+        )
+
     deleteEvent(id: ID!): Event
         @dbquery(
             type: "postgresql"
             schema: "public"
             table: "event"
+            dml: DELETE
+            configuration: "postgresql_config"
+        )
+
+    deleteTeamEvent(id: ID!): TeamEvent
+        @dbquery(
+            type: "postgresql"
+            schema: "public"
+            table: "teamEvent"
             dml: DELETE
             configuration: "postgresql_config"
         )
