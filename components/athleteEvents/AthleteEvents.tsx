@@ -95,7 +95,7 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                         <p>{teamName}</p>
                     </div>
                 </div>
-                {athletesEvents.getEventByAthlete.length != 0 && (
+                {athletesEvents?.getEventByAthlete.length != 0 && (
                     <div className="mt-2 flex flex-col justify-between overflow-x-auto rounded shadow ring-1 ring-black ring-opacity-5">
                         <div className="overflow-hidden ">
                             <table className="table">
@@ -177,7 +177,6 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                             .map((event: Event, idx: number) => (
                                                 <tr key={idx} className="tr">
                                                     <td className="row pl-2">{idx + 1}</td>
-                                                    {/* <td className="row">{event.date}</td> */}
                                                     <CommonColumns date={event.date} />
                                                     <td className="row"></td>
                                                     <td className="row bg-blue-50">{event.time}</td>
@@ -220,15 +219,6 @@ const AthleteEvents = ({ selectedAthlete }: Props) => {
                                                             "/" +
                                                             event.date.slice(2, 4)}
                                                     </td>
-                                                    {/* <td className="row">
-                                                        {(
-                                                            ((eventsByEvent[idx + 1].milliseconds -
-                                                                event.milliseconds) /
-                                                                eventsByEvent[idx + 1]
-                                                                    .milliseconds) *
-                                                            100
-                                                        ).toFixed(2)}
-                                                            </td> */}
                                                     <td className="row pl-2 pr-6 text-right">
                                                         {(
                                                             ((eventsByEvent[idx + 1]?.milliseconds -
